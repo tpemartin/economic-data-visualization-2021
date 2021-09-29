@@ -10,6 +10,6 @@ language:
 delete_merged_file: TRUE
 output_dir: "/Users/martinl/Github/economic-data-visualization-2021/docs"
 rmd_files: [
-  "chapters/index.Rmd",
+  "index.Rmd",
   "chapters/geometries-and-aesthetics.Rmd"
 ]
