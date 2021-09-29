@@ -105,3 +105,16 @@ gg <- list(
 
 ```
 
+## 其他{#otherSoftware}
+
+<div class="alert alert-info">
+  
+  * 後製軟體： Choose your own image editor, but make sure it support SVG editing. Here I use [Boxy SVG](https://boxy-svg.com/).
+  
+  * 程式排版：
+```{r}
+install.packages("styler")
+```
+  
+
+</div>

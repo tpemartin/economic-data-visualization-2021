@@ -3,8 +3,10 @@ start-a-project
 中文
 econdv2
 rprofile
+otherSoftware
 geometries-and-aesthetics
 an-example
 econdv2ggdash
-save-and-export
+script-saving
+graph-output
 ggdash-more

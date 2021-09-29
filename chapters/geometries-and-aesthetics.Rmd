@@ -1,3 +1,8 @@
+```{r eval=T, echo=FALSE}
+klippy::klippy()
+```
+
+
 # Geometries and Aesthetics
 
 -   [Available geometries](https://ggplot2.tidyverse.org/reference/index.html#section-layers)
@@ -170,19 +175,9 @@ myplot <- {
 myplot
 ```
 
-<div class="alert alert-info">
-  
-  * 後製軟體： Choose your own image editor, but make sure it support SVG editing. Here I use [Boxy SVG](https://boxy-svg.com/).
-  
-  * 程式排版：
-```{r}
-install.packages("styler")
-```
-  
 
-</div>
 
-### Save and Export
+### Script saving
 
 If you are happy with your graph, you may want to make it reproducible and easy to use.
 
@@ -195,33 +190,7 @@ Turn your script into a function, and save in a R script.
   
   * **Code** > **Extract Function**
   
-```{r}
-myGoodPlot <- function(data4plot) {
-  myplot <- {
-    ggplot() +
-      geom_point(
-        data = data4plot$point$data,
-        mapping = aes(
-          x = x, y = y
-        ),
-        fill = "#2fc1d3",
-        shape = 21,
-        color = "black",
-        stroke = 1,
-        size = 12
-      ) +
-      geom_text(
-        data = data4plot$text$data,
-        mapping = aes(
-          x = x, y = y, label = label
-        ),
-        hjust = 0,
-        size = 12
-      )
-  }
-  myplot
-}
-```
+The result after **proper** revision:
 
 ```{r}
 myGoodPlot <- function(data4plot) {
@@ -277,6 +246,24 @@ myGoodPlot(data4plot)
 
   * If you replace `data4plot` with the real data, you get the accurate graph that you want. 
   
+### Graph output
+
+  * Saving is tricky. You need to find the viewport ratio. (Different computers are different)
+  
+  * Given your graph width and height, you can save your output as:
+  
+```{r}
+dir.create("works")
+ggsave(
+  filename = "works/week1.png",
+  plot=myGoodPlot(data4plot),
+  width=930,
+  height=400, 
+  units="mm" # text size is default in mm unit
+)
+
+```
+
 ### ggdash more
 
   * ggdash can control any input within a programming block
