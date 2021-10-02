@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>第 3 章 Time trend | Economic Data Visualization</title>
+  <meta name="description" content="第 3 章 Time trend | Economic Data Visualization" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="第 3 章 Time trend | Economic Data Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="第 3 章 Time trend | Economic Data Visualization" />
+  
+  
+  
+
+<meta name="author" content="Dr. Lin, Mau-Ting" />
+
+
+<meta name="date" content="2021-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="geometries-and-aesthetics.html"/>
+
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-104915016-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-104915016-7');
+
+  // ga('set', 'userId', 'USER_ID'); // Set the user ID using signed-in user_id.
+</script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">經濟資料視覺化處理</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#start-a-project"><i class="fa fa-check"></i><b>1.1</b> Start a project</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#中文"><i class="fa fa-check"></i><b>1.2</b> 中文</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#econdv2"><i class="fa fa-check"></i><b>1.3</b> econDV2</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#rprofile"><i class="fa fa-check"></i><b>1.4</b> .Rprofile</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#otherSoftware"><i class="fa fa-check"></i><b>1.5</b> 其他</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html"><i class="fa fa-check"></i><b>2</b> Geometries and Aesthetics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#an-example"><i class="fa fa-check"></i><b>2.1</b> An Example</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#econdv2ggdash"><i class="fa fa-check"></i><b>2.1.1</b> econDV2::ggdash</a></li>
+<li class="chapter" data-level="2.1.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#script-saving"><i class="fa fa-check"></i><b>2.1.2</b> Script saving</a></li>
+<li class="chapter" data-level="2.1.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#graph-output"><i class="fa fa-check"></i><b>2.1.3</b> Graph output</a></li>
+<li class="chapter" data-level="2.1.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#ggdash-more"><i class="fa fa-check"></i><b>2.1.4</b> ggdash more</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#inheritance"><i class="fa fa-check"></i><b>2.2</b> Inheritance</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#data"><i class="fa fa-check"></i><b>2.2.1</b> Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#aesthetics"><i class="fa fa-check"></i><b>2.2.2</b> Aesthetics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#stop-data-inheritance"><i class="fa fa-check"></i><b>2.2.3</b> Stop data inheritance</a></li>
+<li class="chapter" data-level="2.2.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#finish-panel"><i class="fa fa-check"></i><b>2.2.4</b> Finish panel</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="time-trend.html"><a href="time-trend.html"><i class="fa fa-check"></i><b>3</b> Time trend</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="time-trend.html"><a href="time-trend.html#basic-layer"><i class="fa fa-check"></i><b>3.1</b> Basic layer</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="time-trend.html"><a href="time-trend.html#aesthetics-inheritance"><i class="fa fa-check"></i><b>3.1.1</b> Aesthetics inheritance</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="time-trend.html"><a href="time-trend.html#sequence-of-layers"><i class="fa fa-check"></i><b>3.2</b> Sequence of layers</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="time-trend.html"><a href="time-trend.html#line-stroke"><i class="fa fa-check"></i><b>3.2.1</b> Line stroke</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="time-trend.html"><a href="time-trend.html#create-your-first-geom"><i class="fa fa-check"></i><b>3.3</b> Create your first geom</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="time-trend.html"><a href="time-trend.html#layer-adding"><i class="fa fa-check"></i><b>3.3.1</b> Layer adding</a></li>
+<li class="chapter" data-level="3.3.2" data-path="time-trend.html"><a href="time-trend.html#new-geom-function"><i class="fa fa-check"></i><b>3.3.2</b> New geom function</a></li>
+<li class="chapter" data-level="3.3.3" data-path="time-trend.html"><a href="time-trend.html#dot-dot-dot"><i class="fa fa-check"></i><b>3.3.3</b> dot-dot-dot</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/tpemartin/110-1-Economic-Data-Visualization" target="blank">Course Github</a></li>
+<li><a href="https://www.ntpu.edu.tw/econ" target="blank">國立臺北大學 經濟學系</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Economic Data Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="time-trend" class="section level1" number="3">
+<h1><span class="header-section-number">第 3 章</span> Time trend</h1>
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/755/90/media-assets/image/20211002_WOC517.png" style="width: 90%"/>
+</div>
+<div id="basic-layer" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Basic layer</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="time-trend.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;support/time-trend.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="time-trend.html#cb25-1" aria-hidden="true" tabindex="-1"></a>date <span class="ot">=</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">c</span>(<span class="st">&quot;2020-02-01&quot;</span>, <span class="st">&quot;2020-04-01&quot;</span>,</span>
+<span id="cb25-2"><a href="time-trend.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;2020-06-01&quot;</span>, <span class="st">&quot;2020-09-01&quot;</span>))</span>
+<span id="cb25-3"><a href="time-trend.html#cb25-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb25-4"><a href="time-trend.html#cb25-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Britain <span class="ot">&lt;-</span> </span>
+<span id="cb25-5"><a href="time-trend.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb25-6"><a href="time-trend.html#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb25-7"><a href="time-trend.html#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">100</span>)</span>
+<span id="cb25-8"><a href="time-trend.html#cb25-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-9"><a href="time-trend.html#cb25-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Spain <span class="ot">&lt;-</span></span>
+<span id="cb25-10"><a href="time-trend.html#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb25-11"><a href="time-trend.html#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb25-12"><a href="time-trend.html#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">53</span>, <span class="dv">103</span>)</span>
+<span id="cb25-13"><a href="time-trend.html#cb25-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-14"><a href="time-trend.html#cb25-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Italy <span class="ot">&lt;-</span></span>
+<span id="cb25-15"><a href="time-trend.html#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb25-16"><a href="time-trend.html#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb25-17"><a href="time-trend.html#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">99</span>)</span>
+<span id="cb25-18"><a href="time-trend.html#cb25-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<ul>
+<li><p>Geometries: <code>geom_line</code></p>
+<ul>
+<li>Aesthetics: x, y, color; size</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="time-trend.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb26-2"><a href="time-trend.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb26-3"><a href="time-trend.html#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb26-4"><a href="time-trend.html#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb26-5"><a href="time-trend.html#cb26-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb26-6"><a href="time-trend.html#cb26-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb26-7"><a href="time-trend.html#cb26-7" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb26-8"><a href="time-trend.html#cb26-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb26-9"><a href="time-trend.html#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb26-10"><a href="time-trend.html#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain,</span>
+<span id="cb26-11"><a href="time-trend.html#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb26-12"><a href="time-trend.html#cb26-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb26-13"><a href="time-trend.html#cb26-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb26-14"><a href="time-trend.html#cb26-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-15"><a href="time-trend.html#cb26-15" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb26-16"><a href="time-trend.html#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb26-17"><a href="time-trend.html#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy,</span>
+<span id="cb26-18"><a href="time-trend.html#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb26-19"><a href="time-trend.html#cb26-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb26-20"><a href="time-trend.html#cb26-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb26-21"><a href="time-trend.html#cb26-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-22"><a href="time-trend.html#cb26-22" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div id="aesthetics-inheritance" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Aesthetics inheritance</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="time-trend.html#cb27-1" aria-hidden="true" tabindex="-1"></a>sizeInput <span class="ot">=</span> <span class="dv">2</span> <span class="co">#input$sizeInput</span></span>
+<span id="cb27-2"><a href="time-trend.html#cb27-2" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb27-3"><a href="time-trend.html#cb27-3" aria-hidden="true" tabindex="-1"></a>plot<span class="sc">$</span>p1 <span class="ot">&lt;-</span> {</span>
+<span id="cb27-4"><a href="time-trend.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb27-5"><a href="time-trend.html#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb27-6"><a href="time-trend.html#cb27-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb27-7"><a href="time-trend.html#cb27-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb27-8"><a href="time-trend.html#cb27-8" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb27-9"><a href="time-trend.html#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-10"><a href="time-trend.html#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb27-11"><a href="time-trend.html#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb27-12"><a href="time-trend.html#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb27-13"><a href="time-trend.html#cb27-13" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-14"><a href="time-trend.html#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-15"><a href="time-trend.html#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain,</span>
+<span id="cb27-16"><a href="time-trend.html#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#ad8c97&quot;</span>,</span>
+<span id="cb27-17"><a href="time-trend.html#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb27-18"><a href="time-trend.html#cb27-18" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb27-19"><a href="time-trend.html#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-20"><a href="time-trend.html#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy,</span>
+<span id="cb27-21"><a href="time-trend.html#cb27-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;#983d4d&quot;</span>,</span>
+<span id="cb27-22"><a href="time-trend.html#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb27-23"><a href="time-trend.html#cb27-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-24"><a href="time-trend.html#cb27-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-25"><a href="time-trend.html#cb27-25" aria-hidden="true" tabindex="-1"></a>plot<span class="sc">$</span>p1</span></code></pre></div>
+</div>
+</div>
+<div id="sequence-of-layers" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Sequence of layers</h2>
+<div id="line-stroke" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Line stroke</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="time-trend.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb28-2"><a href="time-trend.html#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb28-3"><a href="time-trend.html#cb28-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb28-4"><a href="time-trend.html#cb28-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb28-5"><a href="time-trend.html#cb28-5" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb28-6"><a href="time-trend.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb28-7"><a href="time-trend.html#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb28-8"><a href="time-trend.html#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb28-9"><a href="time-trend.html#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb28-10"><a href="time-trend.html#cb28-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb28-11"><a href="time-trend.html#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb28-12"><a href="time-trend.html#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb28-13"><a href="time-trend.html#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb28-14"><a href="time-trend.html#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb28-15"><a href="time-trend.html#cb28-15" aria-hidden="true" tabindex="-1"></a>  )  </span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="time-trend.html#cb29-1" aria-hidden="true" tabindex="-1"></a>prop <span class="ot">=</span> <span class="fl">0.6</span></span>
+<span id="cb29-2"><a href="time-trend.html#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="time-trend.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb29-4"><a href="time-trend.html#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb29-5"><a href="time-trend.html#cb29-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb29-6"><a href="time-trend.html#cb29-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb29-7"><a href="time-trend.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb29-8"><a href="time-trend.html#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb29-9"><a href="time-trend.html#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb29-10"><a href="time-trend.html#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb29-11"><a href="time-trend.html#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb29-12"><a href="time-trend.html#cb29-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span>  </span>
+<span id="cb29-13"><a href="time-trend.html#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb29-14"><a href="time-trend.html#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb29-15"><a href="time-trend.html#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb29-16"><a href="time-trend.html#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb29-17"><a href="time-trend.html#cb29-17" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+</div>
+</div>
+<div id="create-your-first-geom" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Create your first geom</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="time-trend.html#cb30-1" aria-hidden="true" tabindex="-1"></a>geom_lineWithStroke_error <span class="ot">&lt;-</span> <span class="cf">function</span>(data, sizeInput, prop) {</span>
+<span id="cb30-2"><a href="time-trend.html#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb30-3"><a href="time-trend.html#cb30-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb30-4"><a href="time-trend.html#cb30-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb30-5"><a href="time-trend.html#cb30-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput</span>
+<span id="cb30-6"><a href="time-trend.html#cb30-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span>  </span>
+<span id="cb30-7"><a href="time-trend.html#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb30-8"><a href="time-trend.html#cb30-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb30-9"><a href="time-trend.html#cb30-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb30-10"><a href="time-trend.html#cb30-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb30-11"><a href="time-trend.html#cb30-11" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb30-12"><a href="time-trend.html#cb30-12" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="alert alert-info">
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="time-trend.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(plot<span class="sc">$</span>p1) <span class="co"># ggplot class</span></span></code></pre></div>
+<ul>
+<li>a list of 9 that complete the definitions of a plot</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="time-trend.html#cb32-1" aria-hidden="true" tabindex="-1"></a>gm <span class="ot">&lt;-</span> <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb32-2"><a href="time-trend.html#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb32-3"><a href="time-trend.html#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb32-4"><a href="time-trend.html#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb32-5"><a href="time-trend.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb32-6"><a href="time-trend.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gm) <span class="co"># Layer class</span></span></code></pre></div>
+<ul>
+<li><p>an environment that defines only a layer of a specific geometric structure and its aesthetics.</p></li>
+<li><p>part of a ggplot class object.</p></li>
+</ul>
+<hr />
+<p><code>+</code> operator must have the preceding object a ggplot object.</p>
+</div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="time-trend.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_lineWithStroke_error</span>(</span>
+<span id="cb33-2"><a href="time-trend.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data=</span>data<span class="sc">$</span>Britain, <span class="at">sizeInput=</span><span class="dv">2</span>, <span class="at">prop=</span>.<span class="dv">6</span></span>
+<span id="cb33-3"><a href="time-trend.html#cb33-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<ul>
+<li>The error comes from the function body. It uses <code>+</code> on two layer class objects. There is no ggplot object presented.</li>
+</ul>
+<div id="layer-adding" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Layer adding</h3>
+<p><code>+</code> Layer adding operator and add <strong>a list of layers</strong> all at once.</p>
+<p>Other than the conventional adding:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="time-trend.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb34-2"><a href="time-trend.html#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb34-3"><a href="time-trend.html#cb34-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb34-4"><a href="time-trend.html#cb34-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb34-5"><a href="time-trend.html#cb34-5" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb34-6"><a href="time-trend.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( </span>
+<span id="cb34-7"><a href="time-trend.html#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb34-8"><a href="time-trend.html#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb34-9"><a href="time-trend.html#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput</span>
+<span id="cb34-10"><a href="time-trend.html#cb34-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span>  </span>
+<span id="cb34-11"><a href="time-trend.html#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb34-12"><a href="time-trend.html#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb34-13"><a href="time-trend.html#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb34-14"><a href="time-trend.html#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb34-15"><a href="time-trend.html#cb34-15" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+<p>We can:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="time-trend.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb35-2"><a href="time-trend.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb35-3"><a href="time-trend.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>date,</span>
+<span id="cb35-4"><a href="time-trend.html#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span>y</span>
+<span id="cb35-5"><a href="time-trend.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="time-trend.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb35-7"><a href="time-trend.html#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( </span>
+<span id="cb35-8"><a href="time-trend.html#cb35-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb35-9"><a href="time-trend.html#cb35-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb35-10"><a href="time-trend.html#cb35-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput</span>
+<span id="cb35-11"><a href="time-trend.html#cb35-11" aria-hidden="true" tabindex="-1"></a>    ),  </span>
+<span id="cb35-12"><a href="time-trend.html#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb35-13"><a href="time-trend.html#cb35-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb35-14"><a href="time-trend.html#cb35-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb35-15"><a href="time-trend.html#cb35-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb35-16"><a href="time-trend.html#cb35-16" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb35-17"><a href="time-trend.html#cb35-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+</div>
+<div id="new-geom-function" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> New geom function</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="time-trend.html#cb36-1" aria-hidden="true" tabindex="-1"></a>geom_lineWithStroke_prototype <span class="ot">&lt;-</span> <span class="cf">function</span>(data, sizeInput, prop) {</span>
+<span id="cb36-2"><a href="time-trend.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb36-3"><a href="time-trend.html#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( </span>
+<span id="cb36-4"><a href="time-trend.html#cb36-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb36-5"><a href="time-trend.html#cb36-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb36-6"><a href="time-trend.html#cb36-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput</span>
+<span id="cb36-7"><a href="time-trend.html#cb36-7" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb36-8"><a href="time-trend.html#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb36-9"><a href="time-trend.html#cb36-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb36-10"><a href="time-trend.html#cb36-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb36-11"><a href="time-trend.html#cb36-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb36-12"><a href="time-trend.html#cb36-12" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb36-13"><a href="time-trend.html#cb36-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-14"><a href="time-trend.html#cb36-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="time-trend.html#cb37-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb37-2"><a href="time-trend.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb37-3"><a href="time-trend.html#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb37-4"><a href="time-trend.html#cb37-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb37-5"><a href="time-trend.html#cb37-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb37-6"><a href="time-trend.html#cb37-6" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb37-7"><a href="time-trend.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype</span>(</span>
+<span id="cb37-8"><a href="time-trend.html#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain, sizeInput, prop</span>
+<span id="cb37-9"><a href="time-trend.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb37-10"><a href="time-trend.html#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype</span>(</span>
+<span id="cb37-11"><a href="time-trend.html#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain, sizeInput, prop</span>
+<span id="cb37-12"><a href="time-trend.html#cb37-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb37-13"><a href="time-trend.html#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype</span>(</span>
+<span id="cb37-14"><a href="time-trend.html#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy, sizeInput, prop</span>
+<span id="cb37-15"><a href="time-trend.html#cb37-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-16"><a href="time-trend.html#cb37-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="dot-dot-dot" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> dot-dot-dot</h3>
+<ul>
+<li><a href="https://adv-r.hadley.nz/functions.html?q=dot-#fun-dot-dot-dot" class="uri">https://adv-r.hadley.nz/functions.html?q=dot-#fun-dot-dot-dot</a></li>
+</ul>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="time-trend.html#cb38-1" aria-hidden="true" tabindex="-1"></a>geom_lineWithStroke_prototype2 <span class="ot">&lt;-</span> <span class="cf">function</span>(data, sizeInput, prop, color, stroke, size) {</span>
+<span id="cb38-2"><a href="time-trend.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb38-3"><a href="time-trend.html#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb38-4"><a href="time-trend.html#cb38-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb38-5"><a href="time-trend.html#cb38-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span>stroke,</span>
+<span id="cb38-6"><a href="time-trend.html#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput</span>
+<span id="cb38-7"><a href="time-trend.html#cb38-7" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb38-8"><a href="time-trend.html#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(  <span class="co"># the last geom will be on the top</span></span>
+<span id="cb38-9"><a href="time-trend.html#cb38-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb38-10"><a href="time-trend.html#cb38-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span>color,</span>
+<span id="cb38-11"><a href="time-trend.html#cb38-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> sizeInput<span class="sc">*</span>prop</span>
+<span id="cb38-12"><a href="time-trend.html#cb38-12" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb38-13"><a href="time-trend.html#cb38-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-14"><a href="time-trend.html#cb38-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="time-trend.html#cb39-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb39-2"><a href="time-trend.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb39-3"><a href="time-trend.html#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb39-4"><a href="time-trend.html#cb39-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb39-5"><a href="time-trend.html#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb39-6"><a href="time-trend.html#cb39-6" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb39-7"><a href="time-trend.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype2</span>(</span>
+<span id="cb39-8"><a href="time-trend.html#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain, <span class="at">sizeInput=</span>sizeInput, <span class="at">prop=</span>prop,</span>
+<span id="cb39-9"><a href="time-trend.html#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb39-10"><a href="time-trend.html#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke=</span><span class="st">&quot;white&quot;</span></span>
+<span id="cb39-11"><a href="time-trend.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb39-12"><a href="time-trend.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype2</span>(</span>
+<span id="cb39-13"><a href="time-trend.html#cb39-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain, <span class="at">sizeInput=</span>sizeInput, <span class="at">prop=</span>prop,</span>
+<span id="cb39-14"><a href="time-trend.html#cb39-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#ad8c97&quot;</span>,</span>
+<span id="cb39-15"><a href="time-trend.html#cb39-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke=</span><span class="st">&quot;white&quot;</span></span>
+<span id="cb39-16"><a href="time-trend.html#cb39-16" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb39-17"><a href="time-trend.html#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke_prototype2</span>(</span>
+<span id="cb39-18"><a href="time-trend.html#cb39-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy, <span class="at">sizeInput=</span>sizeInput, <span class="at">prop=</span>prop,</span>
+<span id="cb39-19"><a href="time-trend.html#cb39-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#983d4d&quot;</span>,</span>
+<span id="cb39-20"><a href="time-trend.html#cb39-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke=</span><span class="st">&quot;white&quot;</span></span>
+<span id="cb39-21"><a href="time-trend.html#cb39-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-22"><a href="time-trend.html#cb39-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<hr />
+<p><code>geom_lineWithStroke</code> is an extension to an existing <code>geom_line</code> function. It would be better to make the input argument inline with <code>geom_line</code> so as to keep other geom_line options, such as linetype.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="time-trend.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(geom_line)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="time-trend.html#cb41-1" aria-hidden="true" tabindex="-1"></a>geom_lineWithStroke <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb41-2"><a href="time-trend.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping =</span> <span class="cn">NULL</span>,</span>
+<span id="cb41-3"><a href="time-trend.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="cn">NULL</span>,</span>
+<span id="cb41-4"><a href="time-trend.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>,</span>
+<span id="cb41-5"><a href="time-trend.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>,</span>
+<span id="cb41-6"><a href="time-trend.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb41-7"><a href="time-trend.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="cn">NA</span>,</span>
+<span id="cb41-8"><a href="time-trend.html#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">show.legend =</span> <span class="cn">NA</span>,</span>
+<span id="cb41-9"><a href="time-trend.html#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">inherit.aes =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb41-10"><a href="time-trend.html#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set up default makes your function easy to use</span></span>
+<span id="cb41-11"><a href="time-trend.html#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb41-12"><a href="time-trend.html#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">prop =</span> <span class="fl">0.9</span>,</span>
+<span id="cb41-13"><a href="time-trend.html#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb41-14"><a href="time-trend.html#cb41-14" aria-hidden="true" tabindex="-1"></a>  ...){</span>
+<span id="cb41-15"><a href="time-trend.html#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb41-16"><a href="time-trend.html#cb41-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb41-17"><a href="time-trend.html#cb41-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>data,</span>
+<span id="cb41-18"><a href="time-trend.html#cb41-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span>stroke,</span>
+<span id="cb41-19"><a href="time-trend.html#cb41-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> size</span>
+<span id="cb41-20"><a href="time-trend.html#cb41-20" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb41-21"><a href="time-trend.html#cb41-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( <span class="co"># the last geom will be on the top</span></span>
+<span id="cb41-22"><a href="time-trend.html#cb41-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping =</span> mapping,</span>
+<span id="cb41-23"><a href="time-trend.html#cb41-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> data,</span>
+<span id="cb41-24"><a href="time-trend.html#cb41-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">stat =</span> stat,</span>
+<span id="cb41-25"><a href="time-trend.html#cb41-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">position =</span> position,</span>
+<span id="cb41-26"><a href="time-trend.html#cb41-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> na.rm,</span>
+<span id="cb41-27"><a href="time-trend.html#cb41-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">orientation =</span> orientation,</span>
+<span id="cb41-28"><a href="time-trend.html#cb41-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> show.legend,</span>
+<span id="cb41-29"><a href="time-trend.html#cb41-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">inherit.aes =</span> inherit.aes,</span>
+<span id="cb41-30"><a href="time-trend.html#cb41-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> size<span class="sc">*</span>prop,</span>
+<span id="cb41-31"><a href="time-trend.html#cb41-31" aria-hidden="true" tabindex="-1"></a>      ...)</span>
+<span id="cb41-32"><a href="time-trend.html#cb41-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-33"><a href="time-trend.html#cb41-33" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="alert alert-info">
+<p><code>...</code> is a special argument for function. It means "whatever input whose input name is not specified in function arguments.</p>
+<ul>
+<li><p>it can be passed directly into other functions who use <code>...</code>.</p></li>
+<li><p>it can be accessed via <code>list()</code>.</p></li>
+</ul>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="time-trend.html#cb42-1" aria-hidden="true" tabindex="-1"></a>mySum <span class="ot">&lt;-</span> <span class="cf">function</span>(...){</span>
+<span id="cb42-2"><a href="time-trend.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb42-3"><a href="time-trend.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  argList <span class="ot">&lt;-</span> <span class="fu">c</span>(...)</span>
+<span id="cb42-4"><a href="time-trend.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(argList)</span>
+<span id="cb42-5"><a href="time-trend.html#cb42-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-6"><a href="time-trend.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mySum</span>(<span class="dv">2</span>,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="time-trend.html#cb43-1" aria-hidden="true" tabindex="-1"></a>greeting <span class="ot">&lt;-</span> <span class="cf">function</span>(name, ...){</span>
+<span id="cb43-2"><a href="time-trend.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb43-3"><a href="time-trend.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  argList <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb43-4"><a href="time-trend.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  extraGreeting <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb43-5"><a href="time-trend.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(argList)<span class="sc">!=</span><span class="dv">0</span>){</span>
+<span id="cb43-6"><a href="time-trend.html#cb43-6" aria-hidden="true" tabindex="-1"></a>    extraGreeting <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot; Your&quot;</span>, <span class="fu">names</span>(argList), <span class="st">&quot; is &quot;</span>, argList)</span>
+<span id="cb43-7"><a href="time-trend.html#cb43-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb43-8"><a href="time-trend.html#cb43-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-9"><a href="time-trend.html#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Hi &quot;</span>, name, <span class="st">&quot;. &quot;</span>, extraGreeting)</span>
+<span id="cb43-10"><a href="time-trend.html#cb43-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-11"><a href="time-trend.html#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(xx)</span>
+<span id="cb43-12"><a href="time-trend.html#cb43-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb43-13"><a href="time-trend.html#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="fu">greeting</span>(<span class="st">&quot;John&quot;</span>, <span class="at">age=</span><span class="dv">33</span>)</span></code></pre></div>
+</div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="time-trend.html#cb44-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb44-2"><a href="time-trend.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb44-3"><a href="time-trend.html#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb44-4"><a href="time-trend.html#cb44-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb44-5"><a href="time-trend.html#cb44-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb44-6"><a href="time-trend.html#cb44-6" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb44-7"><a href="time-trend.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb44-8"><a href="time-trend.html#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb44-9"><a href="time-trend.html#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span></span>
+<span id="cb44-10"><a href="time-trend.html#cb44-10" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb44-11"><a href="time-trend.html#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb44-12"><a href="time-trend.html#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain,</span>
+<span id="cb44-13"><a href="time-trend.html#cb44-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#ad8c97&quot;</span></span>
+<span id="cb44-14"><a href="time-trend.html#cb44-14" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb44-15"><a href="time-trend.html#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb44-16"><a href="time-trend.html#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy,</span>
+<span id="cb44-17"><a href="time-trend.html#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#983d4d&quot;</span></span>
+<span id="cb44-18"><a href="time-trend.html#cb44-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-19"><a href="time-trend.html#cb44-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="time-trend.html#cb45-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb45-2"><a href="time-trend.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb45-3"><a href="time-trend.html#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb45-4"><a href="time-trend.html#cb45-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>date,</span>
+<span id="cb45-5"><a href="time-trend.html#cb45-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y</span>
+<span id="cb45-6"><a href="time-trend.html#cb45-6" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb45-7"><a href="time-trend.html#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb45-8"><a href="time-trend.html#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Britain,</span>
+<span id="cb45-9"><a href="time-trend.html#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#096fa1&quot;</span>,</span>
+<span id="cb45-10"><a href="time-trend.html#cb45-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype=</span><span class="dv">2</span></span>
+<span id="cb45-11"><a href="time-trend.html#cb45-11" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb45-12"><a href="time-trend.html#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb45-13"><a href="time-trend.html#cb45-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Spain,</span>
+<span id="cb45-14"><a href="time-trend.html#cb45-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#ad8c97&quot;</span>, </span>
+<span id="cb45-15"><a href="time-trend.html#cb45-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype=</span><span class="dv">3</span></span>
+<span id="cb45-16"><a href="time-trend.html#cb45-16" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb45-17"><a href="time-trend.html#cb45-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb45-18"><a href="time-trend.html#cb45-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>data<span class="sc">$</span>Italy,</span>
+<span id="cb45-19"><a href="time-trend.html#cb45-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;#983d4d&quot;</span>,</span>
+<span id="cb45-20"><a href="time-trend.html#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb45-21"><a href="time-trend.html#cb45-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">5</span></span>
+<span id="cb45-22"><a href="time-trend.html#cb45-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb45-23"><a href="time-trend.html#cb45-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+
+</div>
+</div>
+</div>
+<!--參考答案開關--> 
+<script>
+$(document).ready(function(){
+  $('<button class="flip">More info...</button>').insertBefore(".more");
+  $(".flip").click(function(){
+    $(this).next().slideToggle();
+  });
+})
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- 2. Include library -->
+<script src="js/clipboard.min.js"></script>
+
+<!-- 3. Instantiate clipboard by passing a string selector -->
+
+<script>
+var clipboard = new Clipboard('.btn');
+clipboard.on('success', function(e) {
+    console.log(e);
+});
+clipboard.on('error', function(e) {
+    console.log(e);
+});
+</script>
+
+<script>
+  var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+copyTextareaBtn.addEventListener('click', function(event) {
+  var copyTextarea = document.querySelector('.js-copytextarea');
+  copyTextarea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+});
+</script>
+
+<script>
+  function CopyToClipboard(containerid) {
+if (document.selection) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(document.getElementById(containerid));
+    range.select().createTextRange();
+    document.execCommand("copy");
+
+} else if (window.getSelection) {
+    var range = document.createRange();
+     range.selectNode(document.getElementById(containerid));
+     window.getSelection().addRange(range);
+     document.execCommand("copy");
+     alert("text copied")
+}}
+</script>
+
+<script>
+  $( document ).ready(function() {
+    addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
+});
+</script>
+<!--
+<script>
+  $(document).ready(function() {
+  var codes = document.querySelectorAll('pre:not([class])');
+  var code, i, d, s, p;
+  for (i = 0; i < codes.length; i++) {
+    code = codes[i];
+    p = code.parentNode;
+    d = document.createElement('details');
+    s = document.createElement('summary');
+    s.innerText = 'Details';
+    // <details><summary>Details</summary></details>
+    d.appendChild(s);
+    // move the code into <details>
+    p.replaceChild(d, code);
+    d.appendChild(code);
+  }
+});
+</script>
+-->
+<!--
+<script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'https://gitter.im/NTPU-Econ/Econometrics'
+  };
+</script>
+
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+-->
+<script src="js/documentReady.js"></script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="geometries-and-aesthetics.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"theme": "united"
+});
+});
+</script>
+
+</body>
+
+</html>

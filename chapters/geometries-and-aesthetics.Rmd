@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
 ```{r eval=T, echo=FALSE}
 klippy::klippy()
 ```
@@ -295,5 +300,191 @@ myplot2 <- {
     )
 }
 myplot2
+```
+
+## Inheritance
+
+
+### Data
+
+  * Common data source can be put in `ggplot()`:
+  
+    * **ALL** geoms will use the same data to find aes() mapping,
+    
+    * **UNLESS** the geom has its own data supplied.
+
+```{r}
+data = data4plot$text$data
+
+myplot <- {
+  ggplot(data = data,
+) +
+    geom_point(
+      mapping = aes(
+        x = x, y = y
+      ),
+      fill = "#2fc1d3",
+      shape = 21,
+      color = "black",
+      stroke = 1,
+      size = 12
+    ) +
+    geom_text(
+      # data = data4plot$text$data,
+      mapping = aes(
+        x = x, y = y, label = label
+      ),
+      hjust = 0,
+      size = 12
+    )
+}
+
+```
+
+### Aesthetics
+
+```{r}
+myplot <- {
+  ggplot(
+    data = data,
+    mapping = aes(x=x, y=y)
+) +
+    geom_point(
+      fill = "#2fc1d3",
+      shape = 21,
+      color = "black",
+      stroke = 1,
+      size = 12
+    ) +
+    geom_text(
+      mapping = aes(
+        label = label
+      ),
+      hjust = 0,
+      size = 12
+    )
+}
+myplot
+```
+
+```{r}
+plot_hightlightCountries <- function(data) {
+  myplot <- {
+    ggplot(data = data,
+  ) +
+      geom_point(
+        mapping = aes(
+          x = x, y = y
+        ),
+        fill = "#2fc1d3",
+        shape = 21,
+        color = "black",
+        stroke = 1,
+        size = 12
+      ) +
+      geom_text(
+        # data = data4plot$text$data,
+        mapping = aes(
+          x = x, y = y, label = label
+        ),
+        hjust = 0,
+        size = 12
+      )
+  }
+  myplot
+}
+```
+
+### Stop data inheritance
+
+  * When a **geom has its own data supplied**, data inheritance stops.
+
+```{r}
+nonhighlightedCountries <-
+  data.frame(
+    x=c(48, 52, 53),
+    y=c(48, 53, 54)
+  )
+highlightedCountries <- data4plot$text$data
+
+plot_allCountries <- 
+{
+  plot_hightlightCountries(highlightedCountries) +
+    geom_point(
+      data = nonhighlightedCountries,
+      aes(
+        x=x,
+        y=y
+      ),
+      size = 12,
+      color= "#a4dce6"
+    )
+}
+
+plot_allCountries
+```
+
+```{r}
+plot_allCountries <- function(highlightedCountries, nonhighlightedCountries) {
+  plot_hightlightCountries(highlightedCountries) +
+    geom_point(
+      data = nonhighlightedCountries,
+      aes(
+        x=x,
+        y=y
+      ),
+      size = 12,
+      color= "#a4dce6"
+    )
+}
+
+```
+
+### Finish panel
+
+```{r}
+plot_obsessionWithBorders <- {
+  plot_allCountries(
+    hightlightedCountries = highlightedCountries,
+    unhighlightedCountries = unhighlightedCountries
+  )+
+  geom_abline(
+    aes(
+      slope=1,
+      intercept=0
+    ),
+    color = "#549ab6",
+    linetype = 2,
+    size=2
+  )
+}
+plot_obsessionWithBorders
+```
+```{r}
+plot_obsessionWithBorders +
+  geom_abline(
+    aes(
+      slope=1,
+      intercept=0
+    ),
+    color = "#549ab6",
+    linetype = 2,
+    size=2
+  )
+```
+
+```{r}
+hightlightXYequal <- function(plot_obsessionWithBorders) {
+  plot_obsessionWithBorders +
+    geom_abline(
+      aes(
+        slope=1,
+        intercept=0
+      ),
+      color = "#549ab6",
+      linetype = 2,
+      size=2
+    )
+}
 ```
 

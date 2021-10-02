@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html"/>
-
+<link rel="next" href="layers.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -171,6 +171,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#graph-output"><i class="fa fa-check"></i><b>2.1.3</b> Graph output</a></li>
 <li class="chapter" data-level="2.1.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#ggdash-more"><i class="fa fa-check"></i><b>2.1.4</b> ggdash more</a></li>
 </ul></li>
+<li class="chapter" data-level="2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#inheritance"><i class="fa fa-check"></i><b>2.2</b> Inheritance</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#data"><i class="fa fa-check"></i><b>2.2.1</b> Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#aesthetics"><i class="fa fa-check"></i><b>2.2.2</b> Aesthetics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#stop-data-inheritance"><i class="fa fa-check"></i><b>2.2.3</b> Stop data inheritance</a></li>
+<li class="chapter" data-level="2.2.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#finish-panel"><i class="fa fa-check"></i><b>2.2.4</b> Finish panel</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="layers.html"><a href="layers.html"><i class="fa fa-check"></i><b>3</b> Layers</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="layers.html"><a href="layers.html#time-series-data"><i class="fa fa-check"></i><b>3.1</b> Time series data</a></li>
+<li class="chapter" data-level="3.2" data-path="layers.html"><a href="layers.html#aesthetics-inheritance"><i class="fa fa-check"></i><b>3.2</b> Aesthetics inheritance</a></li>
+<li class="chapter" data-level="3.3" data-path="layers.html"><a href="layers.html#sequence-of-layers"><i class="fa fa-check"></i><b>3.3</b> Sequence of layers</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="layers.html"><a href="layers.html#line-stroke"><i class="fa fa-check"></i><b>3.3.1</b> Line stroke</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="layers.html"><a href="layers.html#create-your-first-geom"><i class="fa fa-check"></i><b>3.4</b> Create your first geom</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="layers.html"><a href="layers.html#layer-adding"><i class="fa fa-check"></i><b>3.4.1</b> Layer adding</a></li>
+<li class="chapter" data-level="3.4.2" data-path="layers.html"><a href="layers.html#new-geom-function"><i class="fa fa-check"></i><b>3.4.2</b> New geom function</a></li>
+<li class="chapter" data-level="3.4.3" data-path="layers.html"><a href="layers.html#dot-dot-dot"><i class="fa fa-check"></i><b>3.4.3</b> dot-dot-dot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="layers.html"><a href="layers.html#summary"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/tpemartin/110-1-Economic-Data-Visualization" target="blank">Course Github</a></li>
@@ -444,6 +467,173 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-24"><a href="geometries-and-aesthetics.html#cb15-24" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb15-25"><a href="geometries-and-aesthetics.html#cb15-25" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb15-26"><a href="geometries-and-aesthetics.html#cb15-26" aria-hidden="true" tabindex="-1"></a>myplot2</span></code></pre></div>
+</div>
+</div>
+<div id="inheritance" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Inheritance</h2>
+<div id="data" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Data</h3>
+<ul>
+<li><p>Common data source can be put in <code>ggplot()</code>:</p>
+<ul>
+<li><p><strong>ALL</strong> geoms will use the same data to find aes() mapping,</p></li>
+<li><p><strong>UNLESS</strong> the geom has its own data supplied.</p></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="geometries-and-aesthetics.html#cb16-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data4plot<span class="sc">$</span>text<span class="sc">$</span>data</span>
+<span id="cb16-2"><a href="geometries-and-aesthetics.html#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="geometries-and-aesthetics.html#cb16-3" aria-hidden="true" tabindex="-1"></a>myplot <span class="ot">&lt;-</span> {</span>
+<span id="cb16-4"><a href="geometries-and-aesthetics.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> data,</span>
+<span id="cb16-5"><a href="geometries-and-aesthetics.html#cb16-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="geometries-and-aesthetics.html#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb16-7"><a href="geometries-and-aesthetics.html#cb16-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb16-8"><a href="geometries-and-aesthetics.html#cb16-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> x, <span class="at">y =</span> y</span>
+<span id="cb16-9"><a href="geometries-and-aesthetics.html#cb16-9" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb16-10"><a href="geometries-and-aesthetics.html#cb16-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">&quot;#2fc1d3&quot;</span>,</span>
+<span id="cb16-11"><a href="geometries-and-aesthetics.html#cb16-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb16-12"><a href="geometries-and-aesthetics.html#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb16-13"><a href="geometries-and-aesthetics.html#cb16-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">stroke =</span> <span class="dv">1</span>,</span>
+<span id="cb16-14"><a href="geometries-and-aesthetics.html#cb16-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb16-15"><a href="geometries-and-aesthetics.html#cb16-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="geometries-and-aesthetics.html#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb16-17"><a href="geometries-and-aesthetics.html#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="co"># data = data4plot$text$data,</span></span>
+<span id="cb16-18"><a href="geometries-and-aesthetics.html#cb16-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb16-19"><a href="geometries-and-aesthetics.html#cb16-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label</span>
+<span id="cb16-20"><a href="geometries-and-aesthetics.html#cb16-20" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb16-21"><a href="geometries-and-aesthetics.html#cb16-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb16-22"><a href="geometries-and-aesthetics.html#cb16-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb16-23"><a href="geometries-and-aesthetics.html#cb16-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-24"><a href="geometries-and-aesthetics.html#cb16-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="aesthetics" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Aesthetics</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="geometries-and-aesthetics.html#cb17-1" aria-hidden="true" tabindex="-1"></a>myplot <span class="ot">&lt;-</span> {</span>
+<span id="cb17-2"><a href="geometries-and-aesthetics.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb17-3"><a href="geometries-and-aesthetics.html#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
+<span id="cb17-4"><a href="geometries-and-aesthetics.html#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)</span>
+<span id="cb17-5"><a href="geometries-and-aesthetics.html#cb17-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="geometries-and-aesthetics.html#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb17-7"><a href="geometries-and-aesthetics.html#cb17-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">&quot;#2fc1d3&quot;</span>,</span>
+<span id="cb17-8"><a href="geometries-and-aesthetics.html#cb17-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb17-9"><a href="geometries-and-aesthetics.html#cb17-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb17-10"><a href="geometries-and-aesthetics.html#cb17-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">stroke =</span> <span class="dv">1</span>,</span>
+<span id="cb17-11"><a href="geometries-and-aesthetics.html#cb17-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb17-12"><a href="geometries-and-aesthetics.html#cb17-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb17-13"><a href="geometries-and-aesthetics.html#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb17-14"><a href="geometries-and-aesthetics.html#cb17-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb17-15"><a href="geometries-and-aesthetics.html#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> label</span>
+<span id="cb17-16"><a href="geometries-and-aesthetics.html#cb17-16" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb17-17"><a href="geometries-and-aesthetics.html#cb17-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb17-18"><a href="geometries-and-aesthetics.html#cb17-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb17-19"><a href="geometries-and-aesthetics.html#cb17-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-20"><a href="geometries-and-aesthetics.html#cb17-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-21"><a href="geometries-and-aesthetics.html#cb17-21" aria-hidden="true" tabindex="-1"></a>myplot</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="geometries-and-aesthetics.html#cb18-1" aria-hidden="true" tabindex="-1"></a>plot_hightlightCountries <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb18-2"><a href="geometries-and-aesthetics.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  myplot <span class="ot">&lt;-</span> {</span>
+<span id="cb18-3"><a href="geometries-and-aesthetics.html#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="at">data =</span> data,</span>
+<span id="cb18-4"><a href="geometries-and-aesthetics.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="geometries-and-aesthetics.html#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(</span>
+<span id="cb18-6"><a href="geometries-and-aesthetics.html#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb18-7"><a href="geometries-and-aesthetics.html#cb18-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> x, <span class="at">y =</span> y</span>
+<span id="cb18-8"><a href="geometries-and-aesthetics.html#cb18-8" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb18-9"><a href="geometries-and-aesthetics.html#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">&quot;#2fc1d3&quot;</span>,</span>
+<span id="cb18-10"><a href="geometries-and-aesthetics.html#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb18-11"><a href="geometries-and-aesthetics.html#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb18-12"><a href="geometries-and-aesthetics.html#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">stroke =</span> <span class="dv">1</span>,</span>
+<span id="cb18-13"><a href="geometries-and-aesthetics.html#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb18-14"><a href="geometries-and-aesthetics.html#cb18-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb18-15"><a href="geometries-and-aesthetics.html#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_text</span>(</span>
+<span id="cb18-16"><a href="geometries-and-aesthetics.html#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># data = data4plot$text$data,</span></span>
+<span id="cb18-17"><a href="geometries-and-aesthetics.html#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb18-18"><a href="geometries-and-aesthetics.html#cb18-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label</span>
+<span id="cb18-19"><a href="geometries-and-aesthetics.html#cb18-19" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb18-20"><a href="geometries-and-aesthetics.html#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb18-21"><a href="geometries-and-aesthetics.html#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb18-22"><a href="geometries-and-aesthetics.html#cb18-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb18-23"><a href="geometries-and-aesthetics.html#cb18-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-24"><a href="geometries-and-aesthetics.html#cb18-24" aria-hidden="true" tabindex="-1"></a>  myplot</span>
+<span id="cb18-25"><a href="geometries-and-aesthetics.html#cb18-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="stop-data-inheritance" class="section level3" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Stop data inheritance</h3>
+<ul>
+<li>When a <strong>geom has its own data supplied</strong>, data inheritance stops.</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="geometries-and-aesthetics.html#cb19-1" aria-hidden="true" tabindex="-1"></a>nonhighlightedCountries <span class="ot">&lt;-</span></span>
+<span id="cb19-2"><a href="geometries-and-aesthetics.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb19-3"><a href="geometries-and-aesthetics.html#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">52</span>, <span class="dv">53</span>),</span>
+<span id="cb19-4"><a href="geometries-and-aesthetics.html#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">53</span>, <span class="dv">54</span>)</span>
+<span id="cb19-5"><a href="geometries-and-aesthetics.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-6"><a href="geometries-and-aesthetics.html#cb19-6" aria-hidden="true" tabindex="-1"></a>highlightedCountries <span class="ot">&lt;-</span> data4plot<span class="sc">$</span>text<span class="sc">$</span>data</span>
+<span id="cb19-7"><a href="geometries-and-aesthetics.html#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="geometries-and-aesthetics.html#cb19-8" aria-hidden="true" tabindex="-1"></a>plot_allCountries <span class="ot">&lt;-</span> </span>
+<span id="cb19-9"><a href="geometries-and-aesthetics.html#cb19-9" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb19-10"><a href="geometries-and-aesthetics.html#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_hightlightCountries</span>(highlightedCountries) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="geometries-and-aesthetics.html#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb19-12"><a href="geometries-and-aesthetics.html#cb19-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> nonhighlightedCountries,</span>
+<span id="cb19-13"><a href="geometries-and-aesthetics.html#cb19-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb19-14"><a href="geometries-and-aesthetics.html#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>x,</span>
+<span id="cb19-15"><a href="geometries-and-aesthetics.html#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span>y</span>
+<span id="cb19-16"><a href="geometries-and-aesthetics.html#cb19-16" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb19-17"><a href="geometries-and-aesthetics.html#cb19-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span>,</span>
+<span id="cb19-18"><a href="geometries-and-aesthetics.html#cb19-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span> <span class="st">&quot;#a4dce6&quot;</span></span>
+<span id="cb19-19"><a href="geometries-and-aesthetics.html#cb19-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-20"><a href="geometries-and-aesthetics.html#cb19-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-21"><a href="geometries-and-aesthetics.html#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="geometries-and-aesthetics.html#cb19-22" aria-hidden="true" tabindex="-1"></a>plot_allCountries</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="geometries-and-aesthetics.html#cb20-1" aria-hidden="true" tabindex="-1"></a>plot_allCountries <span class="ot">&lt;-</span> <span class="cf">function</span>(highlightedCountries, nonhighlightedCountries) {</span>
+<span id="cb20-2"><a href="geometries-and-aesthetics.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_hightlightCountries</span>(highlightedCountries) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="geometries-and-aesthetics.html#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb20-4"><a href="geometries-and-aesthetics.html#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> nonhighlightedCountries,</span>
+<span id="cb20-5"><a href="geometries-and-aesthetics.html#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb20-6"><a href="geometries-and-aesthetics.html#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>x,</span>
+<span id="cb20-7"><a href="geometries-and-aesthetics.html#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span>y</span>
+<span id="cb20-8"><a href="geometries-and-aesthetics.html#cb20-8" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb20-9"><a href="geometries-and-aesthetics.html#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span>,</span>
+<span id="cb20-10"><a href="geometries-and-aesthetics.html#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">color=</span> <span class="st">&quot;#a4dce6&quot;</span></span>
+<span id="cb20-11"><a href="geometries-and-aesthetics.html#cb20-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-12"><a href="geometries-and-aesthetics.html#cb20-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="finish-panel" class="section level3" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Finish panel</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="geometries-and-aesthetics.html#cb21-1" aria-hidden="true" tabindex="-1"></a>plot_obsessionWithBorders <span class="ot">&lt;-</span> {</span>
+<span id="cb21-2"><a href="geometries-and-aesthetics.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_allCountries</span>(</span>
+<span id="cb21-3"><a href="geometries-and-aesthetics.html#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">hightlightedCountries =</span> highlightedCountries,</span>
+<span id="cb21-4"><a href="geometries-and-aesthetics.html#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">unhighlightedCountries =</span> unhighlightedCountries</span>
+<span id="cb21-5"><a href="geometries-and-aesthetics.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb21-6"><a href="geometries-and-aesthetics.html#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(</span>
+<span id="cb21-7"><a href="geometries-and-aesthetics.html#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb21-8"><a href="geometries-and-aesthetics.html#cb21-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">slope=</span><span class="dv">1</span>,</span>
+<span id="cb21-9"><a href="geometries-and-aesthetics.html#cb21-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">intercept=</span><span class="dv">0</span></span>
+<span id="cb21-10"><a href="geometries-and-aesthetics.html#cb21-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-11"><a href="geometries-and-aesthetics.html#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;#549ab6&quot;</span>,</span>
+<span id="cb21-12"><a href="geometries-and-aesthetics.html#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb21-13"><a href="geometries-and-aesthetics.html#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">2</span></span>
+<span id="cb21-14"><a href="geometries-and-aesthetics.html#cb21-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-15"><a href="geometries-and-aesthetics.html#cb21-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-16"><a href="geometries-and-aesthetics.html#cb21-16" aria-hidden="true" tabindex="-1"></a>plot_obsessionWithBorders</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="geometries-and-aesthetics.html#cb22-1" aria-hidden="true" tabindex="-1"></a>plot_obsessionWithBorders <span class="sc">+</span></span>
+<span id="cb22-2"><a href="geometries-and-aesthetics.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(</span>
+<span id="cb22-3"><a href="geometries-and-aesthetics.html#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb22-4"><a href="geometries-and-aesthetics.html#cb22-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">slope=</span><span class="dv">1</span>,</span>
+<span id="cb22-5"><a href="geometries-and-aesthetics.html#cb22-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">intercept=</span><span class="dv">0</span></span>
+<span id="cb22-6"><a href="geometries-and-aesthetics.html#cb22-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb22-7"><a href="geometries-and-aesthetics.html#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;#549ab6&quot;</span>,</span>
+<span id="cb22-8"><a href="geometries-and-aesthetics.html#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb22-9"><a href="geometries-and-aesthetics.html#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">2</span></span>
+<span id="cb22-10"><a href="geometries-and-aesthetics.html#cb22-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="geometries-and-aesthetics.html#cb23-1" aria-hidden="true" tabindex="-1"></a>hightlightXYequal <span class="ot">&lt;-</span> <span class="cf">function</span>(plot_obsessionWithBorders) {</span>
+<span id="cb23-2"><a href="geometries-and-aesthetics.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  plot_obsessionWithBorders <span class="sc">+</span></span>
+<span id="cb23-3"><a href="geometries-and-aesthetics.html#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(</span>
+<span id="cb23-4"><a href="geometries-and-aesthetics.html#cb23-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb23-5"><a href="geometries-and-aesthetics.html#cb23-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">slope=</span><span class="dv">1</span>,</span>
+<span id="cb23-6"><a href="geometries-and-aesthetics.html#cb23-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">intercept=</span><span class="dv">0</span></span>
+<span id="cb23-7"><a href="geometries-and-aesthetics.html#cb23-7" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb23-8"><a href="geometries-and-aesthetics.html#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">&quot;#549ab6&quot;</span>,</span>
+<span id="cb23-9"><a href="geometries-and-aesthetics.html#cb23-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb23-10"><a href="geometries-and-aesthetics.html#cb23-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">size=</span><span class="dv">2</span></span>
+<span id="cb23-11"><a href="geometries-and-aesthetics.html#cb23-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-12"><a href="geometries-and-aesthetics.html#cb23-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 
 </div>
 </div>
@@ -556,8 +746,8 @@ if (document.selection) {
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="layers.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

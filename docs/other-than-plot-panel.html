@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Economic Data Visualization</title>
-  <meta name="description" content="Economic Data Visualization" />
+  <title>第 3 章 Other than plot panel | Economic Data Visualization</title>
+  <meta name="description" content="第 3 章 Other than plot panel | Economic Data Visualization" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Economic Data Visualization" />
+  <meta property="og:title" content="第 3 章 Other than plot panel | Economic Data Visualization" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Economic Data Visualization" />
+  <meta name="twitter:title" content="第 3 章 Other than plot panel | Economic Data Visualization" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="geometries-and-aesthetics.html"/>
 
-<link rel="next" href="geometries-and-aesthetics.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -179,22 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#finish-panel"><i class="fa fa-check"></i><b>2.2.4</b> Finish panel</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="layers.html"><a href="layers.html"><i class="fa fa-check"></i><b>3</b> Layers</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="layers.html"><a href="layers.html#time-series-data"><i class="fa fa-check"></i><b>3.1</b> Time series data</a></li>
-<li class="chapter" data-level="3.2" data-path="layers.html"><a href="layers.html#aesthetics-inheritance"><i class="fa fa-check"></i><b>3.2</b> Aesthetics inheritance</a></li>
-<li class="chapter" data-level="3.3" data-path="layers.html"><a href="layers.html#sequence-of-layers"><i class="fa fa-check"></i><b>3.3</b> Sequence of layers</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="layers.html"><a href="layers.html#line-stroke"><i class="fa fa-check"></i><b>3.3.1</b> Line stroke</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="layers.html"><a href="layers.html#create-your-first-geom"><i class="fa fa-check"></i><b>3.4</b> Create your first geom</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="layers.html"><a href="layers.html#layer-adding"><i class="fa fa-check"></i><b>3.4.1</b> Layer adding</a></li>
-<li class="chapter" data-level="3.4.2" data-path="layers.html"><a href="layers.html#new-geom-function"><i class="fa fa-check"></i><b>3.4.2</b> New geom function</a></li>
-<li class="chapter" data-level="3.4.3" data-path="layers.html"><a href="layers.html#dot-dot-dot"><i class="fa fa-check"></i><b>3.4.3</b> dot-dot-dot</a></li>
-</ul></li>
-<li class="chapter" data-level="3.5" data-path="layers.html"><a href="layers.html#summary"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
-</ul></li>
+<li class="chapter" data-level="3" data-path="other-than-plot-panel.html"><a href="other-than-plot-panel.html"><i class="fa fa-check"></i><b>3</b> Other than plot panel</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/tpemartin/110-1-Economic-Data-Visualization" target="blank">Course Github</a></li>
 <li><a href="https://www.ntpu.edu.tw/econ" target="blank">國立臺北大學 經濟學系</a></li>
@@ -216,89 +201,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Economic Data Visualization</h1>
-<p class="author"><em>Dr. Lin, Mau-Ting</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021</em></p>
-</div>
-<div id="prerequisites" class="section level1" number="1">
-<h1><span class="header-section-number">第 1 章</span> Prerequisites</h1>
-<div id="start-a-project" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Start a project</h2>
-<p>Start a new project for your ggplot environment:</p>
-<p><strong>Project</strong> &gt; <strong>New Project…</strong> &gt; <strong>New Directory</strong> &gt; <strong>New Project</strong></p>
-</div>
-<div id="中文" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> 中文</h2>
+<div id="other-than-plot-panel" class="section level1" number="3">
+<h1><span class="header-section-number">第 3 章</span> Other than plot panel</h1>
 <script>
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;showtext&quot;</span>,<span class="st">&quot;extrafont&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb3-8"><a href="index.html#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="alert alert-info">
-<p>你也可以在你的<code>.Rprofile</code>裡加上:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-2"><a href="index.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb4-3"><a href="index.html#cb4-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb4-4"><a href="index.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb4-5"><a href="index.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb4-6"><a href="index.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-7"><a href="index.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb4-8"><a href="index.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb4-9"><a href="index.html#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-</div>
-<div id="econdv2" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> econDV2</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;tpemartin/econDV2&quot;</span>)</span></code></pre></div>
-</div>
-<div id="rprofile" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> .Rprofile</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="index.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="index.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb6-3"><a href="index.html#cb6-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb6-4"><a href="index.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb6-5"><a href="index.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb6-6"><a href="index.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-7"><a href="index.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb6-8"><a href="index.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb6-9"><a href="index.html#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
-<span id="cb6-10"><a href="index.html#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-11"><a href="index.html#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(econDV2)</span>
-<span id="cb6-12"><a href="index.html#cb6-12" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-13"><a href="index.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">dash =</span> econDV2<span class="sc">::</span>ggdash,</span>
-<span id="cb6-14"><a href="index.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">geom =</span> econDV2<span class="sc">::</span>ggbrowse,</span>
-<span id="cb6-15"><a href="index.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">aes =</span> econDV2<span class="sc">::</span>ggaes</span>
-<span id="cb6-16"><a href="index.html#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-<div id="otherSoftware" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> 其他</h2>
-<div class="alert alert-info">
-<ul>
-<li><p>後製軟體： Choose your own image editor, but make sure it support SVG editing. Here I use <a href="https://boxy-svg.com/">Boxy SVG</a>.</p></li>
-<li><p>程式排版：</p></li>
-</ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;styler&quot;</span>)</span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="other-than-plot-panel.html#cb24-1" aria-hidden="true" tabindex="-1"></a>teachDS<span class="sc">::</span><span class="fu">img_centering</span>(<span class="st">&quot;https://www.economist.com/img/b/1280/755/90/media-assets/image/20211002_WOC517.png&quot;</span>)</span></code></pre></div>
 
-<script>
-  addClassKlippyTo("pre.r, pre.markdown");
-  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
-</script>
-</div>
 </div>
 <!--參考答案開關--> 
 <script>
@@ -408,8 +318,8 @@ if (document.selection) {
           </div>
         </div>
       </div>
+<a href="geometries-and-aesthetics.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="geometries-and-aesthetics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
