@@ -25,3 +25,7 @@ layer-adding
 new-geom-function
 dot-dot-dot
 summary
+exercise
+color
+group-aesthetics
+categorical-data

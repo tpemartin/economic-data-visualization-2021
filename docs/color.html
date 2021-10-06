@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Economic Data Visualization</title>
-  <meta name="description" content="Economic Data Visualization" />
+  <title>第 4 章 Color | Economic Data Visualization</title>
+  <meta name="description" content="第 4 章 Color | Economic Data Visualization" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Economic Data Visualization" />
+  <meta property="og:title" content="第 4 章 Color | Economic Data Visualization" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Economic Data Visualization" />
+  <meta name="twitter:title" content="第 4 章 Color | Economic Data Visualization" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="geometries-and-aesthetics.html"/>
+<link rel="prev" href="layers.html"/>
+<link rel="next" href="categorical-data.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -222,88 +222,86 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Economic Data Visualization</h1>
-<p class="author"><em>Dr. Lin, Mau-Ting</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021</em></p>
-</div>
-<div id="prerequisites" class="section level1" number="1">
-<h1><span class="header-section-number">第 1 章</span> Prerequisites</h1>
-<div id="start-a-project" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Start a project</h2>
-<p>Start a new project for your ggplot environment:</p>
-<p><strong>Project</strong> &gt; <strong>New Project…</strong> &gt; <strong>New Directory</strong> &gt; <strong>New Project</strong></p>
-</div>
-<div id="中文" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> 中文</h2>
-<script>
-  addClassKlippyTo("pre.r, pre.markdown");
-  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
-</script>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;showtext&quot;</span>,<span class="st">&quot;extrafont&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb3-8"><a href="index.html#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="alert alert-info">
-<p>你也可以在你的<code>.Rprofile</code>裡加上:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-2"><a href="index.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb4-3"><a href="index.html#cb4-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb4-4"><a href="index.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb4-5"><a href="index.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb4-6"><a href="index.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-7"><a href="index.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb4-8"><a href="index.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb4-9"><a href="index.html#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-</div>
-<div id="econdv2" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> econDV2</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;tpemartin/econDV2&quot;</span>)</span></code></pre></div>
-</div>
-<div id="rprofile" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> .Rprofile</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="index.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="index.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb6-3"><a href="index.html#cb6-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb6-4"><a href="index.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb6-5"><a href="index.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb6-6"><a href="index.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-7"><a href="index.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb6-8"><a href="index.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb6-9"><a href="index.html#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
-<span id="cb6-10"><a href="index.html#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-11"><a href="index.html#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(econDV2)</span>
-<span id="cb6-12"><a href="index.html#cb6-12" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-13"><a href="index.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">dash =</span> econDV2<span class="sc">::</span>ggdash,</span>
-<span id="cb6-14"><a href="index.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">geom =</span> econDV2<span class="sc">::</span>ggbrowse,</span>
-<span id="cb6-15"><a href="index.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">aes =</span> econDV2<span class="sc">::</span>ggaes</span>
-<span id="cb6-16"><a href="index.html#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-<div id="otherSoftware" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> 其他</h2>
-<div class="alert alert-info">
+<div id="color" class="section level1" number="4">
+<h1><span class="header-section-number">第 4 章</span> Color</h1>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="color.html#cb49-1" aria-hidden="true" tabindex="-1"></a>date <span class="ot">=</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">c</span>(<span class="st">&quot;2020-02-01&quot;</span>, <span class="st">&quot;2020-04-01&quot;</span>,</span>
+<span id="cb49-2"><a href="color.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;2020-06-01&quot;</span>, <span class="st">&quot;2020-09-01&quot;</span>))</span>
+<span id="cb49-3"><a href="color.html#cb49-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb49-4"><a href="color.html#cb49-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Britain <span class="ot">&lt;-</span> </span>
+<span id="cb49-5"><a href="color.html#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb49-6"><a href="color.html#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb49-7"><a href="color.html#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">100</span>)</span>
+<span id="cb49-8"><a href="color.html#cb49-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-9"><a href="color.html#cb49-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Spain <span class="ot">&lt;-</span></span>
+<span id="cb49-10"><a href="color.html#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb49-11"><a href="color.html#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb49-12"><a href="color.html#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">53</span>, <span class="dv">103</span>)</span>
+<span id="cb49-13"><a href="color.html#cb49-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-14"><a href="color.html#cb49-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Italy <span class="ot">&lt;-</span></span>
+<span id="cb49-15"><a href="color.html#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb49-16"><a href="color.html#cb49-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb49-17"><a href="color.html#cb49-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">99</span>)</span>
+<span id="cb49-18"><a href="color.html#cb49-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="color.html#cb50-1" aria-hidden="true" tabindex="-1"></a>dataAll <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(</span>
+<span id="cb50-2"><a href="color.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(data),</span>
+<span id="cb50-3"><a href="color.html#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>{</span>
+<span id="cb50-4"><a href="color.html#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cbind</span>(data[[.x]], <span class="fu">data.frame</span>(<span class="at">country=</span>.x))</span>
+<span id="cb50-5"><a href="color.html#cb50-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb50-6"><a href="color.html#cb50-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <ul>
-<li><p>後製軟體： Choose your own image editor, but make sure it support SVG editing. Here I use <a href="https://boxy-svg.com/">Boxy SVG</a>.</p></li>
-<li><p>程式排版：</p></li>
+<li>dataAll is a grouped data</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;styler&quot;</span>)</span></code></pre></div>
+<div id="group-aesthetics" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Group aesthetics</h2>
+<div class="alert alert-info">
+<p>When you have a grouped data frame and intend to draw by groups, you need to set the aesthetics <code>group</code> equal to the group variable in your data frame.</p>
 </div>
+<p>Without group aes:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="color.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb51-2"><a href="color.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb51-3"><a href="color.html#cb51-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb51-4"><a href="color.html#cb51-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb51-5"><a href="color.html#cb51-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y</span>
+<span id="cb51-6"><a href="color.html#cb51-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb51-7"><a href="color.html#cb51-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>With group aes:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="color.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="color.html#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb52-3"><a href="color.html#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb52-4"><a href="color.html#cb52-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb52-5"><a href="color.html#cb52-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
+<span id="cb52-6"><a href="color.html#cb52-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> country</span>
+<span id="cb52-7"><a href="color.html#cb52-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb52-8"><a href="color.html#cb52-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<hr />
+<p>Using aesthetics other than <strong>x, y</strong> can function as group aesthetic as well:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="color.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb53-2"><a href="color.html#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb53-3"><a href="color.html#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb53-4"><a href="color.html#cb53-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb53-5"><a href="color.html#cb53-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
+<span id="cb53-6"><a href="color.html#cb53-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> country</span>
+<span id="cb53-7"><a href="color.html#cb53-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb53-8"><a href="color.html#cb53-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="color.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb54-2"><a href="color.html#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb54-3"><a href="color.html#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb54-4"><a href="color.html#cb54-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb54-5"><a href="color.html#cb54-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
+<span id="cb54-6"><a href="color.html#cb54-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> country</span>
+<span id="cb54-7"><a href="color.html#cb54-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb54-8"><a href="color.html#cb54-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="color.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;support/time-trend.R&quot;</span>)</span>
+<span id="cb55-2"><a href="color.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb55-3"><a href="color.html#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_lineWithStroke</span>(</span>
+<span id="cb55-4"><a href="color.html#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb55-5"><a href="color.html#cb55-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb55-6"><a href="color.html#cb55-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
+<span id="cb55-7"><a href="color.html#cb55-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> country</span>
+<span id="cb55-8"><a href="color.html#cb55-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb55-9"><a href="color.html#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke=</span><span class="st">&quot;black&quot;</span></span>
+<span id="cb55-10"><a href="color.html#cb55-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 
-<script>
-  addClassKlippyTo("pre.r, pre.markdown");
-  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
-</script>
 </div>
 </div>
 <!--參考答案開關--> 
@@ -414,8 +412,8 @@ if (document.selection) {
           </div>
         </div>
       </div>
-
-<a href="geometries-and-aesthetics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="layers.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="categorical-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

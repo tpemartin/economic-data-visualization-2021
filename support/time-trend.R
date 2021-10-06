@@ -16,7 +16,8 @@ geom_lineWithStroke <- function(
     geom_line(
       data=data,
       color=stroke,
-      size = size
+      size = size,
+      mapping = mapping
     ),
     geom_line( # the last geom will be on the top
       mapping = mapping,

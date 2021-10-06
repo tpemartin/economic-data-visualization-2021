@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Economic Data Visualization</title>
-  <meta name="description" content="Economic Data Visualization" />
+  <title>第 5 章 Categorical data | Economic Data Visualization</title>
+  <meta name="description" content="第 5 章 Categorical data | Economic Data Visualization" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Economic Data Visualization" />
+  <meta property="og:title" content="第 5 章 Categorical data | Economic Data Visualization" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Economic Data Visualization" />
+  <meta name="twitter:title" content="第 5 章 Categorical data | Economic Data Visualization" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="color.html"/>
 
-<link rel="next" href="geometries-and-aesthetics.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -222,89 +222,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Economic Data Visualization</h1>
-<p class="author"><em>Dr. Lin, Mau-Ting</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021</em></p>
-</div>
-<div id="prerequisites" class="section level1" number="1">
-<h1><span class="header-section-number">第 1 章</span> Prerequisites</h1>
-<div id="start-a-project" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Start a project</h2>
-<p>Start a new project for your ggplot environment:</p>
-<p><strong>Project</strong> &gt; <strong>New Project…</strong> &gt; <strong>New Directory</strong> &gt; <strong>New Project</strong></p>
-</div>
-<div id="中文" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> 中文</h2>
-<script>
-  addClassKlippyTo("pre.r, pre.markdown");
-  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
-</script>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;showtext&quot;</span>,<span class="st">&quot;extrafont&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_families</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb3-8"><a href="index.html#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="alert alert-info">
-<p>你也可以在你的<code>.Rprofile</code>裡加上:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-2"><a href="index.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb4-3"><a href="index.html#cb4-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb4-4"><a href="index.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb4-5"><a href="index.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb4-6"><a href="index.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-7"><a href="index.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb4-8"><a href="index.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb4-9"><a href="index.html#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-</div>
-<div id="econdv2" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> econDV2</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;tpemartin/econDV2&quot;</span>)</span></code></pre></div>
-</div>
-<div id="rprofile" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> .Rprofile</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="index.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="index.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
-<span id="cb6-3"><a href="index.html#cb6-3" aria-hidden="true" tabindex="-1"></a>sysfonts<span class="sc">::</span><span class="fu">font_add_google</span>(<span class="st">&#39;Noto Sans TC&#39;</span>)</span>
-<span id="cb6-4"><a href="index.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb6-5"><a href="index.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
-<span id="cb6-6"><a href="index.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-7"><a href="index.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Noto Sans TC&quot;</span>)</span>
-<span id="cb6-8"><a href="index.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb6-9"><a href="index.html#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
-<span id="cb6-10"><a href="index.html#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-11"><a href="index.html#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(econDV2)</span>
-<span id="cb6-12"><a href="index.html#cb6-12" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-13"><a href="index.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">dash =</span> econDV2<span class="sc">::</span>ggdash,</span>
-<span id="cb6-14"><a href="index.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">geom =</span> econDV2<span class="sc">::</span>ggbrowse,</span>
-<span id="cb6-15"><a href="index.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">aes =</span> econDV2<span class="sc">::</span>ggaes</span>
-<span id="cb6-16"><a href="index.html#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-</div>
-<div id="otherSoftware" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> 其他</h2>
-<div class="alert alert-info">
-<ul>
-<li><p>後製軟體： Choose your own image editor, but make sure it support SVG editing. Here I use <a href="https://boxy-svg.com/">Boxy SVG</a>.</p></li>
-<li><p>程式排版：</p></li>
-</ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;styler&quot;</span>)</span></code></pre></div>
-</div>
+<div id="categorical-data" class="section level1" number="5">
+<h1><span class="header-section-number">第 5 章</span> Categorical data</h1>
 
-<script>
-  addClassKlippyTo("pre.r, pre.markdown");
-  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
-</script>
-</div>
 </div>
 <!--參考答案開關--> 
 <script>
@@ -414,8 +334,8 @@ if (document.selection) {
           </div>
         </div>
       </div>
+<a href="color.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="geometries-and-aesthetics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

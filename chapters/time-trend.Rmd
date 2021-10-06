@@ -59,6 +59,28 @@ data$Italy <-
   )
 ```
 
+```{r}
+ggplot(data=dataAll) +
+  geom_line(
+    aes(
+      x=date,
+      y=y
+    )
+  )
+```
+
+
+```{r}
+ggplot(data=dataAll) +
+  geom_line(
+    aes(
+      x=date,
+      y=y,
+      group=country
+    )
+  )
+```
+
 
 ## Aesthetics inheritance
 
@@ -469,3 +491,10 @@ greeting("John", age=33)
     * if in definition specifically **WITH** default: it means something necessary, but there is a good choice of default that users will be happy with it most of the time.
     
     * `...`: a flexible argument especially when our function body has a call to some other function that has `...`
+    
+## Exercise
+
+```{r, eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/600/653/90/sites/default/files/images/2021/09/articles/body/20210925_fnc327.png", width="90%")
+```
+
