@@ -488,3 +488,7 @@ hightlightXYequal <- function(plot_obsessionWithBorders) {
 }
 ```
 
+## Graph export
+
+The easiest way to export the graph as you see on `gg$dash()` is to right click the image on the shiny dashboard and choose **save image as** to export the image. 
+

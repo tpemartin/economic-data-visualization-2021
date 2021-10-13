@@ -15,6 +15,7 @@ data
 aesthetics
 stop-data-inheritance
 finish-panel
+graph-export
 layers
 time-series-data
 aesthetics-inheritance

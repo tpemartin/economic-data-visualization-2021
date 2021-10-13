@@ -215,7 +215,7 @@ geom_lineWithStroke_error(
 
 ### Layer adding
 
-`+` Layer adding operator and add **a list of layers** all at once.
+Instead of using `+` on each layers (i.e. adding geom one after the other), you can put all geom layers as a list, and use `+` to add the list all at once.
 
 Other than the conventional adding:
 ```{r}
@@ -259,6 +259,10 @@ ggplot(
 ```
 
 ### New geom function
+
+<div class="alert alert-info">
+A geom function that delivers a mixture of multiple geoms must return the mixture as a list, avoiding using `+` inside the function body.
+</div>
 
 ```{r}
 geom_lineWithStroke_prototype <- function(data, sizeInput, prop) {
@@ -497,4 +501,14 @@ greeting("John", age=33)
 ```{r, eval=T, echo=F}
 teachDS::img_centering("https://www.economist.com/img/b/600/653/90/sites/default/files/images/2021/09/articles/body/20210925_fnc327.png", width="90%")
 ```
+
+```{r, eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1280/755/90/sites/default/files/images/2021/03/articles/main/20210403_woc329.png", width="90%")
+```
+
+```{r, eval=T, echo=F}
+teachDS::img_centering("https://clauswilke.com/dataviz/visualizing_associations_files/figure-html/CO2-slopegraph-three-year-1.png", width="90%")
+```
+
+  * <https://clauswilke.com/dataviz/visualizing-associations.html#associations-paired-data>
 

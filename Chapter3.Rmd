@@ -1,0 +1,360 @@
+---
+title: "Layers"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## layers
+
+  * geometries
+  
+  1. line:
+    aes: x, y, color, size
+    
+    shape
+    stroke
+    color
+    
+    fill
+    
+```{r}
+date = lubridate::ymd(c("2020-02-01", "2020-04-01",
+  "2020-06-01", "2020-09-01"))
+data = list()
+data$Britain <- 
+  data.frame(
+    date = date,
+    y = c(0, 50, 80, 100)
+  )
+data$Spain <-
+  data.frame(
+    date = date,
+    y = c(0, 32, 53, 103)
+  )
+data$Italy <-
+  data.frame(
+    date = date,
+    y = c(0, 50, 60, 99)
+  )
+```
+
+```{r}
+data$
+```
+
+
+```{r}
+ggplot(
+      mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size=3
+  )+
+  geom_line(
+    data=data$Spain,
+    color="#ad8c97",
+    size=3
+  )+
+  # create white stroke
+    geom_line(
+      data=data$Italy,
+      color="white",
+      size=4
+    )+
+    geom_line(
+      data=data$Italy, 
+      color="#983d4d",
+      size=3
+    )
+  
+```
+
+
+```{r}
+ggplot() +
+  geom_line(
+    data=,
+    mapping=aes(
+      x=,
+      y=
+    )
+  )
+```
+
+## 3.3.1
+
+```{r}
+sizeInput = 2 #input$sizeInput
+plot <- list()
+plot$p1 <- {
+  ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size = sizeInput
+  )+
+  geom_line(
+    data=data$Spain,
+    color="#ad8c97",
+    size = sizeInput
+  )+
+  geom_line(
+    data=data$Italy,
+    color = "#983d4d",
+    size = sizeInput
+  )
+}
+plot$p1
+```
+
+```{r}
+sizeInput = 2
+ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size = sizeInput
+  ) + 
+  geom_line( # the last geom will be on the top
+    data=data$Britain,
+    color="black",
+    size = sizeInput
+  )  
+```
+
+```{r}
+sizeInput = 2
+prop = 0.6
+
+p1 <- ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_line( # the last geom will be on the top
+    data=data$Britain,
+    color="black",
+    size = sizeInput
+  ) +  
+  geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size = sizeInput*prop
+  ) 
+```
+
+```{r}
+geomReturn <- geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size = sizeInput*prop
+  ) 
+```
+
+
+```{r}
+geom_lineWithStroke_error <- function(data, sizeInput, prop) {
+    geom_line( # the last geom will be on the top
+      data=data,
+      color="black",
+      size = sizeInput
+    ) +  
+    geom_line(
+      data=data,
+      color="#096fa1",
+      size = sizeInput*prop
+    ) 
+  }
+```
+
+```{r}
+ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_lineWithStroke_error(
+    data=data$Britain, 
+    sizeInput = sizeInput,
+    prop = prop
+  )
+```
+
+```{r}
+class(myplot)
+```
+
+ 
+  2. horizontal line:
+    aes: intercept, size, color
+    
+## + sign
+
+ggplot object + ....
+
+```{r}
+ggplot() +
+  geom_line()
+```
+
+```{r}
+sizeInput = 2
+ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  geom_line(
+    data=data$Britain,
+    color="#096fa1",
+    size = sizeInput
+  ) + 
+  geom_line( # the last geom will be on the top
+    data=data$Britain,
+    color="black",
+    size = sizeInput
+  )  
+```
+
+is equivalen to
+
+```{r}
+sizeInput = 2
+ggplot(
+    mapping=aes(
+      x=date,
+      y=y
+    ))+
+  list(
+    geom_line(
+      data=data$Britain,
+      color="#096fa1",
+      size = sizeInput
+    ),
+    geom_line( # the last geom will be on the top
+      data=data$Britain,
+      color="black",
+      size = sizeInput
+    )  
+  )
+  
+```
+
+
+```{r}
+ggplot() +
+  list(
+    geom_xxx(),
+    geom_yyy(),
+    :
+    geom_zzz()
+  )
+```
+
+```{r}
+ggplot(
+  mapping=aes(
+    x=date,
+    y=y
+  )) +
+  list(
+    geom_line( 
+      data=data$Britain,
+      color="black",
+      size = sizeInput
+    ),  
+    geom_line( # the last geom will be on the top
+      data=data$Britain,
+      color="#096fa1",
+      size = sizeInput*prop
+    ) 
+  )
+```
+
+```{r}
+geom_lineWithStroke_prototype <- function(data, sizeInput, prop) {
+  list(
+      geom_line( 
+        data=data,
+        color="black",
+        size = sizeInput
+      ),  
+      geom_line( # the last geom will be on the top
+        data=data,
+        color="#096fa1",
+        size = sizeInput*prop
+      ) 
+    )
+}
+```
+
+```{r}
+ggplot(
+  mapping=aes(
+    x=date,
+    y=y
+  )) +
+  geom_lineWithStroke_prototype(data$Britain,
+    sizeInput = sizeInput, prop=prop) +
+  geom_lineWithStroke_prototype(data$Spain,
+    sizeInput = sizeInput, prop=prop) +
+  geom_lineWithStroke_prototype(data$Italy,
+    sizeInput = sizeInput, prop=prop)
+```
+
+
+### summary
+
+
+```{r}
+ggplot()+geom1()+geom2()+...+geomk()
+```
+
+```{r}
+ggplot()+list(geom1(), geom2(), ..., geomk())
+```
+
+```{r}
+ggplot()+mygeom(...)
+```
+
+
+```{r}
+myplot <- function(data){
+  ggplot(data=data)+geom1()+geom2()+...+geomk()
+}
+myplot(data1)
+myplot(data2)
+```
+
+```{r}
+mygeom <- function(...){
+  geom1()+geom2()+...+geomk()
+}
+```
+
+```{r}
+mygeom <- function(...){
+  list(
+    geom1(), geom2(), ..., geomk()
+  )
+}
+```
+
+
+

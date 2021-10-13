@@ -1,0 +1,279 @@
+---
+title: "Oct 6"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data4plot <- list()
+data4plot$point$data <- {
+  data.frame(
+    x=c(52.5, 56, 58.5),
+    y=c(48.6, 54.9, 58)
+  )
+}
+data4plot$text$data <- {
+  data.frame(
+    x=c(52.5, 56, 58.5),
+    y=c(48.6, 54.9, 58),
+    label=c("Colombia", "Norway", "Germany")
+  )
+}
+
+myplot <- {
+  ggplot() +
+    geom_point(
+      data = data4plot$point$data,
+      mapping = aes(
+        x = x, y = y
+      ),
+      fill = "#2fc1d3",
+      shape = 21, 
+      color = "black",
+      stroke = 1,
+      size = 12 #input$size
+    ) +
+    geom_text(
+      data = data4plot$text$data,
+      mapping = aes(
+        x = x, y = y, label = label
+      ),
+      hjust = 0,
+      size = 12
+    )
+}
+myplot
+```
+
+```{r}
+myGoodPlot <- function(data4plot) {
+  myplot <- {
+    ggplot() +
+      geom_point(
+        data = data4plot$point$data,
+        mapping = aes(
+          x = x, y = y
+        ),
+        fill = "#2fc1d3",
+        shape = 21,
+        color = "black",
+        stroke = 1,
+        size = 12
+      ) +
+      geom_text(
+        data = data4plot$text$data,
+        mapping = aes(
+          x = x, y = y, label = label
+        ),
+        hjust = 0,
+        size = 12
+      )
+  }
+  myplot
+}
+```
+
+```{r}
+data4plot <- list() # declaration 
+data4plot$point$data <- {
+  data.frame(
+    x=c(52.5, 56, 58.5),
+    y=c(48.6, 54.9, 58)
+  )
+}
+```
+
+```{r}
+data4plot$point$data
+```
+
+
+
+```{r}
+data4plot$text$data <- {
+  data.frame(
+    x=c(52.5, 56, 58.5),
+    y=c(48.6, 54.9, 58),
+    label=c("Colombia", "Norway", "Germany")
+  )
+}
+```
+
+```{r}
+data4plot$text$data
+```
+
+
+
+```{r}
+myplot <- myGoodPlot(data4plot)
+myplot 
+```
+
+## ggdash
+
+```{r}
+myplot <- {
+  ggplot() +
+    geom_point(
+      data = data4plot$point$data,
+      mapping = aes(
+        x = x, y = y
+      ),
+      fill = "#2fc1d3",
+      shape = 21, 
+      color = "black",
+      stroke = 1,
+      size = 12 #input$size
+    ) +
+    geom_text(
+      data = data4plot$text$data,
+      mapping = aes(
+        x = x, y = y, label = label
+      ),
+      hjust = 0,
+      size = 12
+    )
+}
+myplot
+```
+
+size: 1250 x 400
+
+  * w: 1250
+  
+  * h: 400
+  
+  
+
+```{r}
+wh_ratio = 1250/400 # w/h
+# w/h = 1250/400
+# w = (1250/400) * h
+ggsave(
+  filename = "works/week1.png",
+  plot=myplot,
+  width=wh_ratio*400,
+  height=400, 
+  units="mm" # text size is default in mm unit
+)
+```
+
+## Inheritance
+
+```{r}
+data0 <- data.frame(
+    x=c(52.5, 56, 58.5),
+    y=c(48.6, 54.9, 58),
+    label=c("Colombia", "Norway", "Germany")
+  )
+
+
+```
+
+```{r}
+myplot <- {
+  ggplot(
+    data = data0,
+    mapping = aes(
+        x = x, y = y
+      )
+  ) +
+    geom_point(
+      fill = "#2fc1d3",
+      shape = 21, 
+      color = "black",
+      stroke = 1,
+      size = 12 #input$size
+    ) +
+    geom_text(
+      mapping = aes(
+        label = label
+      ),
+      hjust = 0,
+      size = 12
+    )
+}
+myplot
+```
+
+geom_abline:
+  * intercept = 0
+  * slope = 1
+  * linetype= 2
+  * color
+  
+geom_point:
+
+```{r}
+data1 <- data.frame(
+    x=c(52.1, 56.2, 58.5),
+    y=c(48.7, 55, 58.2)
+  )
+myplot +
+  geom_abline(
+    intercept=0,
+    slope=1,
+    linetype=2
+  ) +
+  geom_point(
+    data = data1,
+    mapping = aes(
+      x=x,
+      y=y
+    ), 
+    size= 12
+  )
+
+```
+
+
+```{r}
+myplot2 <- {
+  ggplot(
+    data = data0,
+    mapping = aes(
+        x = x, y = y
+      )
+  ) +
+    geom_point(
+    data = data1,
+    mapping = aes(
+      x=x,
+      y=y
+    ), 
+    size= 12
+  )+
+    geom_point(
+      fill = "#2fc1d3",
+      shape = 21, 
+      color = "black",
+      stroke = 1,
+      size = 12 #input$size
+    ) +
+    geom_text(
+      mapping = aes(
+        label = label
+      ),
+      hjust = 0,
+      size = 12
+    ) +
+  geom_abline(
+    intercept=0,
+    slope=1,
+    linetype=2
+  )
+  
+}
+myplot2
+```
+
+
+
+
+
+
+

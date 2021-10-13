@@ -178,6 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#stop-data-inheritance"><i class="fa fa-check"></i><b>2.2.3</b> Stop data inheritance</a></li>
 <li class="chapter" data-level="2.2.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#finish-panel"><i class="fa fa-check"></i><b>2.2.4</b> Finish panel</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#graph-export"><i class="fa fa-check"></i><b>2.3</b> Graph export</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="layers.html"><a href="layers.html"><i class="fa fa-check"></i><b>3</b> Layers</a>
 <ul>
@@ -399,7 +400,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <div id="layer-adding" class="section level3" number="3.4.1">
 <h3><span class="header-section-number">3.4.1</span> Layer adding</h3>
-<p><code>+</code> Layer adding operator and add <strong>a list of layers</strong> all at once.</p>
+<p>Instead of using <code>+</code> on each layers (i.e. adding geom one after the other), you can put all geom layers as a list, and use <code>+</code> to add the list all at once.</p>
 <p>Other than the conventional adding:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="layers.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
 <span id="cb37-2"><a href="layers.html#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
@@ -437,6 +438,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="new-geom-function" class="section level3" number="3.4.2">
 <h3><span class="header-section-number">3.4.2</span> New geom function</h3>
+<div class="alert alert-info">
+<p>A geom function that delivers a mixture of multiple geoms must return the mixture as a list, avoiding using <code>+</code> inside the function body.</p>
+</div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="layers.html#cb39-1" aria-hidden="true" tabindex="-1"></a>geom_lineWithStroke_prototype <span class="ot">&lt;-</span> <span class="cf">function</span>(data, sizeInput, prop) {</span>
 <span id="cb39-2"><a href="layers.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
 <span id="cb39-3"><a href="layers.html#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>( </span>
@@ -637,6 +641,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="text-align: center;">
 <img src="https://www.economist.com/img/b/600/653/90/sites/default/files/images/2021/09/articles/body/20210925_fnc327.png" style="width: 90%"/>
 </div>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/755/90/sites/default/files/images/2021/03/articles/main/20210403_woc329.png" style="width: 90%"/>
+</div>
+<div style="text-align: center;">
+<img src="https://clauswilke.com/dataviz/visualizing_associations_files/figure-html/CO2-slopegraph-three-year-1.png" style="width: 90%"/>
+</div>
+<ul>
+<li><a href="https://clauswilke.com/dataviz/visualizing-associations.html#associations-paired-data" class="uri">https://clauswilke.com/dataviz/visualizing-associations.html#associations-paired-data</a></li>
+</ul>
 
 </div>
 </div>
