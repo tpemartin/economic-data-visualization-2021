@@ -27,6 +27,13 @@ new-geom-function
 dot-dot-dot
 summary
 exercise
+categorical-data
+aesthetics-group
+geom-overlapping
+position-stack
+factor
+proportional-data
+more-on-position
+exercise-1
 color
 group-aesthetics
-categorical-data
