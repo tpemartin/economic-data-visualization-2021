@@ -463,8 +463,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb64-8"><a href="categorical-data.html#cb64-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span>fill</span>
 <span id="cb64-9"><a href="categorical-data.html#cb64-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb64-10"><a href="categorical-data.html#cb64-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;white&quot;</span>,</span>
-<span id="cb64-11"><a href="categorical-data.html#cb64-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span><span class="dv">2</span>, <span class="co">#input$width</span></span>
-<span id="cb64-12"><a href="categorical-data.html#cb64-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">1</span>, <span class="co">#input$size</span></span>
+<span id="cb64-11"><a href="categorical-data.html#cb64-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span><span class="fl">0.8</span>, <span class="co">#input$width</span></span>
+<span id="cb64-12"><a href="categorical-data.html#cb64-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">0</span>, <span class="co">#input$size</span></span>
 <span id="cb64-13"><a href="categorical-data.html#cb64-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span> <span class="co">#input$position</span></span>
 <span id="cb64-14"><a href="categorical-data.html#cb64-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <ul>
@@ -619,6 +619,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb72-21"><a href="categorical-data.html#cb72-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">theta =</span> <span class="st">&quot;y&quot;</span></span>
 <span id="cb72-22"><a href="categorical-data.html#cb72-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb72-23"><a href="categorical-data.html#cb72-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<hr />
+<p>When x-axis is also representing a categorical data:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="categorical-data.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb73-2"><a href="categorical-data.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data=</span>data_cat2</span>
+<span id="cb73-3"><a href="categorical-data.html#cb73-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb73-4"><a href="categorical-data.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_col(</span></span>
+<span id="cb73-5"><a href="categorical-data.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   mapping=aes(</span></span>
+<span id="cb73-6"><a href="categorical-data.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     x=x,</span></span>
+<span id="cb73-7"><a href="categorical-data.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     y=y,</span></span>
+<span id="cb73-8"><a href="categorical-data.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     fill=fill</span></span>
+<span id="cb73-9"><a href="categorical-data.html#cb73-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   ),</span></span>
+<span id="cb73-10"><a href="categorical-data.html#cb73-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   color=&quot;white&quot;,</span></span>
+<span id="cb73-11"><a href="categorical-data.html#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   width=0.8, #input$width</span></span>
+<span id="cb73-12"><a href="categorical-data.html#cb73-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   size=0, #input$size</span></span>
+<span id="cb73-13"><a href="categorical-data.html#cb73-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   position = &quot;dodge&quot; #input$position</span></span>
+<span id="cb73-14"><a href="categorical-data.html#cb73-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
+<span id="cb73-15"><a href="categorical-data.html#cb73-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb73-16"><a href="categorical-data.html#cb73-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb73-17"><a href="categorical-data.html#cb73-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x,</span>
+<span id="cb73-18"><a href="categorical-data.html#cb73-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y,</span>
+<span id="cb73-19"><a href="categorical-data.html#cb73-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group=</span>fill,</span>
+<span id="cb73-20"><a href="categorical-data.html#cb73-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">label=</span>y</span>
+<span id="cb73-21"><a href="categorical-data.html#cb73-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb73-22"><a href="categorical-data.html#cb73-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="dv">2</span>)</span>
+<span id="cb73-23"><a href="categorical-data.html#cb73-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 <div id="more-on-position" class="section level2" number="4.7">
 <h2><span class="header-section-number">4.7</span> More on position</h2>
@@ -629,52 +654,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="text-align: center;">
 <img src="https://www.economist.com/img/b/1280/759/90/sites/default/files/20191130_WOC194.png" style="width: 50%"/>
 </div>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="categorical-data.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb73-2"><a href="categorical-data.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
-<span id="cb73-3"><a href="categorical-data.html#cb73-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span></span>
-<span id="cb73-4"><a href="categorical-data.html#cb73-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
-<span id="cb73-5"><a href="categorical-data.html#cb73-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>),</span>
-<span id="cb73-6"><a href="categorical-data.html#cb73-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="fu">c</span>(<span class="dv">56</span>, <span class="dv">77</span>, <span class="dv">92</span>)</span>
-<span id="cb73-7"><a href="categorical-data.html#cb73-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb73-8"><a href="categorical-data.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb73-9"><a href="categorical-data.html#cb73-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="categorical-data.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb74-2"><a href="categorical-data.html#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
+<span id="cb74-3"><a href="categorical-data.html#cb74-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span></span>
+<span id="cb74-4"><a href="categorical-data.html#cb74-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb74-5"><a href="categorical-data.html#cb74-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>),</span>
+<span id="cb74-6"><a href="categorical-data.html#cb74-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="fu">c</span>(<span class="dv">56</span>, <span class="dv">77</span>, <span class="dv">92</span>)</span>
+<span id="cb74-7"><a href="categorical-data.html#cb74-7" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb74-8"><a href="categorical-data.html#cb74-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb74-9"><a href="categorical-data.html#cb74-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <hr />
 <p>Another common application of <code>coord_flip</code> is:</p>
 <div style="text-align: center;">
 <img src="img/us-presidential-election.jpg" style="width: 100%"/>
 </div>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="categorical-data.html#cb74-1" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">=</span><span class="dv">4</span> <span class="co">#input$dx</span></span>
-<span id="cb74-2"><a href="categorical-data.html#cb74-2" aria-hidden="true" tabindex="-1"></a>h<span class="ot">=</span><span class="fl">0.5</span> <span class="co">#input$h</span></span>
-<span id="cb74-3"><a href="categorical-data.html#cb74-3" aria-hidden="true" tabindex="-1"></a>dt<span class="ot">=</span><span class="dv">0</span> <span class="co">#input$dt</span></span>
-<span id="cb74-4"><a href="categorical-data.html#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb74-5"><a href="categorical-data.html#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
-<span id="cb74-6"><a href="categorical-data.html#cb74-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
-<span id="cb74-7"><a href="categorical-data.html#cb74-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb74-8"><a href="categorical-data.html#cb74-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="fu">c</span>(<span class="dv">306</span>, <span class="dv">232</span>),</span>
-<span id="cb74-9"><a href="categorical-data.html#cb74-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;biden&quot;</span>,<span class="st">&quot;trump&quot;</span>)</span>
-<span id="cb74-10"><a href="categorical-data.html#cb74-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb74-11"><a href="categorical-data.html#cb74-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span><span class="dv">1</span></span>
-<span id="cb74-12"><a href="categorical-data.html#cb74-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb74-13"><a href="categorical-data.html#cb74-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(</span>
-<span id="cb74-14"><a href="categorical-data.html#cb74-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
-<span id="cb74-15"><a href="categorical-data.html#cb74-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="dv">1</span><span class="sc">-</span>h,</span>
-<span id="cb74-16"><a href="categorical-data.html#cb74-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="dv">270</span>,</span>
-<span id="cb74-17"><a href="categorical-data.html#cb74-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">xend=</span><span class="dv">1</span><span class="sc">+</span>h,</span>
-<span id="cb74-18"><a href="categorical-data.html#cb74-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">yend=</span><span class="dv">270</span></span>
-<span id="cb74-19"><a href="categorical-data.html#cb74-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb74-20"><a href="categorical-data.html#cb74-20" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb74-21"><a href="categorical-data.html#cb74-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb74-22"><a href="categorical-data.html#cb74-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
-<span id="cb74-23"><a href="categorical-data.html#cb74-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="dv">1</span><span class="sc">+</span>dt,</span>
-<span id="cb74-24"><a href="categorical-data.html#cb74-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="dv">270</span>,</span>
-<span id="cb74-25"><a href="categorical-data.html#cb74-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">label=</span><span class="st">&quot;270&quot;</span></span>
-<span id="cb74-26"><a href="categorical-data.html#cb74-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb74-27"><a href="categorical-data.html#cb74-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">8</span> <span class="co">#input$text</span></span>
-<span id="cb74-28"><a href="categorical-data.html#cb74-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb74-29"><a href="categorical-data.html#cb74-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">1</span><span class="sc">-</span>dx, <span class="dv">1</span><span class="sc">+</span>dx)<span class="sc">+</span> <span class="co"># make sure cover 0.5-1.5 so the bar width can be accomodate</span></span>
-<span id="cb74-30"><a href="categorical-data.html#cb74-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb74-31"><a href="categorical-data.html#cb74-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()<span class="sc">+</span></span>
-<span id="cb74-32"><a href="categorical-data.html#cb74-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="categorical-data.html#cb75-1" aria-hidden="true" tabindex="-1"></a>dx<span class="ot">=</span><span class="dv">4</span> <span class="co">#input$dx</span></span>
+<span id="cb75-2"><a href="categorical-data.html#cb75-2" aria-hidden="true" tabindex="-1"></a>h<span class="ot">=</span><span class="fl">0.5</span> <span class="co">#input$h</span></span>
+<span id="cb75-3"><a href="categorical-data.html#cb75-3" aria-hidden="true" tabindex="-1"></a>dt<span class="ot">=</span><span class="dv">0</span> <span class="co">#input$dt</span></span>
+<span id="cb75-4"><a href="categorical-data.html#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb75-5"><a href="categorical-data.html#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
+<span id="cb75-6"><a href="categorical-data.html#cb75-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb75-7"><a href="categorical-data.html#cb75-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb75-8"><a href="categorical-data.html#cb75-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="fu">c</span>(<span class="dv">306</span>, <span class="dv">232</span>),</span>
+<span id="cb75-9"><a href="categorical-data.html#cb75-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;biden&quot;</span>,<span class="st">&quot;trump&quot;</span>)</span>
+<span id="cb75-10"><a href="categorical-data.html#cb75-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb75-11"><a href="categorical-data.html#cb75-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span><span class="dv">1</span></span>
+<span id="cb75-12"><a href="categorical-data.html#cb75-12" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb75-13"><a href="categorical-data.html#cb75-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(</span>
+<span id="cb75-14"><a href="categorical-data.html#cb75-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb75-15"><a href="categorical-data.html#cb75-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="dv">1</span><span class="sc">-</span>h,</span>
+<span id="cb75-16"><a href="categorical-data.html#cb75-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="dv">270</span>,</span>
+<span id="cb75-17"><a href="categorical-data.html#cb75-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">xend=</span><span class="dv">1</span><span class="sc">+</span>h,</span>
+<span id="cb75-18"><a href="categorical-data.html#cb75-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">yend=</span><span class="dv">270</span></span>
+<span id="cb75-19"><a href="categorical-data.html#cb75-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb75-20"><a href="categorical-data.html#cb75-20" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb75-21"><a href="categorical-data.html#cb75-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb75-22"><a href="categorical-data.html#cb75-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb75-23"><a href="categorical-data.html#cb75-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="dv">1</span><span class="sc">+</span>dt,</span>
+<span id="cb75-24"><a href="categorical-data.html#cb75-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="dv">270</span>,</span>
+<span id="cb75-25"><a href="categorical-data.html#cb75-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">label=</span><span class="st">&quot;270&quot;</span></span>
+<span id="cb75-26"><a href="categorical-data.html#cb75-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb75-27"><a href="categorical-data.html#cb75-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">8</span> <span class="co">#input$text</span></span>
+<span id="cb75-28"><a href="categorical-data.html#cb75-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb75-29"><a href="categorical-data.html#cb75-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">1</span><span class="sc">-</span>dx, <span class="dv">1</span><span class="sc">+</span>dx)<span class="sc">+</span> <span class="co"># make sure cover 0.5-1.5 so the bar width can be accomodate</span></span>
+<span id="cb75-30"><a href="categorical-data.html#cb75-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb75-31"><a href="categorical-data.html#cb75-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()<span class="sc">+</span></span>
+<span id="cb75-32"><a href="categorical-data.html#cb75-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
 </div>
 <div id="summary-1" class="section level2" number="4.9">
 <h2><span class="header-section-number">4.9</span> Summary</h2>

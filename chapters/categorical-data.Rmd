@@ -278,8 +278,8 @@ ggplot(
       fill=fill
     ),
     color="white",
-    width=2, #input$width
-    size=1, #input$size
+    width=0.8, #input$width
+    size=0, #input$size
     position = "dodge" #input$position
   )
 ```
@@ -463,6 +463,36 @@ ggplot(
     theta = "y"
   ) +
   theme_void()
+```
+
+***
+
+When x-axis is also representing a categorical data:
+
+```{r dd}
+ggplot(
+  data=data_cat2
+) + 
+  # geom_col(
+  #   mapping=aes(
+  #     x=x,
+  #     y=y,
+  #     fill=fill
+  #   ),
+  #   color="white",
+  #   width=0.8, #input$width
+  #   size=0, #input$size
+  #   position = "dodge" #input$position
+  # )+
+  geom_text(
+    mapping=aes(
+      x=x,
+      y=y,
+      group=fill,
+      label=y
+    ),
+    position=position_dodge(width=2)
+  )
 ```
 
 
