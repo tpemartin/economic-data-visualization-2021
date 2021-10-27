@@ -332,7 +332,7 @@ ggplot(
   )
 ```
 
-***
+## Adding text 
 
 adding text
 
@@ -360,8 +360,11 @@ ggplot(
   * `geom_col` stack sequence is based on `fill` level sequence.
   
   * `geom_text` stack sequence is based on observation sequence.  
-  
-    * we can use `group` aesthetic to ask `geom_text` to draw group by group.
+
+<div class="alert alert-info">
+
+Grouping aesthetics determine the sequence of stacking. In `geom_col`, `fill` is the grouping aesthetic. To make `geom_text` stack labels in sequence as `fill` in `geom_col`, we can put `group=fill` in `geom_text` to create such a sequence. 
+
     
 ```{r}
 ggplot(
@@ -385,7 +388,9 @@ ggplot(
   )
 ```
 
-Change label to the proportion data `y`
+</div>
+
+Change labels to represent the proportion values of `y`
 ```{r}
 ggplot(
   data=data_cat2_x1only
@@ -401,7 +406,7 @@ ggplot(
     aes(
       x=x,
       y=y,
-      label=y,
+      label=y, # use y to label now
       group=fill
     ),
     position = "stack"
@@ -410,7 +415,7 @@ ggplot(
 
   * `position` argument also takes position functions.
   
-  * When you know what type of position you want, you can use corresponding position function to finetune the position.
+  * When you know what type of position you want, you can use corresponding position function to fine tune the position.
 
 ```{r}
 ggplot(
@@ -465,6 +470,79 @@ ggplot(
 
 <https://ggplot2.tidyverse.org/reference/index.html#section-position-adjustment>
 
+## Coordination flip
+
+```{r, eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1280/759/90/sites/default/files/20191130_WOC194.png")
+```
+
+```{r}
+ggplot()+
+  geom_col(
+    mapping=
+      aes(
+        x=c("A", "B", "C"),
+        y=c(56, 77, 92)
+      )
+  )+
+  coord_flip()
+```
+
+***
+
+Another common application of `coord_flip` is:
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/us-presidential-election.jpg", width="100%")
+```
+
+```{r}
+dx=4 #input$dx
+h=0.5 #input$h
+dt=0 #input$dt
+ggplot()+
+  geom_col(
+    mapping=aes(
+      x=c(1, 1),
+      y=c(306, 232),
+      fill=c("biden","trump")
+    ),
+    width=1
+  )+
+  geom_segment(
+    mapping=aes(
+      x=1-h,
+      y=270,
+      xend=1+h,
+      yend=270
+    )
+  )+
+  geom_text(
+    mapping=aes(
+      x=1+dt,
+      y=270,
+      label="270"
+    ),
+    size=8 #input$text
+  )+
+  xlim(1-dx, 1+dx)+ # make sure cover 0.5-1.5 so the bar width can be accomodate
+  coord_flip()+
+  theme_void()+
+  theme(legend.position = "none")
+```
+
+
+## Summary
+
+  * Grouping aesthetic separate a data frame into various subsample data frame and apply the `geom_` function to each one of them in the sequence determined by the mapping factor's levels sequence.
+  
+  * When `group` aesthetic and other aesthetic share the same mapping variable, `group` aesthetic can be ignored.
+  
+  * When deal with grouping variable, values of y from different groups at the same x can have position choice:  
+    * "identity": respect ys as it is.  
+    * "stack": stack ys according to grouping level sequence.
+    * "dodge": respect ys as it is but move their x values left and right according to grouping level sequence. 
+
 ## Exercise
 
 ### 1{-}
@@ -472,4 +550,24 @@ ggplot(
 ```{r, echo=F, eval=T}
 teachDS::img_centering("https://images.squarespace-cdn.com/content/v1/55b6a6dce4b089e11621d3ed/1586289284165-6Z2M2XKD645EJRCV3TPV/Area+chart+example.png?format=1500w")
 ```
+
+### 2{-}
+
+```{r, echo=F, eval=T}
+teachDS::img_centering("https://www.economist.com/img/b/1000/1339/90/sites/default/files/images/print-edition/20211023_FBC728.png")
+```
+
+### 3{-}
+
+```{r, echo=F, eval=T}
+teachDS::img_centering("https://www.economist.com/img/b/1000/2753/90/sites/default/files/20211023_WWC082.png")
+```
+
+
+### 4{-}
+
+```{r, echo=F, eval=T}
+teachDS::img_centering("http://uc.udn.com.tw/photo/2020/01/12/1/7324036.png")
+```
+
 

@@ -33,7 +33,10 @@ geom-overlapping
 position-stack
 factor
 proportional-data
+adding-text
 more-on-position
+coordination-flip
+summary-1
 exercise-1
 color
 group-aesthetics
