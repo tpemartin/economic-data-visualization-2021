@@ -1,0 +1,76 @@
+# Scale
+
+In geom, `aes(xxx=yyy)`, defines a mapping from data vector `yyy` to aesthetic vector `xxx`. To change or fine tune this mapping, you add `scale_xxx_...` to your ggplot object.
+
+In general, a mapping can be divided into two parts
+
+  * How to map?  
+    * `limits`: the range of data vector to be mapped.  
+    * `values`: the mapped values from `limits`.  
+    
+  * In the the mapping, what to show to the readers? This is about the information in **legend** (圖例說明)  
+    * `breaks`: the picked values in `limits`.  
+    * `labels`: the mapped values of `breaks`.  
+    * `name`: the title of the legend.
+
+Depending on aesthetics, not all five settings will be necessary. 
+
+### `scale_x_datetime`/`scale_x_date`
+
+```{r}
+scale_x_date()-> xx
+```
+
+***
+
+```{r etef}
+teachDS::img_centering("https://www.economist.com/img/b/1280/748/90/sites/default/files/20190112_WOC124.png", width="80%")
+```
+
+```{r}
+dataSet1 <- 
+  data.frame(
+    x=1979:2018
+  )
+dataSet1$y <- sample(10:40, length(dataSet1$x), T)
+ggplot1 <- list()
+
+ggplot()+
+  geom_step(
+    data=dataSet1,
+    mapping=
+      aes(
+        x=x,
+        y=y
+      )
+  ) -> ggplot1$plot0
+ggplot1$plot0
+```
+
+```{r}
+ggplot1$plot0 +
+  scale_x_continuous(
+    breaks=c(1979, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2018),
+    labels=c("1979", "85", "90", "95", "2000", "05", "10", "15", "18")
+  ) -> ggplot1$plot1
+
+ggplot1$plot1
+```
+
+```{r}
+ggplot1$plot1 +
+  geom_rug(
+    mapping=aes(
+      x=1979:2018
+    ),
+    outside=TRUE,
+    size=1, #input$size
+    length=grid::unit(
+      0.1, #input$length
+      "mm"
+    )
+  ) +
+  coord_cartesian(clip="off")
+
+```
+
