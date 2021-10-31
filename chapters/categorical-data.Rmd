@@ -470,31 +470,35 @@ ggplot(
 When x-axis is also representing a categorical data:
 
 ```{r dd}
+dy=0.03 # input$dy
 ggplot(
   data=data_cat2
 ) + 
-  # geom_col(
-  #   mapping=aes(
-  #     x=x,
-  #     y=y,
-  #     fill=fill
-  #   ),
-  #   color="white",
-  #   width=0.8, #input$width
-  #   size=0, #input$size
-  #   position = "dodge" #input$position
-  # )+
-  geom_text(
+  geom_col(
     mapping=aes(
       x=x,
       y=y,
+      fill=fill
+    ),
+    color="white",
+    width=0.8, #input$width
+    position = "dodge" #input$position
+  )+
+  geom_text(
+    mapping=aes(
+      x=x,
+      y=y-dy,
       group=fill,
       label=y
     ),
-    position=position_dodge(width=2)
+    size=8, #input$size
+    position=position_dodge(width=
+        0.8 #input$dodge
+        )
   )
 ```
 
+  * text position_dodge has the same width as `geom_col` to ensure the same dodging distance. 
 
 ## More on position
 
