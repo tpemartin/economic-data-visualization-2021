@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>第 5 章 Scale | Economic Data Visualization</title>
+  <meta name="description" content="第 5 章 Scale | Economic Data Visualization" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="第 5 章 Scale | Economic Data Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="第 5 章 Scale | Economic Data Visualization" />
+  
+  
+  
+
+<meta name="author" content="Dr. Lin, Mau-Ting" />
+
+
+<meta name="date" content="2021-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="categorical-data.html"/>
+<link rel="next" href="color.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-104915016-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-104915016-7');
+
+  // ga('set', 'userId', 'USER_ID'); // Set the user ID using signed-in user_id.
+</script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">經濟資料視覺化處理</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#start-a-project"><i class="fa fa-check"></i><b>1.1</b> Start a project</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#中文"><i class="fa fa-check"></i><b>1.2</b> 中文</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#econdv2"><i class="fa fa-check"></i><b>1.3</b> econDV2</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#rprofile"><i class="fa fa-check"></i><b>1.4</b> .Rprofile</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#otherSoftware"><i class="fa fa-check"></i><b>1.5</b> 其他</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html"><i class="fa fa-check"></i><b>2</b> Geometries and Aesthetics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#an-example"><i class="fa fa-check"></i><b>2.1</b> An Example</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#econdv2ggdash"><i class="fa fa-check"></i><b>2.1.1</b> econDV2::ggdash</a></li>
+<li class="chapter" data-level="2.1.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#script-saving"><i class="fa fa-check"></i><b>2.1.2</b> Script saving</a></li>
+<li class="chapter" data-level="2.1.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#graph-output"><i class="fa fa-check"></i><b>2.1.3</b> Graph output</a></li>
+<li class="chapter" data-level="2.1.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#ggdash-more"><i class="fa fa-check"></i><b>2.1.4</b> ggdash more</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#inheritance"><i class="fa fa-check"></i><b>2.2</b> Inheritance</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#data"><i class="fa fa-check"></i><b>2.2.1</b> Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#aesthetics"><i class="fa fa-check"></i><b>2.2.2</b> Aesthetics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#stop-data-inheritance"><i class="fa fa-check"></i><b>2.2.3</b> Stop data inheritance</a></li>
+<li class="chapter" data-level="2.2.4" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#finish-panel"><i class="fa fa-check"></i><b>2.2.4</b> Finish panel</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="geometries-and-aesthetics.html"><a href="geometries-and-aesthetics.html#graph-export"><i class="fa fa-check"></i><b>2.3</b> Graph export</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="layers.html"><a href="layers.html"><i class="fa fa-check"></i><b>3</b> Layers</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="layers.html"><a href="layers.html#time-series-data"><i class="fa fa-check"></i><b>3.1</b> Time series data</a></li>
+<li class="chapter" data-level="3.2" data-path="layers.html"><a href="layers.html#aesthetics-inheritance"><i class="fa fa-check"></i><b>3.2</b> Aesthetics inheritance</a></li>
+<li class="chapter" data-level="3.3" data-path="layers.html"><a href="layers.html#sequence-of-layers"><i class="fa fa-check"></i><b>3.3</b> Sequence of layers</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="layers.html"><a href="layers.html#line-stroke"><i class="fa fa-check"></i><b>3.3.1</b> Line stroke</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="layers.html"><a href="layers.html#create-your-first-geom"><i class="fa fa-check"></i><b>3.4</b> Create your first geom</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="layers.html"><a href="layers.html#layer-adding"><i class="fa fa-check"></i><b>3.4.1</b> Layer adding</a></li>
+<li class="chapter" data-level="3.4.2" data-path="layers.html"><a href="layers.html#new-geom-function"><i class="fa fa-check"></i><b>3.4.2</b> New geom function</a></li>
+<li class="chapter" data-level="3.4.3" data-path="layers.html"><a href="layers.html#dot-dot-dot"><i class="fa fa-check"></i><b>3.4.3</b> dot-dot-dot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="layers.html"><a href="layers.html#summary"><i class="fa fa-check"></i><b>3.5</b> Summary</a></li>
+<li class="chapter" data-level="3.6" data-path="layers.html"><a href="layers.html#exercise"><i class="fa fa-check"></i><b>3.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="categorical-data.html"><a href="categorical-data.html"><i class="fa fa-check"></i><b>4</b> Categorical data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="categorical-data.html"><a href="categorical-data.html#aesthetics-group"><i class="fa fa-check"></i><b>4.1</b> Aesthetics: group</a></li>
+<li class="chapter" data-level="4.2" data-path="categorical-data.html"><a href="categorical-data.html#geom-overlapping"><i class="fa fa-check"></i><b>4.2</b> Geom overlapping</a></li>
+<li class="chapter" data-level="4.3" data-path="categorical-data.html"><a href="categorical-data.html#position-stack"><i class="fa fa-check"></i><b>4.3</b> Position: stack</a></li>
+<li class="chapter" data-level="4.4" data-path="categorical-data.html"><a href="categorical-data.html#factor"><i class="fa fa-check"></i><b>4.4</b> Factor</a></li>
+<li class="chapter" data-level="4.5" data-path="categorical-data.html"><a href="categorical-data.html#proportional-data"><i class="fa fa-check"></i><b>4.5</b> Proportional data</a></li>
+<li class="chapter" data-level="4.6" data-path="categorical-data.html"><a href="categorical-data.html#adding-text"><i class="fa fa-check"></i><b>4.6</b> Adding text</a></li>
+<li class="chapter" data-level="4.7" data-path="categorical-data.html"><a href="categorical-data.html#more-on-position"><i class="fa fa-check"></i><b>4.7</b> More on position</a></li>
+<li class="chapter" data-level="4.8" data-path="categorical-data.html"><a href="categorical-data.html#coordination-flip"><i class="fa fa-check"></i><b>4.8</b> Coordination flip</a></li>
+<li class="chapter" data-level="4.9" data-path="categorical-data.html"><a href="categorical-data.html#summary-1"><i class="fa fa-check"></i><b>4.9</b> Summary</a></li>
+<li class="chapter" data-level="4.10" data-path="categorical-data.html"><a href="categorical-data.html#exercise-1"><i class="fa fa-check"></i><b>4.10</b> Exercise</a>
+<ul>
+<li class="chapter" data-level="" data-path="categorical-data.html"><a href="categorical-data.html#section"><i class="fa fa-check"></i>1</a></li>
+<li class="chapter" data-level="" data-path="categorical-data.html"><a href="categorical-data.html#section-1"><i class="fa fa-check"></i>2</a></li>
+<li class="chapter" data-level="" data-path="categorical-data.html"><a href="categorical-data.html#section-2"><i class="fa fa-check"></i>3</a></li>
+<li class="chapter" data-level="" data-path="categorical-data.html"><a href="categorical-data.html#section-3"><i class="fa fa-check"></i>4</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="scale.html"><a href="scale.html"><i class="fa fa-check"></i><b>5</b> Scale</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="scale.html"><a href="scale.html#time-axis"><i class="fa fa-check"></i><b>5.1</b> Time axis</a></li>
+<li class="chapter" data-level="5.2" data-path="scale.html"><a href="scale.html#xy-axis"><i class="fa fa-check"></i><b>5.2</b> XY axis</a></li>
+<li class="chapter" data-level="5.3" data-path="scale.html"><a href="scale.html#colorfill"><i class="fa fa-check"></i><b>5.3</b> Color/Fill</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="scale.html"><a href="scale.html#discrete"><i class="fa fa-check"></i><b>5.3.1</b> Discrete</a></li>
+<li class="chapter" data-level="5.3.2" data-path="scale.html"><a href="scale.html#continuous"><i class="fa fa-check"></i><b>5.3.2</b> Continuous</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="color.html"><a href="color.html"><i class="fa fa-check"></i><b>6</b> Color</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="color.html"><a href="color.html#group-aesthetics"><i class="fa fa-check"></i><b>6.1</b> Group aesthetics</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/tpemartin/110-1-Economic-Data-Visualization" target="blank">Course Github</a></li>
+<li><a href="https://www.ntpu.edu.tw/econ" target="blank">國立臺北大學 經濟學系</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Economic Data Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="scale" class="section level1" number="5">
+<h1><span class="header-section-number">第 5 章</span> Scale</h1>
+<p>In geom, <code>aes(xxx=yyy)</code>, defines a mapping from data vector <code>yyy</code> to aesthetic vector <code>xxx</code>. To change or fine tune this mapping, you add <code>scale_xxx_...</code> to your ggplot object.</p>
+<p>In general, a mapping can be divided into two parts</p>
+<ul>
+<li>How to map?
+<ul>
+<li><code>limits</code>: the range of data vector to be mapped.<br />
+</li>
+<li><code>values</code>: the mapped values from <code>limits</code>.</li>
+</ul></li>
+<li>In the the mapping, what to show to the readers? This is about the information in <strong>legend</strong> (圖例說明)
+<ul>
+<li><code>breaks</code>: the picked values in <code>limits</code>.<br />
+</li>
+<li><code>labels</code>: the mapped values of <code>breaks</code>.<br />
+</li>
+<li><code>name</code>: the title of the legend.</li>
+</ul></li>
+</ul>
+<p>Depending on aesthetics, not all five settings will be necessary.</p>
+<div id="time-axis" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Time axis</h2>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/748/90/sites/default/files/20190112_WOC124.png" style="width: 80%"/>
+</div>
+<p>Generate basic plot:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="scale.html#cb76-1" aria-hidden="true" tabindex="-1"></a>dataSet1 <span class="ot">&lt;-</span> </span>
+<span id="cb76-2"><a href="scale.html#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb76-3"><a href="scale.html#cb76-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="dv">1979</span><span class="sc">:</span><span class="dv">2018</span></span>
+<span id="cb76-4"><a href="scale.html#cb76-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb76-5"><a href="scale.html#cb76-5" aria-hidden="true" tabindex="-1"></a>dataSet1<span class="sc">$</span>y <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">40</span>, <span class="fu">length</span>(dataSet1<span class="sc">$</span>x), T)</span>
+<span id="cb76-6"><a href="scale.html#cb76-6" aria-hidden="true" tabindex="-1"></a>ggplot1 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb76-7"><a href="scale.html#cb76-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-8"><a href="scale.html#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb76-9"><a href="scale.html#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(</span>
+<span id="cb76-10"><a href="scale.html#cb76-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>dataSet1,</span>
+<span id="cb76-11"><a href="scale.html#cb76-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span></span>
+<span id="cb76-12"><a href="scale.html#cb76-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb76-13"><a href="scale.html#cb76-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>x,</span>
+<span id="cb76-14"><a href="scale.html#cb76-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span>y</span>
+<span id="cb76-15"><a href="scale.html#cb76-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb76-16"><a href="scale.html#cb76-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> ggplot1<span class="sc">$</span>plot0</span>
+<span id="cb76-17"><a href="scale.html#cb76-17" aria-hidden="true" tabindex="-1"></a>ggplot1<span class="sc">$</span>plot0</span></code></pre></div>
+<p>Fine tune x scale</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="scale.html#cb77-1" aria-hidden="true" tabindex="-1"></a>ggplot1<span class="sc">$</span>plot0 <span class="sc">+</span></span>
+<span id="cb77-2"><a href="scale.html#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb77-3"><a href="scale.html#cb77-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">1979</span>, <span class="dv">1985</span>, <span class="dv">1990</span>, <span class="dv">1995</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>),</span>
+<span id="cb77-4"><a href="scale.html#cb77-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;1979&quot;</span>, <span class="st">&quot;85&quot;</span>, <span class="st">&quot;90&quot;</span>, <span class="st">&quot;95&quot;</span>, <span class="st">&quot;2000&quot;</span>, <span class="st">&quot;05&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;15&quot;</span>, <span class="st">&quot;18&quot;</span>)</span>
+<span id="cb77-5"><a href="scale.html#cb77-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> ggplot1<span class="sc">$</span>plot1</span>
+<span id="cb77-6"><a href="scale.html#cb77-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-7"><a href="scale.html#cb77-7" aria-hidden="true" tabindex="-1"></a>ggplot1<span class="sc">$</span>plot1</span></code></pre></div>
+<p>add ticks:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="scale.html#cb78-1" aria-hidden="true" tabindex="-1"></a>ggplot1<span class="sc">$</span>plot1 <span class="sc">+</span></span>
+<span id="cb78-2"><a href="scale.html#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(</span>
+<span id="cb78-3"><a href="scale.html#cb78-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb78-4"><a href="scale.html#cb78-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="fu">setdiff</span>(<span class="dv">1979</span><span class="sc">:</span><span class="dv">2018</span>,</span>
+<span id="cb78-5"><a href="scale.html#cb78-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="dv">1979</span>, <span class="dv">1985</span>, <span class="dv">1990</span>, <span class="dv">1995</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>))</span>
+<span id="cb78-6"><a href="scale.html#cb78-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb78-7"><a href="scale.html#cb78-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype=</span><span class="st">&quot;dotted&quot;</span>,</span>
+<span id="cb78-8"><a href="scale.html#cb78-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">outside=</span><span class="cn">TRUE</span>, <span class="co"># draw rug outside the plot panel</span></span>
+<span id="cb78-9"><a href="scale.html#cb78-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">1</span>, <span class="co">#input$size</span></span>
+<span id="cb78-10"><a href="scale.html#cb78-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">length=</span>grid<span class="sc">::</span><span class="fu">unit</span>(</span>
+<span id="cb78-11"><a href="scale.html#cb78-11" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.1</span>, <span class="co">#input$length</span></span>
+<span id="cb78-12"><a href="scale.html#cb78-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mm&quot;</span></span>
+<span id="cb78-13"><a href="scale.html#cb78-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb78-14"><a href="scale.html#cb78-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb78-15"><a href="scale.html#cb78-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip=</span><span class="st">&quot;off&quot;</span>) <span class="co"># allow drawing outside the plot panel </span></span></code></pre></div>
+<ul>
+<li>The ticks are ad hoc ticks here, which are different from the ticks defined in <code>scale_x_continuous</code>. Ticks defined in <code>scale_x_continuous</code> can be fine tuned, including its length via <code>theme()</code> which will be covered later.</li>
+</ul>
+<hr />
+<p>When axis x is to represent a period:</p>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/675/90/sites/default/files/20131221_FNC079.png" style="width: 50%"/>
+</div>
+<p>Basic plot:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="scale.html#cb79-1" aria-hidden="true" tabindex="-1"></a>dataSet2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb79-2"><a href="scale.html#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">seq</span>(<span class="at">from=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2013-01-01&quot;</span>),</span>
+<span id="cb79-3"><a href="scale.html#cb79-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">to=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2013-12-31&quot;</span>),</span>
+<span id="cb79-4"><a href="scale.html#cb79-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;1 day&quot;</span>)</span>
+<span id="cb79-5"><a href="scale.html#cb79-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb79-6"><a href="scale.html#cb79-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-7"><a href="scale.html#cb79-7" aria-hidden="true" tabindex="-1"></a>dataSet2<span class="sc">$</span>y <span class="ot">&lt;-</span> {</span>
+<span id="cb79-8"><a href="scale.html#cb79-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>)</span>
+<span id="cb79-9"><a href="scale.html#cb79-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">2033</span>)</span>
+<span id="cb79-10"><a href="scale.html#cb79-10" aria-hidden="true" tabindex="-1"></a>  shocks <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(dataSet2<span class="sc">$</span>x), <span class="at">sd=</span><span class="dv">50</span>)</span>
+<span id="cb79-11"><a href="scale.html#cb79-11" aria-hidden="true" tabindex="-1"></a>  shocks</span>
+<span id="cb79-12"><a href="scale.html#cb79-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(dataSet2<span class="sc">$</span>x)){</span>
+<span id="cb79-13"><a href="scale.html#cb79-13" aria-hidden="true" tabindex="-1"></a>    y[[t]] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">*</span>t <span class="sc">+</span> <span class="fl">0.6</span><span class="sc">*</span>y[[t<span class="dv">-1</span>]] <span class="sc">+</span> shocks[[t]]</span>
+<span id="cb79-14"><a href="scale.html#cb79-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb79-15"><a href="scale.html#cb79-15" aria-hidden="true" tabindex="-1"></a>  y</span>
+<span id="cb79-16"><a href="scale.html#cb79-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb79-17"><a href="scale.html#cb79-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-18"><a href="scale.html#cb79-18" aria-hidden="true" tabindex="-1"></a>ggplot2 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb79-19"><a href="scale.html#cb79-19" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot1 <span class="ot">&lt;-</span> {</span>
+<span id="cb79-20"><a href="scale.html#cb79-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb79-21"><a href="scale.html#cb79-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb79-22"><a href="scale.html#cb79-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>dataSet2,</span>
+<span id="cb79-23"><a href="scale.html#cb79-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb79-24"><a href="scale.html#cb79-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>x,</span>
+<span id="cb79-25"><a href="scale.html#cb79-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span>y</span>
+<span id="cb79-26"><a href="scale.html#cb79-26" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb79-27"><a href="scale.html#cb79-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb79-28"><a href="scale.html#cb79-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb79-29"><a href="scale.html#cb79-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-30"><a href="scale.html#cb79-30" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot1</span></code></pre></div>
+<p>Add rug ticks and labels:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="scale.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels have to sit in the middle of the period.</span></span>
+<span id="cb80-2"><a href="scale.html#cb80-2" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">paste</span>(<span class="st">&quot;2013&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="st">&quot;15&quot;</span>, <span class="at">sep=</span><span class="st">&quot;-&quot;</span>))</span>
+<span id="cb80-3"><a href="scale.html#cb80-3" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">month</span>(breaks, </span>
+<span id="cb80-4"><a href="scale.html#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> T <span class="co"># returned as month abbreviates</span></span>
+<span id="cb80-5"><a href="scale.html#cb80-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb80-6"><a href="scale.html#cb80-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-7"><a href="scale.html#cb80-7" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot2 <span class="ot">&lt;-</span> {</span>
+<span id="cb80-8"><a href="scale.html#cb80-8" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">$</span>plot1 <span class="sc">+</span></span>
+<span id="cb80-9"><a href="scale.html#cb80-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_rug</span>(</span>
+<span id="cb80-10"><a href="scale.html#cb80-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb80-11"><a href="scale.html#cb80-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">paste</span>(<span class="st">&quot;2013&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="st">&quot;1&quot;</span>, <span class="at">sep=</span><span class="st">&quot;-&quot;</span>))</span>
+<span id="cb80-12"><a href="scale.html#cb80-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb80-13"><a href="scale.html#cb80-13" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
+<span id="cb80-14"><a href="scale.html#cb80-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(</span>
+<span id="cb80-15"><a href="scale.html#cb80-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> breaks,</span>
+<span id="cb80-16"><a href="scale.html#cb80-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> labels</span>
+<span id="cb80-17"><a href="scale.html#cb80-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb80-18"><a href="scale.html#cb80-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb80-19"><a href="scale.html#cb80-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-20"><a href="scale.html#cb80-20" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot2</span></code></pre></div>
+<p>Remove middle-of-the-month ticks:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="scale.html#cb81-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot2 <span class="sc">+</span> </span>
+<span id="cb81-2"><a href="scale.html#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb81-3"><a href="scale.html#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.length.x =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">0</span>,<span class="st">&quot;mm&quot;</span>)</span>
+<span id="cb81-4"><a href="scale.html#cb81-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="alert alert-info">
+<p>Locales in your operating system determine how month and weekday should be expressed:<br />
+* Windows: <a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c" class="uri">https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c</a>
+* Mac OS/linux:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="scale.html#cb82-1" aria-hidden="true" tabindex="-1"></a>locales <span class="ot">&lt;-</span> <span class="fu">system</span>(<span class="st">&quot;locale -a&quot;</span>, <span class="at">intern =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="scale.html#cb83-1" aria-hidden="true" tabindex="-1"></a>lubridate<span class="sc">::</span><span class="fu">month</span>(breaks, </span>
+<span id="cb83-2"><a href="scale.html#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">locale =</span> <span class="st">&quot;zh_TW&quot;</span>, </span>
+<span id="cb83-3"><a href="scale.html#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> T <span class="co"># returned as month abbreviates</span></span>
+<span id="cb83-4"><a href="scale.html#cb83-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb83-5"><a href="scale.html#cb83-5" aria-hidden="true" tabindex="-1"></a>lubridate<span class="sc">::</span><span class="fu">wday</span>(breaks, </span>
+<span id="cb83-6"><a href="scale.html#cb83-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">locale =</span> <span class="st">&quot;zh_TW&quot;</span>, </span>
+<span id="cb83-7"><a href="scale.html#cb83-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> T <span class="co"># returned as month abbreviates</span></span>
+<span id="cb83-8"><a href="scale.html#cb83-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+</div>
+<hr />
+<p>Multiple rug tick lengths:</p>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1000/969/90/sites/default/files/images/print-edition/20140719_FNC335.png" style="width: 50%"/>
+</div>
+<p>If you like some rug ticks to be longer than others, you can use two <code>geom_rug</code> layers, such as:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="scale.html#cb84-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">$</span>plot1 <span class="sc">+</span></span>
+<span id="cb84-2"><a href="scale.html#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(</span>
+<span id="cb84-3"><a href="scale.html#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb84-4"><a href="scale.html#cb84-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">paste</span>(<span class="st">&quot;2013&quot;</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>, <span class="st">&quot;1&quot;</span>, <span class="at">sep=</span><span class="st">&quot;-&quot;</span>))</span>
+<span id="cb84-5"><a href="scale.html#cb84-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb84-6"><a href="scale.html#cb84-6" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb84-7"><a href="scale.html#cb84-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(</span>
+<span id="cb84-8"><a href="scale.html#cb84-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb84-9"><a href="scale.html#cb84-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2013-1-1&quot;</span>)</span>
+<span id="cb84-10"><a href="scale.html#cb84-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb84-11"><a href="scale.html#cb84-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">length=</span>grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">2</span>, <span class="co">#input$length</span></span>
+<span id="cb84-12"><a href="scale.html#cb84-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mm&quot;</span>)</span>
+<span id="cb84-13"><a href="scale.html#cb84-13" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span>    </span>
+<span id="cb84-14"><a href="scale.html#cb84-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(</span>
+<span id="cb84-15"><a href="scale.html#cb84-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> breaks,</span>
+<span id="cb84-16"><a href="scale.html#cb84-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> labels</span>
+<span id="cb84-17"><a href="scale.html#cb84-17" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="alert alert-info">
+<p>For date/time axis:<br />
+* always assign ticks to the beginning and the end of the sample period.<br />
+* when too many ticks are there,<br />
+* try to label few of them, like labeling every 5 years, every 6 months, etc. Or<br />
+* use period marking.<br />
+* when use period marking, put labels in the middle of the period.</p>
+</div>
+</div>
+<div id="xy-axis" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> XY axis</h2>
+<p>Among <code>scale_x_...</code> and <code>scale_y_...</code>, there are two arguments that might be handy:</p>
+<ul>
+<li><p><strong>expand</strong>: define the padding around the limits of the plot. (圖形與xy軸的留白空間)</p></li>
+<li><p><strong>oob</strong> (out of bound): define what to do when observations are out of limits bound. (超出作圖範圍的資料點要怎麼處置)</p></li>
+</ul>
+</div>
+<div id="colorfill" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Color/Fill</h2>
+<div id="discrete" class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Discrete</h3>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/755/90/sites/default/files/20200815_WOC191.png" style="width: 80%"/>
+</div>
+<p>Set up simulated data:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="scale.html#cb85-1" aria-hidden="true" tabindex="-1"></a>dataSet3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb85-2"><a href="scale.html#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">seq</span>(</span>
+<span id="cb85-3"><a href="scale.html#cb85-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">from=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2020-01-03&quot;</span>),</span>
+<span id="cb85-4"><a href="scale.html#cb85-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to=</span>lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2020-08-12&quot;</span>),</span>
+<span id="cb85-5"><a href="scale.html#cb85-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">by=</span><span class="st">&quot;1 day&quot;</span></span>
+<span id="cb85-6"><a href="scale.html#cb85-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb85-7"><a href="scale.html#cb85-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb85-8"><a href="scale.html#cb85-8" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Britain&quot;</span>,<span class="st">&quot;France&quot;</span>,<span class="st">&quot;Germany&quot;</span>,<span class="st">&quot;Italy&quot;</span>,<span class="st">&quot;Spain&quot;</span>)</span>
+<span id="cb85-9"><a href="scale.html#cb85-9" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>)</span>
+<span id="cb85-10"><a href="scale.html#cb85-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(slopes)){</span>
+<span id="cb85-11"><a href="scale.html#cb85-11" aria-hidden="true" tabindex="-1"></a>  dataSet3[[countries[[i]]]] <span class="ot">&lt;-</span></span>
+<span id="cb85-12"><a href="scale.html#cb85-12" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span> <span class="sc">+</span> slopes[[i]]<span class="sc">*</span><span class="fu">as.integer</span>(dataSet3<span class="sc">$</span>x<span class="sc">-</span>dataSet3<span class="sc">$</span>x[[<span class="dv">1</span>]])</span>
+<span id="cb85-13"><a href="scale.html#cb85-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb85-14"><a href="scale.html#cb85-14" aria-hidden="true" tabindex="-1"></a>dataSet3 <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb85-15"><a href="scale.html#cb85-15" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb85-16"><a href="scale.html#cb85-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols=</span><span class="st">&quot;Britain&quot;</span><span class="sc">:</span><span class="st">&quot;Spain&quot;</span>,</span>
+<span id="cb85-17"><a href="scale.html#cb85-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;country&quot;</span>,</span>
+<span id="cb85-18"><a href="scale.html#cb85-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;y&quot;</span></span>
+<span id="cb85-19"><a href="scale.html#cb85-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> dataSet3</span></code></pre></div>
+<p>Initiate a base plot:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="scale.html#cb86-1" aria-hidden="true" tabindex="-1"></a>ggplot3 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb86-2"><a href="scale.html#cb86-2" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>data <span class="ot">&lt;-</span> dataSet3</span>
+<span id="cb86-3"><a href="scale.html#cb86-3" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>plot1 <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb86-4"><a href="scale.html#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb86-5"><a href="scale.html#cb86-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb86-6"><a href="scale.html#cb86-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span>ggplot3<span class="sc">$</span>data,</span>
+<span id="cb86-7"><a href="scale.html#cb86-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb86-8"><a href="scale.html#cb86-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>x,</span>
+<span id="cb86-9"><a href="scale.html#cb86-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span>y,</span>
+<span id="cb86-10"><a href="scale.html#cb86-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">group=</span>country,</span>
+<span id="cb86-11"><a href="scale.html#cb86-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">color=</span>country</span>
+<span id="cb86-12"><a href="scale.html#cb86-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb86-13"><a href="scale.html#cb86-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb86-14"><a href="scale.html#cb86-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb86-15"><a href="scale.html#cb86-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-16"><a href="scale.html#cb86-16" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span><span class="fu">plot1</span>()</span></code></pre></div>
+<div class="alert alert-info">
+<p>Formulate the plotting process as a function has an advantage of data set substitutability. We can substitute <code>ggplot3$data</code> by:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="scale.html#cb87-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>data <span class="ot">&lt;-</span> new_data</span>
+<span id="cb87-2"><a href="scale.html#cb87-2" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span><span class="fu">plot1</span>()</span></code></pre></div>
+<ul>
+<li><p>This is because function is lazily evaluated which will look for <code>ggplot3$data</code> when it is called.</p></li>
+<li><p>The birth place of <code>ggplot3$plot1</code> function is global environment. Therefore, any update of <code>ggplot3$data</code> in global environment before a call of <code>ggplot3$plot1</code> will always be based on the updated value.</p></li>
+</ul>
+</div>
+<hr />
+<p>Prepare color scale:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="scale.html#cb88-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>color<span class="sc">$</span>limits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Britain&quot;</span>, <span class="st">&quot;France&quot;</span>, <span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Italy&quot;</span>, <span class="st">&quot;Spain&quot;</span>)</span>
+<span id="cb88-2"><a href="scale.html#cb88-2" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>color<span class="sc">$</span>values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#984152&quot;</span>, <span class="st">&quot;#1e80ab&quot;</span>, <span class="st">&quot;#2ec1d2&quot;</span>, <span class="st">&quot;#af959f&quot;</span>, <span class="st">&quot;#e5b865&quot;</span>)</span>
+<span id="cb88-3"><a href="scale.html#cb88-3" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>color<span class="sc">$</span>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;英&quot;</span>, <span class="st">&quot;法&quot;</span>, <span class="st">&quot;德&quot;</span>, <span class="st">&quot;義&quot;</span>, <span class="st">&quot;西&quot;</span>)</span></code></pre></div>
+<p>Formulate the <code>scale_color_manual</code> call as a function</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="scale.html#cb89-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>scale_color_manual <span class="ot">&lt;-</span> <span class="cf">function</span>()</span>
+<span id="cb89-2"><a href="scale.html#cb89-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb89-3"><a href="scale.html#cb89-3" aria-hidden="true" tabindex="-1"></a>  limits <span class="ot">=</span> ggplot3<span class="sc">$</span>color<span class="sc">$</span>limits</span>
+<span id="cb89-4"><a href="scale.html#cb89-4" aria-hidden="true" tabindex="-1"></a>  values <span class="ot">=</span> ggplot3<span class="sc">$</span>color<span class="sc">$</span>values</span>
+<span id="cb89-5"><a href="scale.html#cb89-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb89-6"><a href="scale.html#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># a call to scale_color_manual</span></span>
+<span id="cb89-7"><a href="scale.html#cb89-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb89-8"><a href="scale.html#cb89-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> limits,</span>
+<span id="cb89-9"><a href="scale.html#cb89-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> values,</span>
+<span id="cb89-10"><a href="scale.html#cb89-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> limits,</span>
+<span id="cb89-11"><a href="scale.html#cb89-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> ggplot3<span class="sc">$</span>color<span class="sc">$</span>labels</span>
+<span id="cb89-12"><a href="scale.html#cb89-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb89-13"><a href="scale.html#cb89-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="scale.html#cb90-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span><span class="fu">plot1</span>() <span class="sc">+</span></span>
+<span id="cb90-2"><a href="scale.html#cb90-2" aria-hidden="true" tabindex="-1"></a>  ggplot3<span class="sc">$</span><span class="fu">scale_color_manual</span>()</span></code></pre></div>
+<div class="alert alert-info">
+<p><code>{...}</code> returns the visible value of the last executed line.</p>
+</div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="scale.html#cb91-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span>axis_x_date_monthlyPeriod <span class="ot">&lt;-</span> <span class="cf">function</span>()</span>
+<span id="cb91-2"><a href="scale.html#cb91-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb91-3"><a href="scale.html#cb91-3" aria-hidden="true" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb91-4"><a href="scale.html#cb91-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> ggplot3<span class="sc">$</span>data<span class="sc">$</span>x</span>
+<span id="cb91-5"><a href="scale.html#cb91-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb91-6"><a href="scale.html#cb91-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span>(dplyr)</span>
+<span id="cb91-7"><a href="scale.html#cb91-7" aria-hidden="true" tabindex="-1"></a>  dd <span class="sc">%&gt;%</span></span>
+<span id="cb91-8"><a href="scale.html#cb91-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(x) <span class="sc">%&gt;%</span></span>
+<span id="cb91-9"><a href="scale.html#cb91-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb91-10"><a href="scale.html#cb91-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">year=</span>lubridate<span class="sc">::</span><span class="fu">year</span>(x),</span>
+<span id="cb91-11"><a href="scale.html#cb91-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">month=</span>lubridate<span class="sc">::</span><span class="fu">month</span>(x)</span>
+<span id="cb91-12"><a href="scale.html#cb91-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb91-13"><a href="scale.html#cb91-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(year,month) <span class="sc">%&gt;%</span></span>
+<span id="cb91-14"><a href="scale.html#cb91-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb91-15"><a href="scale.html#cb91-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb91-16"><a href="scale.html#cb91-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">day1 =</span> <span class="fu">min</span>(x),</span>
+<span id="cb91-17"><a href="scale.html#cb91-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">midlength =</span> <span class="fu">round</span>(<span class="fu">length</span>(x)<span class="sc">/</span><span class="dv">2</span>,<span class="dv">0</span>),</span>
+<span id="cb91-18"><a href="scale.html#cb91-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> day1 <span class="sc">+</span> lubridate<span class="sc">::</span><span class="fu">days</span>(midlength),</span>
+<span id="cb91-19"><a href="scale.html#cb91-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> lubridate<span class="sc">::</span><span class="fu">month</span>(breaks, <span class="at">label=</span>T)</span>
+<span id="cb91-20"><a href="scale.html#cb91-20" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> dx</span>
+<span id="cb91-21"><a href="scale.html#cb91-21" aria-hidden="true" tabindex="-1"></a>  xrange <span class="ot">&lt;-</span> <span class="fu">range</span>(dd<span class="sc">$</span>x)</span>
+<span id="cb91-22"><a href="scale.html#cb91-22" aria-hidden="true" tabindex="-1"></a>  rug_x <span class="ot">&lt;-</span> {</span>
+<span id="cb91-23"><a href="scale.html#cb91-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(xrange, dx<span class="sc">$</span>day1) <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb91-24"><a href="scale.html#cb91-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">unique</span>() <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb91-25"><a href="scale.html#cb91-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sort</span>() </span>
+<span id="cb91-26"><a href="scale.html#cb91-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb91-27"><a href="scale.html#cb91-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-28"><a href="scale.html#cb91-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb91-29"><a href="scale.html#cb91-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_rug</span>(</span>
+<span id="cb91-30"><a href="scale.html#cb91-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb91-31"><a href="scale.html#cb91-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>rug_x</span>
+<span id="cb91-32"><a href="scale.html#cb91-32" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb91-33"><a href="scale.html#cb91-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">outside =</span> T</span>
+<span id="cb91-34"><a href="scale.html#cb91-34" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb91-35"><a href="scale.html#cb91-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(<span class="at">clip=</span><span class="st">&quot;off&quot;</span>),</span>
+<span id="cb91-36"><a href="scale.html#cb91-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(</span>
+<span id="cb91-37"><a href="scale.html#cb91-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks=</span>dx<span class="sc">$</span>breaks,</span>
+<span id="cb91-38"><a href="scale.html#cb91-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> dx<span class="sc">$</span>labels</span>
+<span id="cb91-39"><a href="scale.html#cb91-39" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb91-40"><a href="scale.html#cb91-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb91-41"><a href="scale.html#cb91-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.ticks.length.x =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">0</span>,<span class="st">&quot;mm&quot;</span>)</span>
+<span id="cb91-42"><a href="scale.html#cb91-42" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb91-43"><a href="scale.html#cb91-43" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb91-44"><a href="scale.html#cb91-44" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="scale.html#cb92-1" aria-hidden="true" tabindex="-1"></a>ggplot3<span class="sc">$</span><span class="fu">plot1</span>() <span class="sc">+</span></span>
+<span id="cb92-2"><a href="scale.html#cb92-2" aria-hidden="true" tabindex="-1"></a>  ggplot3<span class="sc">$</span><span class="fu">scale_color_manual</span>() <span class="sc">+</span></span>
+<span id="cb92-3"><a href="scale.html#cb92-3" aria-hidden="true" tabindex="-1"></a>  ggplot3<span class="sc">$</span><span class="fu">axis_x_date_monthlyPeriod</span>()</span></code></pre></div>
+</div>
+<div id="continuous" class="section level3" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Continuous</h3>
+<div style="text-align: center;">
+<img src="https://www.economist.com/img/b/1280/755/90/sites/default/files/20201031_WOC015.png" style="width: 85%"/>
+</div>
+
+</div>
+</div>
+</div>
+<!--參考答案開關--> 
+<script>
+$(document).ready(function(){
+  $('<button class="flip">More info...</button>').insertBefore(".more");
+  $(".flip").click(function(){
+    $(this).next().slideToggle();
+  });
+})
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- 2. Include library -->
+<script src="js/clipboard.min.js"></script>
+
+<!-- 3. Instantiate clipboard by passing a string selector -->
+
+<script>
+var clipboard = new Clipboard('.btn');
+clipboard.on('success', function(e) {
+    console.log(e);
+});
+clipboard.on('error', function(e) {
+    console.log(e);
+});
+</script>
+
+<script>
+  var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+copyTextareaBtn.addEventListener('click', function(event) {
+  var copyTextarea = document.querySelector('.js-copytextarea');
+  copyTextarea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+});
+</script>
+
+<script>
+  function CopyToClipboard(containerid) {
+if (document.selection) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(document.getElementById(containerid));
+    range.select().createTextRange();
+    document.execCommand("copy");
+
+} else if (window.getSelection) {
+    var range = document.createRange();
+     range.selectNode(document.getElementById(containerid));
+     window.getSelection().addRange(range);
+     document.execCommand("copy");
+     alert("text copied")
+}}
+</script>
+
+<script>
+  $( document ).ready(function() {
+    addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('left', 'top', 'auto', '1', 'Copy code', 'Copied!');
+});
+</script>
+<!--
+<script>
+  $(document).ready(function() {
+  var codes = document.querySelectorAll('pre:not([class])');
+  var code, i, d, s, p;
+  for (i = 0; i < codes.length; i++) {
+    code = codes[i];
+    p = code.parentNode;
+    d = document.createElement('details');
+    s = document.createElement('summary');
+    s.innerText = 'Details';
+    // <details><summary>Details</summary></details>
+    d.appendChild(s);
+    // move the code into <details>
+    p.replaceChild(d, code);
+    d.appendChild(code);
+  }
+});
+</script>
+-->
+<!--
+<script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'https://gitter.im/NTPU-Econ/Econometrics'
+  };
+</script>
+
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+-->
+<script src="js/documentReady.js"></script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="categorical-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="color.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"theme": "united"
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="layers.html"/>
-<link rel="next" href="color.html"/>
+<link rel="next" href="scale.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -216,9 +216,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="categorical-data.html"><a href="categorical-data.html#section-3"><i class="fa fa-check"></i>4</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="color.html"><a href="color.html"><i class="fa fa-check"></i><b>5</b> Color</a>
+<li class="chapter" data-level="5" data-path="scale.html"><a href="scale.html"><i class="fa fa-check"></i><b>5</b> Scale</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="color.html"><a href="color.html#group-aesthetics"><i class="fa fa-check"></i><b>5.1</b> Group aesthetics</a></li>
+<li class="chapter" data-level="5.1" data-path="scale.html"><a href="scale.html#time-axis"><i class="fa fa-check"></i><b>5.1</b> Time axis</a></li>
+<li class="chapter" data-level="5.2" data-path="scale.html"><a href="scale.html#xy-axis"><i class="fa fa-check"></i><b>5.2</b> XY axis</a></li>
+<li class="chapter" data-level="5.3" data-path="scale.html"><a href="scale.html#colorfill"><i class="fa fa-check"></i><b>5.3</b> Color/Fill</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="scale.html"><a href="scale.html#discrete"><i class="fa fa-check"></i><b>5.3.1</b> Discrete</a></li>
+<li class="chapter" data-level="5.3.2" data-path="scale.html"><a href="scale.html#continuous"><i class="fa fa-check"></i><b>5.3.2</b> Continuous</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="color.html"><a href="color.html"><i class="fa fa-check"></i><b>6</b> Color</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="color.html"><a href="color.html#group-aesthetics"><i class="fa fa-check"></i><b>6.1</b> Group aesthetics</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/tpemartin/110-1-Economic-Data-Visualization" target="blank">Course Github</a></li>
@@ -621,29 +631,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb72-23"><a href="categorical-data.html#cb72-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
 <hr />
 <p>When x-axis is also representing a categorical data:</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="categorical-data.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb73-2"><a href="categorical-data.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data=</span>data_cat2</span>
-<span id="cb73-3"><a href="categorical-data.html#cb73-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
-<span id="cb73-4"><a href="categorical-data.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_col(</span></span>
-<span id="cb73-5"><a href="categorical-data.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   mapping=aes(</span></span>
-<span id="cb73-6"><a href="categorical-data.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     x=x,</span></span>
-<span id="cb73-7"><a href="categorical-data.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     y=y,</span></span>
-<span id="cb73-8"><a href="categorical-data.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#     fill=fill</span></span>
-<span id="cb73-9"><a href="categorical-data.html#cb73-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   ),</span></span>
-<span id="cb73-10"><a href="categorical-data.html#cb73-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   color=&quot;white&quot;,</span></span>
-<span id="cb73-11"><a href="categorical-data.html#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   width=0.8, #input$width</span></span>
-<span id="cb73-12"><a href="categorical-data.html#cb73-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   size=0, #input$size</span></span>
-<span id="cb73-13"><a href="categorical-data.html#cb73-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   position = &quot;dodge&quot; #input$position</span></span>
-<span id="cb73-14"><a href="categorical-data.html#cb73-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># )+</span></span>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="categorical-data.html#cb73-1" aria-hidden="true" tabindex="-1"></a>dy<span class="ot">=</span><span class="fl">0.03</span> <span class="co"># input$dy</span></span>
+<span id="cb73-2"><a href="categorical-data.html#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb73-3"><a href="categorical-data.html#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data=</span>data_cat2</span>
+<span id="cb73-4"><a href="categorical-data.html#cb73-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> </span>
+<span id="cb73-5"><a href="categorical-data.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(</span>
+<span id="cb73-6"><a href="categorical-data.html#cb73-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb73-7"><a href="categorical-data.html#cb73-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x,</span>
+<span id="cb73-8"><a href="categorical-data.html#cb73-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y,</span>
+<span id="cb73-9"><a href="categorical-data.html#cb73-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span>fill</span>
+<span id="cb73-10"><a href="categorical-data.html#cb73-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb73-11"><a href="categorical-data.html#cb73-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;white&quot;</span>,</span>
+<span id="cb73-12"><a href="categorical-data.html#cb73-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span><span class="fl">0.8</span>, <span class="co">#input$width</span></span>
+<span id="cb73-13"><a href="categorical-data.html#cb73-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span> <span class="co">#input$position</span></span>
+<span id="cb73-14"><a href="categorical-data.html#cb73-14" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
 <span id="cb73-15"><a href="categorical-data.html#cb73-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
 <span id="cb73-16"><a href="categorical-data.html#cb73-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
 <span id="cb73-17"><a href="categorical-data.html#cb73-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x,</span>
-<span id="cb73-18"><a href="categorical-data.html#cb73-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y,</span>
+<span id="cb73-18"><a href="categorical-data.html#cb73-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span>y<span class="sc">-</span>dy,</span>
 <span id="cb73-19"><a href="categorical-data.html#cb73-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group=</span>fill,</span>
 <span id="cb73-20"><a href="categorical-data.html#cb73-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">label=</span>y</span>
 <span id="cb73-21"><a href="categorical-data.html#cb73-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb73-22"><a href="categorical-data.html#cb73-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="dv">2</span>)</span>
-<span id="cb73-23"><a href="categorical-data.html#cb73-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<span id="cb73-22"><a href="categorical-data.html#cb73-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">8</span>, <span class="co">#input$size</span></span>
+<span id="cb73-23"><a href="categorical-data.html#cb73-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span></span>
+<span id="cb73-24"><a href="categorical-data.html#cb73-24" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.8</span> <span class="co">#input$dodge</span></span>
+<span id="cb73-25"><a href="categorical-data.html#cb73-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb73-26"><a href="categorical-data.html#cb73-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<ul>
+<li>text position_dodge has the same width as <code>geom_col</code> to ensure the same dodging distance.</li>
+</ul>
 </div>
 <div id="more-on-position" class="section level2" number="4.7">
 <h2><span class="header-section-number">4.7</span> More on position</h2>
@@ -853,7 +869,7 @@ if (document.selection) {
         </div>
       </div>
 <a href="layers.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="color.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="scale.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

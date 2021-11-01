@@ -14,5 +14,6 @@ rmd_files: [
   "chapters/geometries-and-aesthetics.Rmd",
   "chapters/layers.Rmd",
   "chapters/categorical-data.Rmd",
+  "chapters/scales.Rmd",
   "chapters/color.Rmd"
 ]

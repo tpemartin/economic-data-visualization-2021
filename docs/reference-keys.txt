@@ -38,5 +38,11 @@ more-on-position
 coordination-flip
 summary-1
 exercise-1
+scale
+time-axis
+xy-axis
+colorfill
+discrete
+continuous
 color
 group-aesthetics

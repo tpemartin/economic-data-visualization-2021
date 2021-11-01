@@ -15,18 +15,14 @@ In general, a mapping can be divided into two parts
 
 Depending on aesthetics, not all five settings will be necessary. 
 
-### `scale_x_datetime`/`scale_x_date`
+## Time axis
 
-```{r}
-scale_x_date()-> xx
-```
 
-***
-
-```{r etef}
+```{r , eval=T, echo=F}
 teachDS::img_centering("https://www.economist.com/img/b/1280/748/90/sites/default/files/20190112_WOC124.png", width="80%")
 ```
 
+Generate basic plot:
 ```{r}
 dataSet1 <- 
   data.frame(
@@ -47,6 +43,7 @@ ggplot()+
 ggplot1$plot0
 ```
 
+Fine tune x scale
 ```{r}
 ggplot1$plot0 +
   scale_x_continuous(
@@ -57,20 +54,355 @@ ggplot1$plot0 +
 ggplot1$plot1
 ```
 
+add ticks:
 ```{r}
 ggplot1$plot1 +
   geom_rug(
     mapping=aes(
-      x=1979:2018
+      x=setdiff(1979:2018,
+        c(1979, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2018))
     ),
-    outside=TRUE,
+    linetype="dotted",
+    outside=TRUE, # draw rug outside the plot panel
     size=1, #input$size
     length=grid::unit(
       0.1, #input$length
       "mm"
     )
   ) +
-  coord_cartesian(clip="off")
+  coord_cartesian(clip="off") # allow drawing outside the plot panel 
 
+```
+
+  * The ticks are ad hoc ticks here, which are different from the ticks defined in `scale_x_continuous`. Ticks defined in `scale_x_continuous` can be fine tuned, including its length via `theme()` which will be covered later. 
+  
+
+***
+
+When axis x is to represent a period:
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1280/675/90/sites/default/files/20131221_FNC079.png")
+```
+
+Basic plot:
+```{r}
+dataSet2 <- data.frame(
+  x=seq(from=lubridate::ymd("2013-01-01"),
+    to=lubridate::ymd("2013-12-31"),
+    by="1 day")
+)
+
+dataSet2$y <- {
+  y <- c(100)
+  set.seed(2033)
+  shocks <- rnorm(length(dataSet2$x), sd=50)
+  shocks
+  for(t in 2:length(dataSet2$x)){
+    y[[t]] <- 1*t + 0.6*y[[t-1]] + shocks[[t]]
+  }
+  y
+}
+
+ggplot2 <- list()
+ggplot2$plot1 <- {
+  ggplot()+
+    geom_line(
+      data=dataSet2,
+      mapping=aes(
+        x=x,
+        y=y
+      )
+    )
+}
+
+ggplot2$plot1
+```
+
+Add rug ticks and labels:
+```{r}
+# labels have to sit in the middle of the period.
+breaks <- lubridate::ymd(paste("2013", 1:12, "15", sep="-"))
+labels <- lubridate::month(breaks, 
+  label = T # returned as month abbreviates
+  )
+
+ggplot2$plot2 <- {
+  ggplot2$plot1 +
+    geom_rug(
+      mapping=aes(
+        x=lubridate::ymd(paste("2013", 1:12, "1", sep="-"))
+      )
+    )+
+    scale_x_date(
+      breaks = breaks,
+      labels = labels
+    )
+}
+
+ggplot2$plot2
+```
+
+Remove middle-of-the-month ticks:
+```{r}
+ggplot2$plot2 + 
+  theme(
+    axis.ticks.length.x = grid::unit(0,"mm")
+  )
+```
+
+<div class="alert alert-info">
+Locales in your operating system determine how month and weekday should be expressed:  
+  * Windows: <https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c> 
+  * Mac OS/linux:
+```{r}
+locales <- system("locale -a", intern = TRUE)
+```
+
+```{r}
+lubridate::month(breaks, 
+  locale = "zh_TW", 
+  label = T # returned as month abbreviates
+  )
+lubridate::wday(breaks, 
+  locale = "zh_TW", 
+  label = T # returned as month abbreviates
+  )
+```
+
+</div>
+
+***
+
+Multiple rug tick lengths: 
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1000/969/90/sites/default/files/images/print-edition/20140719_FNC335.png")
+```
+
+If you like some rug ticks to be longer than others, you can use two `geom_rug` layers, such as:
+```{r}
+ggplot2$plot1 +
+  geom_rug(
+    mapping=aes(
+      x=lubridate::ymd(paste("2013", 2:12, "1", sep="-"))
+    )
+  )+
+  geom_rug(
+    mapping=aes(
+      x=lubridate::ymd("2013-1-1")
+    ),
+    length=grid::unit(2, #input$length
+      "mm")
+  )+    
+  scale_x_date(
+      breaks = breaks,
+      labels = labels
+    )
+```
+
+<div class="alert alert-info">
+For date/time axis:  
+  * always assign ticks to the beginning and the end of the sample period.  
+  * when too many ticks are there,  
+    * try to label few of them, like labeling every 5 years, every 6 months, etc. Or  
+    * use period marking.  
+  * when use period marking, put labels in the middle of the period.  
+</div>
+
+```{r, echo=F}
+samplePeriod <- dataSet2$x
+start_label_tick <- lubridate::ymd("2013-01-01")
+end_label_tick <- lubridate::ymd("2013-12-01") 
+by="2 months"
+
+ticks_labels <- list()
+  # * always assign ticks to the beginning and the end of the sample period.  
+ticks_labels$range <- range(samplePeriod)
+  # * when too many ticks are there,  
+  #   * try to label few of them, like labeling every 5 years, every 6 months, etc., and use different tick lengths; Or
+ticks_labels$scale <- 
+  scale_x_date(
+    breaks=seq(from=start_label_tick, to=end_label_tick, by=by))
+  #   * use period marking. .
+ticks_labels$rug <-
+  geom_rug(
+    mapping=aes(
+      # x=
+    )
+  )
+  # * when use period marking, put labels in the middle of the period.  
+```
+
+## XY axis
+
+Among `scale_x_...` and `scale_y_...`, there are two arguments that might be handy:
+
+  * **expand**: define the padding around the limits of the plot. (圖形與xy軸的留白空間)
+  
+  * **oob** (out of bound): define what to do when observations are out of limits bound. (超出作圖範圍的資料點要怎麼處置)
+
+
+## Color/Fill
+
+### Discrete
+
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1280/755/90/sites/default/files/20200815_WOC191.png", width="80%")
+```
+
+
+Set up simulated data:
+```{r}
+dataSet3 <- data.frame(
+  x=seq(
+    from=lubridate::ymd("2020-01-03"),
+    to=lubridate::ymd("2020-08-12"),
+    by="1 day"
+  )
+)
+countries <- c("Britain","France","Germany","Italy","Spain")
+slopes <- c(0.1, 0.2, 0.3, 0.4, 0.5)
+for(i in seq_along(slopes)){
+  dataSet3[[countries[[i]]]] <-
+    0 + slopes[[i]]*as.integer(dataSet3$x-dataSet3$x[[1]])
+}
+dataSet3 |>
+  tidyr::pivot_longer(
+    cols="Britain":"Spain",
+    names_to = "country",
+    values_to = "y"
+  ) -> dataSet3
+```
+
+Initiate a base plot:
+```{r}
+ggplot3 <- list()
+ggplot3$data <- dataSet3
+ggplot3$plot1 <- function(){
+  ggplot()+
+    geom_line(
+      data=ggplot3$data,
+      mapping=aes(
+        x=x,
+        y=y,
+        group=country,
+        color=country
+      )
+    )
+}
+
+ggplot3$plot1()
+```
+
+<div class="alert alert-info">
+Formulate the plotting process as a function has an advantage of data set substitutability. We can substitute `ggplot3$data` by:
+
+```{r}
+ggplot3$data <- new_data
+ggplot3$plot1()
+```
+
+  * This is because function is lazily evaluated which will look for `ggplot3$data` when it is called.
+  
+  * The birth place of `ggplot3$plot1` function is global environment. Therefore, any update of `ggplot3$data` in global environment before a call of `ggplot3$plot1` will always be based on the updated value.
+
+</div>
+
+***
+
+Prepare color scale:
+```{r}
+ggplot3$color$limits <- c("Britain", "France", "Germany", "Italy", "Spain")
+ggplot3$color$values <- c("#984152", "#1e80ab", "#2ec1d2", "#af959f", "#e5b865")
+ggplot3$color$labels <- c("英", "法", "德", "義", "西")
+```
+
+Formulate the `scale_color_manual` call as a function
+```{r}
+ggplot3$scale_color_manual <- function()
+{
+  limits = ggplot3$color$limits
+  values = ggplot3$color$values
+  
+  # a call to scale_color_manual
+  scale_color_manual(
+    limits = limits,
+    values = values,
+    breaks = limits,
+    labels = ggplot3$color$labels
+  )
+}
+```
+
+
+```{r}
+ggplot3$plot1() +
+  ggplot3$scale_color_manual()
+```
+
+<div class="alert alert-info">
+`{...}` returns the visible value of the last executed line. 
+</div>
+
+```{r}
+ggplot3$axis_x_date_monthlyPeriod <- function()
+{
+  dd <- data.frame(
+    x = ggplot3$data$x
+  )
+  require(dplyr)
+  dd %>%
+    arrange(x) %>%
+    mutate(
+      year=lubridate::year(x),
+      month=lubridate::month(x)
+    ) %>%
+    group_by(year,month) %>%
+    distinct() %>%
+    summarise(
+      day1 = min(x),
+      midlength = round(length(x)/2,0),
+      breaks = day1 + lubridate::days(midlength),
+      labels = lubridate::month(breaks, label=T)
+    ) %>% ungroup() -> dx
+  xrange <- range(dd$x)
+  rug_x <- {
+    c(xrange, dx$day1) |>
+      unique() |>
+      sort() 
+  }
+  
+  list(
+    geom_rug(
+      mapping=aes(
+        x=rug_x
+      ),
+      outside = T
+    ),
+    coord_cartesian(clip="off"),
+    scale_x_date(
+      breaks=dx$breaks,
+      labels = dx$labels
+    ),
+    theme(
+      axis.ticks.length.x = grid::unit(0,"mm")
+    )
+  )
+}
+```
+
+
+```{r}
+ggplot3$plot1() +
+  ggplot3$scale_color_manual() +
+  ggplot3$axis_x_date_monthlyPeriod()
+```
+
+### Continuous
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1280/755/90/sites/default/files/20201031_WOC015.png", width="85%")
 ```
 
