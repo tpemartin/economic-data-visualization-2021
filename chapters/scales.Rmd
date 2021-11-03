@@ -15,6 +15,40 @@ In general, a mapping can be divided into two parts
 
 Depending on aesthetics, not all five settings will be necessary. 
 
+## Legend
+
+```{r}
+data_cat1 <- data.frame(
+      x=c(1, 2, 3, 1, 2, 3),
+      y=c(0.2, 0.3, 0.2, 0.4, 0.4, 0.52),
+      fill=c("m", "m", "m", "f", "f", "f")
+)
+ggplot0 <- list()
+ggplot0$plot1 <- 
+  ggplot(
+    data=data_cat1
+  ) + 
+    geom_area(
+      mapping=aes(
+        x=x,
+        y=y,
+        fill=factor(fill, levels=c("m", "f"))
+      )
+    )
+ggplot0$plot1
+```
+
+```{r}
+ggplot0$plot1 +
+  scale_fill_discrete(
+    name="Gender",
+    breaks=c("m", "f"),
+    labels=c("Male", "Female")
+  )
+```
+
+
+
 ## Time axis
 
 
@@ -210,30 +244,6 @@ For date/time axis:
   * when use period marking, put labels in the middle of the period.  
 </div>
 
-```{r, echo=F}
-samplePeriod <- dataSet2$x
-start_label_tick <- lubridate::ymd("2013-01-01")
-end_label_tick <- lubridate::ymd("2013-12-01") 
-by="2 months"
-
-ticks_labels <- list()
-  # * always assign ticks to the beginning and the end of the sample period.  
-ticks_labels$range <- range(samplePeriod)
-  # * when too many ticks are there,  
-  #   * try to label few of them, like labeling every 5 years, every 6 months, etc., and use different tick lengths; Or
-ticks_labels$scale <- 
-  scale_x_date(
-    breaks=seq(from=start_label_tick, to=end_label_tick, by=by))
-  #   * use period marking. .
-ticks_labels$rug <-
-  geom_rug(
-    mapping=aes(
-      # x=
-    )
-  )
-  # * when use period marking, put labels in the middle of the period.  
-```
-
 ## XY axis
 
 Among `scale_x_...` and `scale_y_...`, there are two arguments that might be handy:
@@ -241,6 +251,37 @@ Among `scale_x_...` and `scale_y_...`, there are two arguments that might be han
   * **expand**: define the padding around the limits of the plot. (圖形與xy軸的留白空間)
   
   * **oob** (out of bound): define what to do when observations are out of limits bound. (超出作圖範圍的資料點要怎麼處置)
+
+```{r}
+dataSet <- data.frame(
+  x=rep(c("Jan", "Feb", "Mar"),2),
+  y=c(10, 20, 30, 10, 25, 33),
+  group=c(rep("Art", 3), rep("General", 3))
+)
+ggplot()+
+  geom_col(
+    data=dataSet,
+    mapping=
+      aes(
+        x=x, y=y,
+        fill=group
+      ),
+    position="dodge",
+    width=0.8
+  )+
+  scale_y_continuous(
+    expand = 
+      expansion(0, #input$multiply
+        0 #input$add 
+        )
+    )
+```
+
+  * `expand = c(lowerBoundStretch, upperBoundStretch)`:  
+    * `lowerBoundStretch=c(a,b)`: `lowerBound - a*range -b`  
+    * `upperBoundStretch=c(c,d)`: `upperBound + c*range +d`  
+    
+    * `expansion(m, n)` will set a=c=m, b=d=n.
 
 
 ## Color/Fill
@@ -406,3 +447,12 @@ ggplot3$plot1() +
 teachDS::img_centering("https://www.economist.com/img/b/1280/755/90/sites/default/files/20201031_WOC015.png", width="85%")
 ```
 
+## Exercise
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1000/2072/90/sites/default/files/images/print-edition/20211009_SRC217.png", width="80%")
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1000/1153/90/sites/default/files/images/print-edition/20211030_FNC803.png", width="80%")
+```

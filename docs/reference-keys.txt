@@ -39,10 +39,12 @@ coordination-flip
 summary-1
 exercise-1
 scale
+legend
 time-axis
 xy-axis
 colorfill
 discrete
 continuous
+exercise-2
 color
 group-aesthetics
