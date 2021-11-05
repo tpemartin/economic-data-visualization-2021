@@ -24,6 +24,7 @@ data_cat1 <- data.frame(
       fill=c("m", "m", "m", "f", "f", "f")
 )
 ggplot0 <- list()
+0 #input$null
 ggplot0$plot1 <- 
   ggplot(
     data=data_cat1
@@ -38,16 +39,21 @@ ggplot0$plot1 <-
 ggplot0$plot1
 ```
 
+
 ```{r}
 ggplot0$plot1 +
   scale_fill_discrete(
     name="Gender",
     breaks=c("m", "f"),
     labels=c("Male", "Female")
-  )
+  ) -> ggplot0$plot2
+ggplot0$plot2
 ```
 
 
+<div class="alert alert-info">
+On every graph, by default, there is legend and/or axis that show information of how `aes=variable` mapping is defined. However, those variable value expressions you see in the legend/axis are defined by `labels` (such as "Male", "Female"), whose corresponding variable values are defined in `breaks` (such as "m" and "f"); and `name` gives lengend/axis a title (such as "Gender").
+</div>
 
 ## Time axis
 
@@ -62,6 +68,7 @@ dataSet1 <-
   data.frame(
     x=1979:2018
   )
+set.seed(2038)
 dataSet1$y <- sample(10:40, length(dataSet1$x), T)
 ggplot1 <- list()
 
@@ -77,41 +84,371 @@ ggplot()+
 ggplot1$plot0
 ```
 
-Fine tune x scale
+***
+
+Define x-axis labels:
 ```{r}
+breaks = c(
+  1979,
+  seq(1985, 2015, by=5),
+  2018
+)
+labels = c(
+  "1979", "85", "90", "95", "2000", "05", "10", "15", "18"
+)
+
 ggplot1$plot0 +
   scale_x_continuous(
-    breaks=c(1979, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2018),
-    labels=c("1979", "85", "90", "95", "2000", "05", "10", "15", "18")
+    breaks=breaks,
+    labels=labels
   ) -> ggplot1$plot1
 
 ggplot1$plot1
 ```
 
-add ticks:
+Remove scale ticks
 ```{r}
+ggplot1$plot1 +
+  theme(
+    axis.ticks.length.x = unit(0,"mm")
+  ) -> ggplot1$plot1
+
+ggplot1$plot1
+```
+
+Add ticks:
+
+  - major ticks: ticks that belong to constant time span labels
+  
+  - minor ticks: ticks that are not major ticks. 
+  
+```{r}
+ticks <- list()
+ticks$major <- seq(1980, 2015, by=5)
+ticks$minor <- c(1979, 2018)
+
+majorLength = 3 #input$length
+minor_majorRatio = 0.7 #input$ratio
+
 ggplot1$plot1 +
   geom_rug(
     mapping=aes(
-      x=setdiff(1979:2018,
-        c(1979, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2018))
-    ),
-    linetype="dotted",
+      x=ticks$major
+      ),
     outside=TRUE, # draw rug outside the plot panel
-    size=1, #input$size
+    size=0.5, #input$majorsize
     length=grid::unit(
-      0.1, #input$length
+      majorLength, 
       "mm"
     )
   ) +
-  coord_cartesian(clip="off") # allow drawing outside the plot panel 
+  geom_rug(
+    mapping=aes(
+      x=ticks$minor
+    ),
+    outside = TRUE,
+    size=0.5, #input$minorsize
+    length=grid::unit(
+      minor_majorRatio*majorLength,
+      "mm"
+    )
+  )+
+  coord_cartesian(clip="off") -> # allow drawing outside the plot panel 
+  ggplot1$plot2
+
+ggplot1$plot2
+```
+
+
+```{r}
+ggplot1$plot2 +
+  theme(
+    axis.text.x = element_text(
+      margin = margin(
+        12 #input$margin
+      ),
+      size=16 #input$textSize
+    ))
+```
+
+  * `margin(t=0, r=0, b=0, l=0, unit='pt')`
+
+### Custom axis function
+
+Pull out all the axis-related building blocks:
+```{r}
+{
+  # scale_x 
+    scale_x_continuous(
+      breaks=breaks,
+      labels=labels
+    ) +
+    theme(
+      axis.ticks.length.x = unit(0,"mm"),
+      axis.text.x = element_text(
+        margin = margin(
+          12 #input$margin
+        ),
+        size=16 #input$textSize
+        )
+      )+
+    geom_rug(
+      mapping=aes(
+        x=ticks$major
+        ),
+      outside=TRUE, # draw rug outside the plot panel
+      size=0.5, #input$majorsize
+      length=grid::unit(
+        majorLength, 
+        "mm"
+      )
+    ) +
+    geom_rug(
+      mapping=aes(
+        x=ticks$minor
+      ),
+      outside = TRUE,
+      size=0.5, #input$minorsize
+      length=grid::unit(
+        minor_majorRatio*majorLength,
+        "mm"
+      )
+    )+
+    coord_cartesian(clip="off")
+}
+```
+
+Build a function:
+```{r axis_x_continuouse_custom}
+axis_x_continuouse_custom <- function(
+  breaks, labels,
+  ticks_major, ticks_minor,
+  ticks_major_length = 3, 
+  minor_major_tickLength_ratio = 0.7,
+  text_size = 16,
+  text_top_margin = 12,
+  major_tick_size = 0.5,
+  minor_tick_size = 0.5
+){
+  list(
+    scale_x_continuous(
+      breaks=breaks,
+      labels=labels
+    ), 
+    theme(
+      axis.ticks.length.x = unit(0,"mm"),
+      axis.text.x = element_text(
+        margin = margin(
+          text_top_margin #input$margin
+        ),
+        size=text_size #input$textSize
+        )
+      ), 
+    geom_rug(
+      mapping=aes(
+        x=ticks_major
+        ),
+      outside=TRUE, # draw rug outside the plot panel
+      size=major_tick_size, #input$majorsize
+      length=grid::unit(
+        ticks_major_length, 
+        "mm"
+      )
+    ), 
+    geom_rug(
+      mapping=aes(
+        x=ticks_minor
+      ),
+      outside = TRUE,
+      size=minor_tick_size,
+      length=grid::unit(
+        minor_major_tickLength_ratio*ticks_major_length,
+        "mm"
+      )
+    ), 
+    coord_cartesian(clip="off")
+    )
+}
 
 ```
 
-  * The ticks are ad hoc ticks here, which are different from the ticks defined in `scale_x_continuous`. Ticks defined in `scale_x_continuous` can be fine tuned, including its length via `theme()` which will be covered later. 
+```{r}
+breaks = c(
+  1979,
+  seq(1985, 2015, by=5),
+  2018
+)
+labels = c(
+  "1979", "85", "90", "95", "2000", "05", "10", "15", "18"
+)
+ticks_major <- seq(1980, 2015, by=5)
+ticks_minor <- c(1979, 2018)
+
+ggplot1$plot0 +
+  axis_x_continuouse_custom(
+    breaks=breaks, labels=labels, 
+    ticks_major = ticks_major,
+    ticks_minor = ticks_minor
+  )
+```
+
+### Advanced function
+
+  * Other input as default: when `labels` is omitted, use `breaks` value
   
+  * When `ticks_minor` is omitted, remove minor geom_rug.
+
+```{r}
+axis_x_continuouse_custom <- function(
+  breaks, labels = breaks,
+  ticks_major, ticks_minor=NULL,
+  ticks_major_length = 3, 
+  minor_major_tickLength_ratio = 0.7,
+  text_size = 16,
+  text_top_margin = 12,
+  major_tick_size = 0.5,
+  minor_tick_size = 0.5
+){
+  list(
+    scale_x_continuous(
+      breaks=breaks,
+      labels=labels
+    ), 
+    theme(
+      axis.ticks.length.x = unit(0,"mm"),
+      axis.text.x = element_text(
+        margin = margin(
+          text_top_margin #input$margin
+        ),
+        size=text_size #input$textSize
+        )
+      ), 
+    geom_rug(
+      mapping=aes(
+        x=ticks_major
+        ),
+      outside=TRUE, # draw rug outside the plot panel
+      size=major_tick_size, #input$majorsize
+      length=grid::unit(
+        ticks_major_length, 
+        "mm"
+      )
+    ),
+    if(!is.null(ticks_minor)){
+      geom_rug(
+        mapping=aes(
+          x=ticks_minor
+        ),
+        outside = TRUE,
+        size=minor_tick_size,
+        length=grid::unit(
+          minor_major_tickLength_ratio*ticks_major_length,
+          "mm"
+        )
+      )
+    } else {
+      NULL
+    }, 
+    coord_cartesian(clip="off")
+    )
+}
+```
+
+```{r}
+ggplot1$plot0 +
+  axis_x_continuouse_custom(
+    breaks=breaks,
+    ticks_major = ticks_major
+  )
+```
 
 ***
+
+There are many possible `scale_x`. We can build a `axis_x_custom` function that can take all possible `scale_x_zzz` as input, and return `axis_x_zzz_custom` function as an output.
+
+  * Function that can take function as input is called **functional**.
+  
+  * Functionals that generate functions are called **function generators**.
+
+```{r}
+axis_x_custom <- function(scale_x){
+  function(
+    breaks, labels = breaks,
+    ticks_major, ticks_minor=NULL,
+    ticks_major_length = 3, 
+    minor_major_tickLength_ratio = 0.7,
+    text_size = 16,
+    text_top_margin = 12,
+    major_tick_size = 0.5,
+    minor_tick_size = 0.5
+  ){
+    list(
+      scale_x(
+        breaks=breaks,
+        labels=labels
+      ), 
+      theme(
+        axis.ticks.length.x = unit(0,"mm"),
+        axis.text.x = element_text(
+          margin = margin(
+            text_top_margin #input$margin
+          ),
+          size=text_size #input$textSize
+          )
+        ), 
+      geom_rug(
+        mapping=aes(
+          x=ticks_major
+          ),
+        outside=TRUE, # draw rug outside the plot panel
+        size=major_tick_size, #input$majorsize
+        length=grid::unit(
+          ticks_major_length, 
+          "mm"
+        )
+      ),
+      if(!is.null(ticks_minor)){
+        geom_rug(
+          mapping=aes(
+            x=ticks_minor
+          ),
+          outside = TRUE,
+          size=minor_tick_size,
+          length=grid::unit(
+            minor_major_tickLength_ratio*ticks_major_length,
+            "mm"
+          )
+        )
+      } else {
+        NULL
+      }, 
+      coord_cartesian(clip="off")
+      )
+  }
+}
+```
+
+***
+
+```{r}
+# generate axis_x_continuous_custom
+axis_x_continuous_custom2 <-
+  axis_x_custom(scale_x_continuous)
+ggplot1$plot0 +
+  axis_x_continuous_custom2(
+    breaks=breaks,
+    ticks_major = ticks_major
+  )
+ggplot1$plot0 +
+  axis_x_continuous_custom2(
+    breaks=breaks, labels=labels,
+    ticks_major = ticks_major,
+    ticks_minor = ticks_minor
+  )
+```
+
+
+### Time period
 
 When axis x is to represent a period:
 
@@ -137,7 +474,27 @@ dataSet2$y <- {
   }
   y
 }
+```
 
+
+7-days moving average:
+```{r}
+install.packages("zoo")
+```
+
+
+```{r}
+library(dplyr)
+dataSet2 %>%
+  mutate(
+    y_smooth=zoo::rollmean(y, 7, na.pad=TRUE, align="center")
+  ) -> dataSet2
+```
+
+  * `zoo::rollmean(y, window_width, padding_na_to_maintain_length, window_center)`
+
+
+```{r}
 ggplot2 <- list()
 ggplot2$plot1 <- {
   ggplot()+
@@ -145,7 +502,7 @@ ggplot2$plot1 <- {
       data=dataSet2,
       mapping=aes(
         x=x,
-        y=y
+        y=y_smooth
       )
     )
 }
@@ -155,34 +512,31 @@ ggplot2$plot1
 
 Add rug ticks and labels:
 ```{r}
-# labels have to sit in the middle of the period.
-breaks <- lubridate::ymd(paste("2013", 1:12, "15", sep="-"))
-labels <- lubridate::month(breaks, 
-  label = T # returned as month abbreviates
-  )
-
-ggplot2$plot2 <- {
-  ggplot2$plot1 +
-    geom_rug(
-      mapping=aes(
-        x=lubridate::ymd(paste("2013", 1:12, "1", sep="-"))
-      )
-    )+
-    scale_x_date(
-      breaks = breaks,
-      labels = labels
-    )
-}
-
-ggplot2$plot2
+axis_x_date_custom <- 
+  axis_x_custom(scale_x_date)
 ```
 
-Remove middle-of-the-month ticks:
 ```{r}
-ggplot2$plot2 + 
-  theme(
-    axis.ticks.length.x = grid::unit(0,"mm")
-  )
+# breaks in middle of the month
+#  set 15th of every month
+breaks=seq(
+  from=lubridate::ymd("20130115"),
+  to=lubridate::ymd("20131215"),
+  by="1 month"
+)
+labels=lubridate::month(
+  breaks,
+  label=TRUE # Use month name based on OS locale
+)
+labels
+
+ticks_major=c(
+  seq(
+    from=lubridate::ymd("20130101"),
+    to=lubridate::ymd("20131231"),
+    by="1 month"
+  ),
+  lubridate::ymd("20131231"))
 ```
 
 <div class="alert alert-info">
@@ -206,6 +560,93 @@ lubridate::wday(breaks,
 
 </div>
 
+```{r}
+ggplot2$plot1 +
+  axis_x_date_custom(
+    breaks=breaks, labels=labels,
+    ticks_major=ticks_major,
+    ticks_major_length = 2, #input$tickLength
+    text_size = 14 #input$textSize
+  )
+```
+
+### dot-dot-dot
+
+  * `...` can pass any arguments not defined in function usage as one argument input that can be used in any place by calling `...` .
+
+```{r}
+axis_x_custom <- function(scale_x){
+  function(
+    breaks, labels = breaks,
+    ticks_major, ticks_minor=NULL,
+    ticks_major_length = 3, 
+    minor_major_tickLength_ratio = 0.7,
+    text_size = 16,
+    text_top_margin = 12,
+    major_tick_size = 0.5,
+    minor_tick_size = 0.5, ...
+  ){
+    list(
+      scale_x(
+        breaks=breaks,
+        labels=labels, ...
+      ), 
+      theme(
+        axis.ticks.length.x = unit(0,"mm"),
+        axis.text.x = element_text(
+          margin = margin(
+            text_top_margin #input$margin
+          ),
+          size=text_size #input$textSize
+          )
+        ), 
+      geom_rug(
+        mapping=aes(
+          x=ticks_major
+          ),
+        outside=TRUE, # draw rug outside the plot panel
+        size=major_tick_size, #input$majorsize
+        length=grid::unit(
+          ticks_major_length, 
+          "mm"
+        )
+      ),
+      if(!is.null(ticks_minor)){
+        geom_rug(
+          mapping=aes(
+            x=ticks_minor
+          ),
+          outside = TRUE,
+          size=minor_tick_size,
+          length=grid::unit(
+            minor_major_tickLength_ratio*ticks_major_length,
+            "mm"
+          )
+        )
+      } else {
+        NULL
+      }, 
+      coord_cartesian(clip="off")
+      )
+  }
+}
+
+```
+
+```{r}
+axis_x_date_custom <-
+  axis_x_custom(scale_x_date)
+
+ggplot2$plot1 +
+  axis_x_date_custom(
+    breaks=breaks, labels=labels,
+    ticks_major=ticks_major,
+    ticks_major_length = 2, #input$tickLength
+    text_size = 14, #input$textSize
+    name="2013"
+  )
+```
+
 ***
 
 Multiple rug tick lengths: 
@@ -214,26 +655,80 @@ Multiple rug tick lengths:
 teachDS::img_centering("https://www.economist.com/img/b/1000/969/90/sites/default/files/images/print-edition/20140719_FNC335.png")
 ```
 
-If you like some rug ticks to be longer than others, you can use two `geom_rug` layers, such as:
 ```{r}
-ggplot2$plot1 +
-  geom_rug(
-    mapping=aes(
-      x=lubridate::ymd(paste("2013", 2:12, "1", sep="-"))
-    )
-  )+
-  geom_rug(
-    mapping=aes(
-      x=lubridate::ymd("2013-1-1")
-    ),
-    length=grid::unit(2, #input$length
-      "mm")
-  )+    
-  scale_x_date(
-      breaks = breaks,
-      labels = labels
-    )
+dataSet3 <- data.frame(
+  x=seq(from=lubridate::ymd("2011-01-01"),
+    to=lubridate::ymd("2014-06-01"),
+    by="1 month")
+)
+
+dataSet3$y <- {
+  y <- c(100)
+  set.seed(2033)
+  shocks <- rnorm(length(dataSet3$x), sd=50)
+  shocks
+  for(t in 2:length(dataSet3$x)){
+    y[[t]] <- 1*t + 0.6*y[[t-1]] + shocks[[t]]
+  }
+  y
+}
+
+dataSet3 %>%
+  mutate(
+    y_smooth = zoo::rollmean(y, 5, na.pad=TRUE, align="center")
+  ) -> dataSet3 
 ```
+
+```{r}
+ggplot3 <- list()
+ggplot()+
+  geom_line(
+    data=dataSet3,
+    mapping=aes(
+      x=x,
+      y=y_smooth
+    )
+  ) -> ggplot3$plot1
+ggplot3$plot1
+```
+
+```{r}
+# breaks in middle of years, set at June, except 2014, set at March
+breaks = c(
+  seq(
+    from=lubridate::ymd("20110601"),
+    to=lubridate::ymd("20130601"),
+    by="1 year"
+  ),
+  lubridate::ymd("20140301")
+)
+labels = c("2011", "12", "13", "14")
+ticks_major=seq(
+    from=lubridate::ymd("20110101"),
+    to=lubridate::ymd("20140101"),
+    by="1 year"
+  )
+ticks_minor=seq(
+    from=lubridate::ymd("20110101"),
+    to=lubridate::ymd("20140601"),
+    by="1 month"
+  )
+```
+
+```{r}
+ggplot3$plot1 +
+  axis_x_date_custom(
+    breaks=breaks,
+    labels=labels,
+    ticks_major = ticks_major,
+    ticks_minor = ticks_minor
+  )
+```
+
+<div class="exercise">
+How do you put ticks inside?
+</div>
+
 
 <div class="alert alert-info">
 For date/time axis:  

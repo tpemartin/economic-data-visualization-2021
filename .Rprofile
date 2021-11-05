@@ -14,3 +14,6 @@ gg <- list(
   geom = econDV2::ggbrowse,
   aes = econDV2::ggaes
 )
+imgFolder = "/Users/martinl/Github/economic-data-visualization-2021/img"
+teachDS::set_screenShotDir(imgFolder)
+# img <- teachDS::Image()
