@@ -47,6 +47,8 @@ advanced-function
 time-period
 dot-dot-dot-1
 xy-axis
+expansion-and-out-of-bound
+secondary-axis
 colorfill
 discrete
 continuous

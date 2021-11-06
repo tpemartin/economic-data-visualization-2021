@@ -324,6 +324,9 @@ axis_x_continuouse_custom <- function(
         )
       ), 
     geom_rug(
+      data = data.frame(
+        ticks_major=ticks_major
+      ),
       mapping=aes(
         x=ticks_major
         ),
@@ -336,6 +339,9 @@ axis_x_continuouse_custom <- function(
     ),
     if(!is.null(ticks_minor)){
       geom_rug(
+        data = data.frame(
+          ticks_minor=ticks_minor
+        ),
         mapping=aes(
           x=ticks_minor
         ),
@@ -397,6 +403,9 @@ axis_x_custom <- function(scale_x){
           )
         ), 
       geom_rug(
+        data = data.frame(
+          ticks_major=ticks_major
+        ),
         mapping=aes(
           x=ticks_major
           ),
@@ -409,6 +418,9 @@ axis_x_custom <- function(scale_x){
       ),
       if(!is.null(ticks_minor)){
         geom_rug(
+          data = data.frame(
+            ticks_minor=ticks_minor
+          ),
           mapping=aes(
             x=ticks_minor
           ),
@@ -601,6 +613,9 @@ axis_x_custom <- function(scale_x){
           )
         ), 
       geom_rug(
+        data = data.frame(
+          ticks_major=ticks_major
+        ),
         mapping=aes(
           x=ticks_major
           ),
@@ -613,6 +628,9 @@ axis_x_custom <- function(scale_x){
       ),
       if(!is.null(ticks_minor)){
         geom_rug(
+          data = data.frame(
+            ticks_minor=ticks_minor
+          ),
           mapping=aes(
             x=ticks_minor
           ),
@@ -741,6 +759,8 @@ For date/time axis:
 
 ## XY axis
 
+### Expansion and out-of-bound
+
 Among `scale_x_...` and `scale_y_...`, there are two arguments that might be handy:
 
   * **expand**: define the padding around the limits of the plot. (圖形與xy軸的留白空間)
@@ -777,6 +797,236 @@ ggplot()+
     * `upperBoundStretch=c(c,d)`: `upperBound + c*range +d`  
     
     * `expansion(m, n)` will set a=c=m, b=d=n.
+
+### Secondary axis
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("https://www.economist.com/img/b/1000/969/90/sites/default/files/images/print-edition/20140719_FNC335.png")
+```
+
+```{r}
+dataSet4 <- data.frame(
+  x=seq(
+    from=lubridate::ymd("20110101"),
+    to=lubridate::ymd("20140601"),
+    by="1 month"
+  )
+)
+
+dataSet4$unemployment <- 10+
+  (12-10)*as.integer(dataSet4$x-dataSet4$x[[1]])/as.integer(dataSet4$x[[length(dataSet4$x)]]-dataSet4$x[[1]])
+dataSet4$ind_prod <- 5 + (-5-5)*as.integer(dataSet4$x-dataSet4$x[[1]])/as.integer(dataSet4$x[[length(dataSet4$x)]]-dataSet4$x[[1]])
+```
+
+***
+
+  * All layers are graphed based on the LHS y-axis.
+
+We need:
+
+  * A **break transfer function** to transfer LHS breaks to RHS breaks. (i.e. $0\rightarrow 11$, $5\rightarrow 12$)
+
+```{r}
+transfer_lr <- function(x) 11+(12-11)*x/5
+
+breaks_lhs <- seq(-10,10, by=5)
+breaks_rhs <- transfer_lr(breaks_lhs)
+```
+  
+  * A **data series scale function** to scale RHS data series to LHS y-axis scale. (An inverse function of break transfer function)
+
+```{r}
+scale_rl <- function(y) 5*(y-11)
+
+dataSet4$unemployment_scaled <- scale_rl(dataSet4$unemployment)
+```
+
+***
+
+Basic plot:
+```{r}
+ggplot4 <- list()
+ggplot(
+  data=dataSet4,
+  mapping=aes(x=x)
+)+
+  geom_col(
+    mapping=aes(
+      y=ind_prod
+    ),
+    fill="#04a2d0"
+  ) -> ggplot4$plot1
+
+ggplot4$plot1
+```
+
+Axis y without secondary axis:
+```{r}
+ggplot4$plot1 +
+  scale_y_continuous(
+    name="Industrial production",
+    limits = c(-10, 10),
+    breaks = seq(-10, 10, by=5)
+  )
+```
+
+Axis y with secondary axis: 
+```{r}
+ggplot4$plot1 +
+  scale_y_continuous(
+    name="Industrial production",
+    limits = c(-10, 10), # required. Since data range is less, without this, breaks setup will be truncated.
+    breaks = seq(-10, 10, by=5),
+    sec.axis = sec_axis(
+      trans=transfer_lr, # map: first axis breaks to second axis breaks
+      name="Unemployment",
+      labels=c("//", as.character(10:13)) # secondary axis labels
+    ),
+    expand = c(0,0,0,
+      1.5 #input$yupper
+      )
+  ) -> ggplot4$plot2
+
+ggplot4$plot2
+```
+
+
+```{r}
+ggplot4$plot2 +
+  geom_line(
+    aes(
+      y=unemployment_scaled
+    ),
+    color="#77230f"
+  ) -> ggplot4$plot3
+
+ggplot4$plot3
+```
+
+<div class="alert alert-info">
+`econDV2::geom_sec_axis` function turns any `geom` function into a secondary `geom` layer with equipped secondary y-axis on the right:
+```{r}
+# generate the geom for right y-axis
+geom_line_right <- econDV2::geom_sec_axis(
+  geom_line
+)
+
+
+ggplot4$y.axis$breaks_left = seq(-10, 10, by=5)
+ggplot4$y.axis$breaks_right=9:13
+ggplot4$y.axis$name_left = "Industrial production"
+ggplot4$y.axis$name_right= "Unemployment"
+ggplot4$y.axis$labels_right=c("//", as.character(10:13))
+
+ggplot4$geom_line_right <- function(...){
+    geom_line_right(
+      mapping=aes(
+        y=unemployment
+      ),
+      color="#77230f",
+      breaks_left=ggplot4$y.axis$breaks_left,
+      breaks_right=ggplot4$y.axis$breaks_right,
+      name_left=ggplot4$y.axis$name_left, 
+      name_right=ggplot4$y.axis$name_right,
+      labels_right=ggplot4$y.axis$labels_right, ...
+    )
+}
+ggplot4$plot1 +
+  ggplot4$geom_line_right() -> ggplot4$plot3
+
+ggplot4$plot3
+```
+
+Style axis-x:
+```{r}
+dataSet4$x |> class()
+axis_x_date <- econDV2::axis_x_custom(scale_x_date)
+
+axis_x_date |> args()
+
+ggplot4$x.axis$breaks = seq(
+  from=lubridate::ymd("20110601"),
+  to=lubridate::ymd("20130601"),
+  by="1 year"
+)
+ggplot4$x.axis$breaks = c(ggplot4$x.axis$breaks, lubridate::ymd("20140301"))
+ggplot4$x.axis$labels = c("2011", "12", "13", "14")
+ggplot4$x.axis$ticks_major= seq(
+  from=lubridate::ymd("20110101"),
+  to=lubridate::ymd("20140101"),
+  by="1 year"
+)
+ggplot4$x.axis$ticks_minor=seq(
+  from=lubridate::ymd("20110101"),
+  to=lubridate::ymd("20140601"),
+  by="1 month"
+)
+
+ggplot4$axis_x_date <- function(...){
+  axis_x_date(
+    breaks=ggplot4$x.axis$breaks,
+    labels=ggplot4$x.axis$labels, 
+    ticks_major = ggplot4$x.axis$ticks_major,
+    ticks_minor=ggplot4$x.axis$ticks_minor,
+    ...
+  )
+}
+
+ggplot4$plot3 +
+   ggplot4$axis_x_date() -> ggplot4$plot4
+
+ggplot4$plot4
+```
+
+
+</div>
+
+```{r}
+size=8 #input$size_title
+size_text=8 #input$size_text
+vjust=1 #input$vjust
+angle=0 #input$angel
+margin_l=-50 #input$margin_l
+margin_r=-50 #input$margin_r
+ggplot4$plot1 +
+  ggplot4$axis_x_date()+
+  ggplot4$geom_line_right(
+    expand=c(0,0,0, 
+      0 #input$yupper
+      )
+  )+
+  theme(
+    axis.text.y.left=element_text(color="#04a2d0",
+      size=size_text
+      ),
+    axis.text.y.right=element_text(color="#77230f",
+      size=size_text
+      ),
+    axis.title.y.left = 
+      element_text(
+        color="#04a2d0", 
+        size=size,
+        vjust=vjust, 
+        angle=angle, 
+        margin=margin(
+          r=margin_l
+          )
+        ),
+    axis.title.y.right = 
+      element_text(
+        color="#77230f", 
+        size=size,
+        vjust=vjust, 
+        angle=angle, 
+        margin=margin(
+          l=margin_r
+          )
+        ),
+    axis.ticks.length.y=unit(0,"mm"),
+    axis.line.y=element_blank(),
+    panel.grid.major.y=element_line(color="#ececec")
+  )
+```
 
 
 ## Color/Fill

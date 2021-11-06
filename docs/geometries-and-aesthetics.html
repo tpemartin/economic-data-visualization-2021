@@ -226,7 +226,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.3" data-path="scale.html"><a href="scale.html#time-period"><i class="fa fa-check"></i><b>5.2.3</b> Time period</a></li>
 <li class="chapter" data-level="5.2.4" data-path="scale.html"><a href="scale.html#dot-dot-dot-1"><i class="fa fa-check"></i><b>5.2.4</b> dot-dot-dot</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="scale.html"><a href="scale.html#xy-axis"><i class="fa fa-check"></i><b>5.3</b> XY axis</a></li>
+<li class="chapter" data-level="5.3" data-path="scale.html"><a href="scale.html#xy-axis"><i class="fa fa-check"></i><b>5.3</b> XY axis</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="scale.html"><a href="scale.html#expansion-and-out-of-bound"><i class="fa fa-check"></i><b>5.3.1</b> Expansion and out-of-bound</a></li>
+<li class="chapter" data-level="5.3.2" data-path="scale.html"><a href="scale.html#secondary-axis"><i class="fa fa-check"></i><b>5.3.2</b> Secondary axis</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="scale.html"><a href="scale.html#colorfill"><i class="fa fa-check"></i><b>5.4</b> Color/Fill</a>
 <ul>
 <li class="chapter" data-level="5.4.1" data-path="scale.html"><a href="scale.html#discrete"><i class="fa fa-check"></i><b>5.4.1</b> Discrete</a></li>
@@ -847,6 +851,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
