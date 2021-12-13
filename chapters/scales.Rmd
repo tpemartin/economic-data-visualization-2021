@@ -376,7 +376,7 @@ There are many possible `scale_x`. We can build a `axis_x_custom` function that 
   
   * Functionals that generate functions are called **function generators**.
 
-```{r}
+```{r axis_x_custom}
 axis_x_custom <- function(scale_x){
   function(
     breaks, labels = breaks,
@@ -804,104 +804,379 @@ ggplot()+
 teachDS::img_centering("https://www.economist.com/img/b/1000/969/90/sites/default/files/images/print-edition/20140719_FNC335.png")
 ```
 
-```{r}
-dataSet4 <- data.frame(
-  x=seq(
-    from=lubridate::ymd("20110101"),
-    to=lubridate::ymd("20140601"),
-    by="1 month"
-  )
+  1. Rescale right series to left series range.
+  
+  2. Map LHS breaks to RHS
+
+```{r, echo=FALSE}
+eu2 <- eu
+econDV2::Object(eu)
+eurostat::check_access_to_data()
+toc <- eurostat::get_eurostat_toc()
+eu$search <- eu2$search# list()
+eu$search[[1]] <- eurostat::search_eurostat("unemployment")
+eu$search[[2]] <- eurostat::search_eurostat("Production in industry")
+eu$search[[2]] |> View()
+eu$data <- eu2$data
+eu$data$unemployment_rate <- eurostat::get_eurostat(
+  id="ei_lmhr_m", filters = list("geo"="EU27_2020")
+)
+eu$data$industrial_production <- eurostat::get_eurostat(
+  id="ei_isin_m"
 )
 
-dataSet4$unemployment <- 10+
-  (12-10)*as.integer(dataSet4$x-dataSet4$x[[1]])/as.integer(dataSet4$x[[length(dataSet4$x)]]-dataSet4$x[[1]])
-dataSet4$ind_prod <- 5 + (-5-5)*as.integer(dataSet4$x-dataSet4$x[[1]])/as.integer(dataSet4$x[[length(dataSet4$x)]]-dataSet4$x[[1]])
+eu$data$unemployment_rate |> names()
+eu$data$industrial_production |> View() 
+
+eu$data$unemployment_rate <- 
+{
+  eu$data$unemployment_rate |>
+    dplyr::filter(
+      indic=="LM-UN-T-GT25",
+      s_adj=="SA",
+      !is.na(values)
+    ) #|> View()
+}
+
+eu$data$industrial_production <- 
+{
+  eu$data$industrial_production |> 
+    filter(
+      indic=="IS-IP",
+      geo=="EU27_2020",
+      nace_r2=="B",
+      s_adj=="SCA"
+    ) 
+} 
+eu$data$industrial_production |> View()
+attach(eu$data)
+
+unemployment_rate %T>% View() %>%
+  rename(
+    "unemploymentRate"="values"
+  ) -> unemployment_rate
+industrial_production %T>% View() |>
+  rename(
+    "ind_procution"="values"
+  ) -> industrial_production
+
+library(magrittr)
+unemployment_rate |> select(geo, time, unemploymentRate) %T>% View() -> .df1
+industrial_production |> select(geo, time, ind_procution) %T>% View() -> .df2
+inner_join(
+  .df1, .df2,
+  by=c("geo", "time")
+) -> eu$data2
+detach(eu$data)
+
+View(eu$data2)
+
+eu$source[[1]] <- "https://ec.europa.eu/eurostat/web/main/data/database"
+eu$save()
 ```
 
-***
+#### Preliminary analytics
 
-  * All layers are graphed based on the LHS y-axis.
-
-We need:
-
-  * A **break transfer function** to transfer LHS breaks to RHS breaks. (i.e. $0\rightarrow 11$, $5\rightarrow 12$)
+The relationship between two series.
 
 ```{r}
-transfer_lr <- function(x) 11+(12-11)*x/5
+eu=readRDS("data/eu.Rds")
 
-breaks_lhs <- seq(-10,10, by=5)
-breaks_rhs <- transfer_lr(breaks_lhs)
+ggplot4 <- econDV2::Object(ggplot4)
+ggplot4$data = eu$data2 |> dplyr::filter(
+      time >= "2011-01-01"
+    )
+ggplot4$summary$industrialProductionChange$range <- {
+  ggplot4$data$ind_procution_change |> range(na.rm = T)
+}
+ggplot4$summary$unemploymentRate$range <- {
+  ggplot4$data$unemploymentRate |> range(na.rm=T)
+}
+
+ggplot4$scatter_path <- function(plotly=F, timeEnd="2014-06-01"){
+  ggplot(
+    data=ggplot4$data |> subset(
+  time <= timeEnd),
+    mapping=aes(
+        x=ind_procution_change,
+        y=unemploymentRate,
+      label=time
+      )
+    )+
+  geom_point()+geom_path() -> gg
+  if(plotly){plotly::ggplotly(gg)} else {gg}
+}
+
+ggplot4$scatter_path(T)
 ```
+
+  * Observe negative correlation between year-to-year change of industrial production and unemployment rate.
   
-  * A **data series scale function** to scale RHS data series to LHS y-axis scale. (An inverse function of break transfer function)
+#### Graphic design
+
+  * A graph that shows negative correlated movements.
 
 ```{r}
-scale_rl <- function(y) 5*(y-11)
-
-dataSet4$unemployment_scaled <- scale_rl(dataSet4$unemployment)
-```
-
-***
-
-Basic plot:
-```{r}
-ggplot4 <- list()
-ggplot(
-  data=dataSet4,
-  mapping=aes(x=x)
-)+
+ggplot4$ggplot <- function(){
+  ggplot(
+    data= ggplot4$data |>
+      subset(time <= "2014-06-01"),
+    mapping=aes(x=time)
+  )
+}
+ggplot4$industrialProduction <- function(){
   geom_col(
     mapping=aes(
-      y=ind_prod
+      y=ind_procution_change
     ),
     fill="#04a2d0"
-  ) -> ggplot4$plot1
-
-ggplot4$plot1
-```
-
-Axis y without secondary axis:
-```{r}
-ggplot4$plot1 +
+  )
+}
+ggplot4$unemployment <- function(){
+  geom_line(
+    aes(
+      y=unemploymentRate
+    ),
+    color="#77230f"
+  )
+}
+ggplot4$scale_y_ind_production <- function(...){
   scale_y_continuous(
     name="Industrial production",
-    limits = c(-10, 10),
-    breaks = seq(-10, 10, by=5)
+    limits = c(-10, 11),
+    breaks = seq(-10, 10, by=5),
+    labels = seq(-10, 10, by=5),
+    ...
+  )
+}
+ggplot4$scale_y_unemployment <- function(...){
+  scale_y_continuous(
+    name="Unemployment",
+    limits = c(3, 13),
+    breaks = seq(4,12, by=2),
+    ...
+  )
+}
+
+ggplot4$just$industrialProduction <- function(){
+  ggplot4$ggplot()+
+    ggplot4$industrialProduction()+
+    ggplot4$scale_y_ind_production()
+}
+ggplot4$just$unemployment <- function(){
+  ggplot4$ggplot()+
+    ggplot4$unemployment()+
+    ggplot4$scale_y_unemployment()
+}
+
+ggplot4$twoSeries <- function(...){
+  ggplot4$ggplot()+
+    ggplot4$industrialProduction()+
+    ggplot4$unemployment()+
+    ggplot4$scale_y_ind_production(...)
+}
+ggplot4$twoSeries()
+```
+
+#### Secondary axis
+
+```{r}
+ggplot4$sec_y_unemployment <- function(){
+  
+  # mapping left breaks to unemployment range
+  # ggplot4$scale_y_ind_production() -> left_y
+  # left_y$breaks |> range()
+  
+  transfer_leftBreaks = function(breaks){
+      scales::rescale(breaks, 
+        from=c(-10,10), to=c(4, 12))
+    }
+    
+  # left_y$breaks |> transfer_leftBreaks()
+  sec_axis(
+    name="Unemployment",
+    trans=transfer_leftBreaks,
+    breaks=seq(4, 12, by=2)
+  )
+}
+
+ggplot4$twoSeries(
+  sec.axis=ggplot4$sec_y_unemployment()
+    )
+
+```
+
+
+#### Rescale right series
+
+  * Unemployment is drawn based on left y scale, not based on the secondary (right) y scale. 
+  
+  * One plot can only have one y scale to define y coordinate (which will be the left y).
+  
+    * Unemployment rate of 10 will be placed at the height of 10 as left y would show, but
+    
+    * Right y 10 is actually in line with left -5; So
+    
+    * We need to map unemployment rate of 10 to -5, which is an inverse transfer function of `transfer_leftBreaks`.
+    
+```{r}
+
+ggplot4$scaled_unemployment <- function(){
+  
+  transferInv_leftBreaks <- function(breaks){
+      scales::rescale(breaks, 
+        to=c(-10,10), from=c(4, 12))
+    }
+
+  geom_line(
+    aes(
+      y=transferInv_leftBreaks(unemploymentRate)
+    ),
+    color="#77230f"
+  )
+}
+
+ggplot4$twoSeries_recaled <- function(){
+  ggplot4$ggplot() +
+    ggplot4$industrialProduction() + 
+    ggplot4$scaled_unemployment() + 
+    ggplot4$scale_y_ind_production(
+      sec.axis=ggplot4$sec_y_unemployment(),
+      expand=expansion(0,add=c(0,1))
+    )
+}
+ggplot4$twoSeries_recaled()
+```
+
+#### Time axis
+
+```{r}
+ggplot4$scale_x <- function(){
+  scale_x_custom <- econDV2::axis_x_custom(scale_x_date)
+  scale_x_custom(
+    breaks = lubridate::ymd(c(paste(2011:2013,"06","01"), "2014-03-01")),
+    labels = c("2011", "12", "13", "14"),
+    ticks_major = lubridate::ymd(
+      paste(2011:2014, "1", "1")
+    ),
+    ticks_minor = seq(
+      from=lubridate::ymd("2011-01-01"),
+      to=lubridate::ymd("2014-06-01"),
+      by="1 month"
+    )
+  )
+}
+```
+
+#### gg$dash
+
+```{r}
+size=8 #input$size_title
+size_text=8 #input$size_text
+vjust=1 #input$vjust
+angle=0 #input$angel
+margin_l=-50 #input$margin_l
+margin_r=-50 #input$margin_r
+ggplot4$twoSeries_recaled() +
+  ggplot4$scale_x() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.line.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    panel.grid.major.y=
+      element_line(color="#ececec"),
+    axis.text.y.left=
+      element_text(color="#04a2d0",
+        size=size_text
+      ),
+    axis.text.y.right=
+      element_text(color="#77230f",
+        size=size_text
+      ),
+    axis.title.y.left = 
+      element_text(
+        color="#04a2d0", 
+        size=size,
+        vjust=vjust, 
+        angle=angle, 
+        margin=margin(
+          r=margin_l
+          )
+        ),
+    axis.title.y.right = 
+      element_text(
+        color="#77230f", 
+        size=size,
+        vjust=vjust, 
+        angle=angle, 
+        margin=margin(
+          l=margin_r
+          )
+        ),
+    axis.ticks.length.y=unit(0,"mm")
   )
 ```
 
-Axis y with secondary axis: 
-```{r}
-ggplot4$plot1 +
-  scale_y_continuous(
-    name="Industrial production",
-    limits = c(-10, 10), # required. Since data range is less, without this, breaks setup will be truncated.
-    breaks = seq(-10, 10, by=5),
-    sec.axis = sec_axis(
-      trans=transfer_lr, # map: first axis breaks to second axis breaks
-      name="Unemployment",
-      labels=c("//", as.character(10:13)) # secondary axis labels
-    ),
-    expand = c(0,0,0,
-      1.5 #input$yupper
-      )
-  ) -> ggplot4$plot2
+#### final plot
 
-ggplot4$plot2
+```{r, eval=T, echo=F}
+teachDS::img_centering("img/sec_axis.png", "90%")
 ```
 
 
 ```{r}
-ggplot4$plot2 +
-  geom_line(
-    aes(
-      y=unemployment_scaled
-    ),
-    color="#77230f"
-  ) -> ggplot4$plot3
-
-ggplot4$plot3
+ggplot4$finalPlot <- function(){
+  size <- 15
+  size_text <- 19
+  vjust <- 1
+  angle <- 0
+  margin_l <- -103
+  margin_r <- -84
+  ggplot4$twoSeries_recaled() +
+    ggplot4$scale_x() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.grid.major.y =
+        element_line(color = "#ececec"),
+      axis.text.y.left =
+        element_text(
+          color = "#04a2d0",
+          size = size_text
+        ),
+      axis.text.y.right =
+        element_text(
+          color = "#77230f",
+          size = size_text
+        ),
+      axis.title.y.left =
+        element_text(
+          color = "#04a2d0",
+          size = size,
+          vjust = vjust,
+          angle = angle,
+          margin = margin(
+            r = margin_l
+          )
+        ),
+      axis.title.y.right =
+        element_text(
+          color = "#77230f",
+          size = size,
+          vjust = vjust,
+          angle = angle,
+          margin = margin(
+            l = margin_r
+          )
+        ),
+      axis.ticks.length.y = unit(0, "mm")
+    )
+}
+ggplot4$finalPlot()
 ```
+
+<!--
 
 <div class="alert alert-info">
 `econDV2::geom_sec_axis` function turns any `geom` function into a secondary `geom` layer with equipped secondary y-axis on the right:
@@ -1028,6 +1303,7 @@ ggplot4$plot1 +
   )
 ```
 
+-->
 
 ## Color/Fill
 

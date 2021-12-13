@@ -49,6 +49,13 @@ dot-dot-dot-1
 xy-axis
 expansion-and-out-of-bound
 secondary-axis
+preliminary-analytics
+graphic-design
+secondary-axis-1
+rescale-right-series
+time-axis-1
+ggdash
+final-plot
 colorfill
 discrete
 continuous
