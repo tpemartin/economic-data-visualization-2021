@@ -17,3 +17,9 @@ gg <- list(
 imgFolder = "/Users/martinl/Github/economic-data-visualization-2021/img"
 teachDS::set_screenShotDir(imgFolder)
 # img <- teachDS::Image()
+library(dplyr)
+library(magrittr)
+dash <- classdash::Classdash() 
+library(ggmap)
+register_google(key="AIzaSyCS5NWgJamT12ABAhNpXjYEnD7Zy3sg9n0")
+source("support/maps2.R")

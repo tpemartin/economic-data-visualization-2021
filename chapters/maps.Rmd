@@ -1,0 +1,701 @@
+# Map
+
+```{r}
+mp <- econDV2::Map()
+```
+
+## Geographic geoms
+
+### Point, Line and Polygon
+ggplot2 is equipped with geoms that can draw all kinds of geographic structure.
+
+```{r}
+fourPoints <- data.frame(
+    x=c(2, 3, 5, 3),
+    y=c(-1, 0, 6, 6)
+)
+geometry <- list()
+geometry$ggplot <- function(){
+  ggplot(
+    data=fourPoints,
+    mapping=aes(
+      x=x, y=y
+    )
+  )
+}
+```
+
+
+Points:
+```{r}
+geometry$points <- geometry$ggplot() + geom_point()
+geometry$points 
+```
+
+Path:
+```{r}
+geometry$path <- geometry$ggplot() + geom_path()
+geometry$path
+```
+
+Polygon
+```{r}
+geometry$polygon <- geometry$ggplot() + geom_polygon()
+geometry$polygon
+```
+
+***
+
+### Multipolygons
+
+  * A school consists of many buildings
+
+```{r}
+bigArea <- data.frame(
+  order=1:7,
+  x=c(1, 5.5, 5.5, 1,
+    7, 8, 9),
+  y=c(-2, -2, 7, 7,
+    8, 8 , 2),
+  building=c(rep("building1", 4), rep("building2", 3)), # same school
+  contour=c(rep("outer",4), rep("outer",3)) # two different buildings
+)
+
+# draw each building separately
+ggplot()+geom_polygon(
+  data=bigArea, 
+  mapping=aes(x=x, y=y, group=building)
+  )
+```
+
+  * `geom_polygon` can draw a polygon with hole(s) by using `group` and `subgroup` aesthetics, with hole(s) as a polygon inside another. 
+  
+    * A building with a courtyard has two contours (one for the outer contour, the other for the courtyard contour). Both contours are polygons belong to the same group, but different subgroups. 
+  
+```{r}
+fourPoints$building="building1"
+fourPoints$contour="courtyard"
+fourPoints$order=8:11
+bigArea |> names()
+bigAreaWithHoles <-
+  dplyr::bind_rows(
+    bigArea,
+    fourPoints
+  ) |> arrange(building, order)
+
+View(bigAreaWithHoles)
+
+ggplot(
+  data=bigAreaWithHoles
+) + 
+  geom_polygon(
+    aes(
+      x=x, y=y, 
+      group=building, 
+      subgroup=contour
+    )
+  )
+```
+
+### Fill polygons
+
+  * You can give different polygons different fills. 
+
+```{r}
+ggplot(
+  data=bigAreaWithHoles
+) + 
+  geom_polygon(
+    aes(
+      x=x, y=y, 
+      group=building, 
+      subgroup=contour,
+      fill=building
+    )
+  )
+
+```
+
+### Application to world map
+
+We apply those `geoms` to draw some maps.
+
+```{r}
+world = ggplot2::map_data("world")
+```
+
+
+***
+
+You can pull out certain country data via filter on `region`.
+
+  * A country can have many polygons defined by `subregion`, like Taiwan.
+
+```{r}
+world |> 
+  dplyr::filter(
+    stringr::str_detect(region, "Taiwan")
+  ) ->
+  taiwan
+
+taiwan |> 
+  ggplot() + geom_polygon(
+    mapping=aes(
+      x=long, y=lat, group=subregion
+    )
+  )
+
+last_plot() + coord_map()
+```
+
+  * By default, all geom (except geom_sf) is graphed based on Cartesian coordinate system. You need to `+coord_map()` to do map projection.
+
+  * If multiple coordinate systems are detected, the last coordinate system will be used.
+  
+```{r}
+# do not run 
+world |> 
+  ggplot() +
+  geom_polygon(
+    mapping=aes(
+      x=long, y=lat, group=subregion
+    ),
+    fill="white", 
+    color="black"
+  )
+```
+
+ggplot2 has a more efficient geom (`geom_map`) to deal with data from `ggplot2::map_data()`. However, you need to prepare another data set for social-geographic graphing purpose, like
+```{r}
+map_value <- data.frame(
+  region=world$region |> unique()
+)
+```
+ 
+  * `map_value` could be a data frame describe different region's gdp for example.
+
+
+```{r}
+ggplot(
+  data=map_value
+) +
+  geom_map(
+    mapping=
+      aes(map_id=region),
+    map=world,
+    color="black", fill="white"
+    )
+```
+
+  * aesthetic `map_id` is required for join other values from `ggplot data`
+
+  * The `geom_map` does not define xy limits for a graph; hence no background map shown.
+  
+  * We can force ggplot to shows graph that covers certain limits via `expand_limits`
+
+```{r}
+last_plot()+
+  expand_limits(x = world$long, y = world$lat)
+
+```
+
+World map with different fills:
+```{r}
+map_value$region |> length()
+set.seed(2938)
+map_value$value <- sample(1:100, 252, T)
+
+ggplot(
+  data=map_value
+) +
+  geom_map(
+    mapping=
+      aes(map_id=region, fill=value),
+    map=world,
+    color="black",
+    ) +
+  expand_limits(x=world$long, y=world$lat)
+```
+
+***
+
+Exclude Antartica
+
+```{r}
+world2 <- world |> 
+  dplyr::filter(
+    region != "Antarctica"
+  )
+ggplot(
+  data=world2 |> group_by(region) |> slice(1)
+) +
+  geom_map(
+    mapping=aes(
+      map_id=region
+    ),
+    map=world2, 
+    fill="white",
+    color="black"
+  )+
+  expand_limits(
+    x=world2$long,
+    y=world2$lat
+  )
+```
+
+
+
+## Simple feature
+
+```{r}
+install.packages("sf")
+```
+
+  * <https://r-spatial.github.io/sf/>
+
+Another type of geographic data structure. 
+
+  * a new class. Each value in a simple feature vector represents a form of geometry (called **feature**) and its geographic notation (i.e. latitude and longitude); and could carry its coordinate reference system.
+  
+  * Each value is a parsing result from `sf::st_xxx` functions where `xxx` can be `point` (台北大學的一個地標，如[YouBike站](https://www.google.com.tw/maps/place/YouBike+1.0/@24.9425965,121.3700117,18z/data=!4m5!3m4!1s0x34681b7d1f8d8569:0x5d135a3058409b3e!8m2!3d24.94317!4d121.36952)), `multipoint` (台北大學所有地標), `linestring`(台北大學的一條路徑), `polygon`(台北大學的一棟建築), `multilinestring`(台北大學的所有路徑), `multipolygon`(台北大學的所有建築), or `geometrycollection`(整個台北大學)
+
+```{r, echo=F}
+source("support/maps.R")
+```
+
+### Define simple features
+
+A simple feature is composed of numeric vector, matrix, or list. No data frame is used. 
+
+
+```{r}
+geoValues <- list()
+geoValues$simple_feature$point <-
+  sf::st_point(
+    c(24.9433123, 121.3699526)
+  )
+geoValues$simple_feature$multipoint <-
+  sf::st_multipoint(
+    rbind( # will form a matrix
+      c(24.9443019, 121.3714944), # 1st point
+      c(24.9440709, 121.3728518) # 2nd point
+    )
+  )
+geoValues$simple_feature$linestring <-
+  sf::st_linestring(
+    rbind(
+      c(24.9423755, 121.3679438), # 1st trace point
+      c(24.9429941, 121.3679432), # 2nd trace point
+      c(24.9432087, 121.3686713) # 3rd trace point
+    )
+  )
+geoValues$simple_feature$polygon <-
+  sf::st_polygon(
+    list(
+      # 1st closed trace
+      rbind(
+        c(24.9441895, 121.3695181),
+        c(24.9442244, 121.3692544),
+        c(24.9437158, 121.3694094),
+        c(24.9438647, 121.3696271),
+        c(24.9441895, 121.3695181) # close the polygon
+      )
+    )
+  )
+# polygon: a list consists of matrices.
+```
+
+```{r}
+class(geoValues$simple_feature$point)
+class(geoValues$simple_feature$linestring)
+class(geoValues$simple_feature$polygon)
+# all have sfg class
+```
+
+Simple feature value can be graphed directly via `geom_sf()`
+```{r}
+geoValues$simple_feature$polygon |> ggplot()+geom_sf()
+```
+
+### Form simple feature column
+
+A collection column of multiple simple features.
+
+```{r}
+sf::st_sfc(geoValues$simple_feature) -> geoValues$simple_feature_column
+
+class(geoValues$simple_feature_column) # "sfc_GEOMETRY" "sfc" 
+# has class sfc
+```
+
+```{r}
+geoValues$simple_feature_column |> 
+  ggplot()+geom_sf()
+```
+
+
+### Form simple feature data frame
+
+  * A simple feature data frame is basically a data frame with a column named **geometry** which is a list of each obervation's simple feature value.
+
+```{r}
+# initiate a data frame
+df_sf <- data.frame(
+  name=c("landmark 1", "must-see landmarks", "path 1", "building 1")
+)
+
+# add simple feature column
+df_sf |> sf::st_set_geometry(geoValues$simple_feature_column) ->
+  geoValues$simple_feature_df
+
+class(df_sf) # only "data frame"
+df_sf |>
+  dplyr::mutate(
+    geometry=geoValues$simple_feature_column
+  ) -> df_sf2
+class(df_sf2) # still a "data frame"
+# Must go through sf::st_set_geometry to get sf class
+class(geoValues$simple_feature_df) # "sf" "data.frame"
+
+geoValues$simple_feature_df |> ggplot()+geom_sf()
+```
+
+<!--
+
+### Save simple feature data frame
+
+  * save as **.shp** file
+
+```{r}
+sf::write_sf(dfsf,"sf_df_example.shp")
+geoValues$simple_feature_df[1, ] |> 
+  sf::write_sf("sfdf.shp")
+geoValues$simple_feature_df$geometry |>
+  sf::st_cast("GEOMETRYCOLLECTION") -> dfsf
+geoValues$simple_feature_df$geometry |> sf::
+```
+
+
+```{r}
+print(df_sf$geometry)
+```
+
+```
+Geometry set for 4 features 
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: 24.9 ymin: 120 xmax: 25 ymax: 122
+CRS:           NA
+POINT (24.943 121.3709)
+MULTIPOINT ((24.94 121.37), (24.95 121.38))
+LINESTRING (24.94 121.37, 24.95 121.38, 24.956 ...
+POLYGON ((24.94 121.37, 24.95 121.38, 24.956 12...
+```
+
+<div class="alert alert-info">
+**Coordinate Reference Systems (CRS)**
+包含兩部份：
+
+  * geographic coordinate reference systems: 經度、緯度，衡量規則通常為WGS84。
+
+  * projected coordinate reference systems：怎麼把球體上的地理位置投射成2維經緯平面，受投射中心點及投射方法選擇影響。
+
+不同CRS在2維平面投出的地理形狀、兩點距離、兩點角度會有不同結果；在繪圖時需要特別聲明。常見的地圖，如Google map，使用epsg 4326:
+
+  * <https://epsg.io/map#srs=4326&x=0.000000&y=0.000000&z=1&layer=streets>
+
+```{r}
+df_sf$geometry |> 
+  sf::st_set_crs("WGS84") -> df_sf$geometry
+# OR
+df_sf |>
+  sf::st_set_crs(4326) -> df_sf
+print(df_sf$geometry)
+```
+
+</div>
+
+```{r}
+gg0 <- 
+  ggplot(data=df_sf) + geom_sf()
+gg0
+```
+
+
+
+
+--> 
+
+
+## Import Simple Feature Data
+
+  * <https://tpemartin.github.io/economic-data-visualization/zh-tw/annotation-and-maps.html#%E8%AE%80%E5%85%A5shp%E6%AA%94>
+
+<!--
+
+## Map overlay
+
+
+```{r}
+xfun::download_file("https://www.dropbox.com/s/kvjpd1idvsln41k/20-Mar-2021-sanxiaBikeRoute.gpx?dl=1")
+econDV2::Object(bikeRoute)
+bikeRoute$data$raw <- 
+  plotKML::readGPX(
+    gpx.file="20-Mar-2021-sanxiaBikeRoute.gpx")
+bikeRoute$data$track <-
+  bikeRoute$data$raw$tracks[[1]][[1]]
+```
+
+```{r}
+ggplot() +
+  geom_path(
+    data=bikeRoute$data$track,
+    mapping=
+      aes(
+        x=lon,
+        y=lat
+      )
+  ) + coord_map()
+```
+
+### Raster image
+
+```{r}
+mp$browse$openstreetmap()
+```
+
+
+```{r}
+mp$copy_paste$osm_bbox()
+```
+left=121.3512,
+bottom=24.9435,
+right=121.3849,
+top=24.9615
+
+
+```{r}
+img <- list()
+xfun::download_file("https://www.dropbox.com/s/e2kct9xropvg1h5/map_sanxia.png?dl=1")
+magick::image_read("map_sanxia.png") -> img$raw
+magick::image_resize(
+  img$raw,
+  geometry = magick::geometry_size_percent(width = 50, height = NULL)
+) -> img$resize
+
+magick::image_flatten(
+  img$raw
+) -> img$flatten
+
+magick::image_write(
+  img$resize, path="map_resize.png"
+)
+```
+
+```{r}
+check_size <- function(x){
+  x |> magick::image_raster() |>
+    pryr::object_size()
+}
+```
+
+```{r}
+raster_0 <- magick::image_raster(
+  img$raw
+)
+pryr::object_size(raster_0)
+
+raster_map <- magick::image_raster(img$resize)
+pryr::object_size(raster_map)
+raster_flatmap <- 
+  magick::image_raster(img$flatten)
+pryr::object_size(raster_flatmap)
+
+
+img$raw |> check_size()
+
+img$raw |>
+  magick::image_quantize(colorspace="gray") |> 
+  check_size()
+
+img$raw |> 
+  magick::image_quantize(
+    max=30,
+    colorspace = "gray") |> #print()
+  check_size()
+
+img$raw |> 
+  magick::image_quantize(
+    max=30,
+    colorspace = "gray") |>
+  magick::image_resize(
+    geometry = magick::geometry_size_percent(80)
+  ) |> #print()
+  check_size()
+
+img$raw |> 
+  magick::image_quantize(
+    max=30,
+    colorspace = "gray") |>
+  magick::image_resize(
+    geometry = magick::geometry_size_percent(80)
+  ) |>
+  magick::image_raster() -> img$resize_gray
+```
+
+```{r}
+img$resize_gray$col |> unique() -> colorlimit
+ggplot()+
+  geom_raster(
+    data=img$resize_gray,
+    mapping=aes(
+      x=x, y=y, fill=col
+    )
+  )+
+  scale_fill_manual(
+    limits = colorlimit,
+    values = colorlimit
+  )+
+  theme(
+    legend.position = "none"
+  )-> gg1
+
+gg1
+```
+
+
+```{r}
+econDV2::Object(overlay)
+overlay$raster$google <- {
+  ggmap::get_map(
+  c(lon=121.3684249, lat=24.9521791),
+  zoom=15)
+}
+overlay$raster$statmen <- {
+  
+}
+overlay$raster$osm <- {
+  ggmap::get_map(
+    c(left=121.34759,
+bottom=24.94224,
+right=121.38503,
+top=24.96071),
+    source="osm"
+  )
+}
+```
+
+
+```{r}
+attach(bikeRoute$data)
+{
+  track[c("lon", "lat")] |> as.matrix() |> sf::st_linestring() -> track_linestring
+  
+  track_linestring |> sf::st_crs()
+  
+  ggplot()+geom_sf(data=track_linestring, crs=NULL)
+  
+  ggmap::get_map(
+c(lon=121.3684249, lat=24.9521791),
+zoom=15  ) -> raster_ntpu
+  
+  
+  ggmap(raster_ntpu) -> gg_ntpu
+  
+  gg_ntpu |> sf::st_crs()
+  raster_ntpu |> sf::st_crs()
+  track_linestring |> sf::st_crs()
+  
+  gg_ntpu + geom_sf(
+    data=track_linestring,
+    inherit.aes = F
+  )+theme_void()
+
+  # gg_ntpu and geom_sf are two different coordinate systems by concepts. Here both has no crs setting. So the warning is wrong.
+}
+detach(bikeRoute$data)
+```
+
+```{r}
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+get_stamenmap(us, zoom = 5, maptype = "toner-lite") |> ggmap() 
+```
+
+
+## Raster map 
+
+```{r}
+
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+bbox_ntpu <- 
+  c(top=24.94709,
+right=121.37619,
+bottom=24.93842,
+left=121.36230)
+ggmap::get_map(
+  location= c(lon=121.37015,lat=24.94311),
+  source="osm"
+)
+ggmap::get_openstreetmap(
+  bbox=bbox_ntpu
+) -> map_ntpu 
+get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>% ggmap()  -> gg0
+```
+
+
+24.94709 (top)
+121.37619 (right)
+24.93842
+121.36230
+
+
+
+```{r}
+magick::image_read("/Users/martinl/Downloads/map_ntpu.png") -> map_ntpu
+magick::image_raster(map_ntpu) -> raster_ntpu
+pryr::object_size(raster_ntpu) # extremely big
+```
+
+  * **Raster** is not an efficient way to store image information. 
+  
+```{r}
+newTaipeiBBox <- c(xmin=121.28263, ymin=24.67316, xmax=122.00640, ymax=25.29974)
+```
+
+
+## open street map (OSM)
+
+  * <https://openstreetmap.org>
+
+```{r}
+browseURL("https://openstreetmap.org")
+```
+
+## ggmap
+
+```{r}
+ggmap::get_openstreetmap(
+  
+)
+```
+
+
+```{r}
+library("ggmap")
+#  Loading required package: ggplot2
+#  Registered S3 methods overwritten by 'ggplot2':
+#    method         from 
+#    [.quosures     rlang
+#    c.quosures     rlang
+#    print.quosures rlang
+#  Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
+#  Please cite ggmap if you use it! See citation("ggmap") for details.
+
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>% ggmap()  -> gg0
+gg0 |> class()
+gg0$data
+ggmap |> body() |> clipr::write_clip()
+```
+
+-->

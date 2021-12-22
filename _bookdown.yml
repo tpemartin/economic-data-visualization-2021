@@ -15,5 +15,6 @@ rmd_files: [
   "chapters/layers.Rmd",
   "chapters/categorical-data.Rmd",
   "chapters/scales.Rmd",
+  "chapters/maps.Rmd",
   "chapters/color.Rmd"
 ]

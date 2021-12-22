@@ -60,5 +60,16 @@ colorfill
 discrete
 continuous
 exercise-2
+map
+geographic-geoms
+point-line-and-polygon
+multipolygons
+fill-polygons
+application-to-world-map
+simple-feature
+define-simple-features
+form-simple-feature-column
+form-simple-feature-data-frame
+import-simple-feature-data
 color
 group-aesthetics
