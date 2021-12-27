@@ -116,6 +116,7 @@ ggplot(
 
 ```
 
+
 ### Application to world map
 
 We apply those `geoms` to draw some maps.
@@ -124,125 +125,332 @@ We apply those `geoms` to draw some maps.
 world = ggplot2::map_data("world")
 ```
 
+  * `group` column is for `group` aesthetics for polygon.
 
-***
-
-You can pull out certain country data via filter on `region`.
-
-  * A country can have many polygons defined by `subregion`, like Taiwan.
-
-```{r}
-world |> 
-  dplyr::filter(
-    stringr::str_detect(region, "Taiwan")
-  ) ->
-  taiwan
-
-taiwan |> 
+```{r world0}
+world0 <- function(color="black", fill="white", size=0.35) {
   ggplot() + geom_polygon(
-    mapping=aes(
-      x=long, y=lat, group=subregion
-    )
-  )
-
-last_plot() + coord_map()
-```
-
-  * By default, all geom (except geom_sf) is graphed based on Cartesian coordinate system. You need to `+coord_map()` to do map projection.
-
-  * If multiple coordinate systems are detected, the last coordinate system will be used.
-  
-```{r}
-# do not run 
-world |> 
-  ggplot() +
-  geom_polygon(
-    mapping=aes(
-      x=long, y=lat, group=subregion
+    data=world,
+    aes(
+      x=long, y=lat,
+      group=group
     ),
-    fill="white", 
-    color="black"
+  color=color, fill=fill, size=size
   )
+}
 ```
 
-ggplot2 has a more efficient geom (`geom_map`) to deal with data from `ggplot2::map_data()`. However, you need to prepare another data set for social-geographic graphing purpose, like
+
 ```{r}
-map_value <- data.frame(
-  region=world$region |> unique()
+# Cartesian crs
+world0()
+# Cartesian with fixed aspect ratio
+world0() + coord_fixed()
+# Mercator projection: fixed asp, correct direction
+world0() + coord_map()
+# Mercator projection: fixed asp, correct direction, expand xlim
+world0() + coord_map(xlim = c(-180,180))
+```
+
+## Choropleth map
+
+  * A map with different **fill**s to show certain social-economic data variation. 
+
+### Backgroup fill and borders
+
+Though ggplot2 has geom function to work on Choropleth graph directly, I recommend to lay out a background map first.
+
+Map data
+```{r}
+world = ggplot2::map_data("world")
+```
+
+Backgroup map base on Economist style:
+```{r}
+world0_background <- function(){
+  world0(
+    color="white", 
+    fill="#c8c5be", 
+    size=0.15)
+}
+```
+
+### Choropleth layer: value layer
+
+Another layer of `geom_polygon`s but with different fills setup based on social-economic data. Instead of using `geom_polygon` as the background layer does, `geom_map` is an easier to use geom for Choropleth graph. 
+
+  * `geom_map` is a wrapper of `geom_polygon` but with a much easier setup for Choropleth map purpose.
+
+  * use `geom_map()+expand_limits()`
+
+```{r}
+geom_map(
+  data=`social-economic data`,
+  mapping = aes(
+    map_id = ...,
+    fill = ...
+  ),
+  map =`map data`
+)+
+expand_limits(
+  x=`map data`$long, y=`map data`$lat
 )
 ```
- 
-  * `map_value` could be a data frame describe different region's gdp for example.
 
-
-```{r}
-ggplot(
-  data=map_value
-) +
-  geom_map(
-    mapping=
-      aes(map_id=region),
-    map=world,
-    color="black", fill="white"
-    )
-```
-
-  * aesthetic `map_id` is required for join other values from `ggplot data`
-
-  * The `geom_map` does not define xy limits for a graph; hence no background map shown.
+  * `map data` from  `ggplot2::map_data` (can be filtered if needed)
   
-  * We can force ggplot to shows graph that covers certain limits via `expand_limits`
+  * `social-economic data`: a data frame with a column for `map_id` and a column for `fill`.
+  
+    * `map_id` column must consist of the levels of `map data`'s region column.
+    
+    * `fill` column: the social-economic data to show.
 
+#### WDI example
+
+
+Social-economic data
 ```{r}
-last_plot()+
-  expand_limits(x = world$long, y = world$lat)
-
+se_data <- jsonlite::fromJSON(
+  "https://www.dropbox.com/s/78jr6g6xtjz453b/women_in_parliament.json?dl=1"
+)
+View(se_data)
 ```
 
-World map with different fills:
 ```{r}
-map_value$region |> length()
-set.seed(2938)
-map_value$value <- sample(1:100, 252, T)
-
-ggplot(
-  data=map_value
-) +
+world0_background() +
   geom_map(
-    mapping=
-      aes(map_id=region, fill=value),
-    map=world,
-    color="black",
-    ) +
-  expand_limits(x=world$long, y=world$lat)
+    data=se_data,
+    mapping=aes(
+      map_id=country,
+      fill=women_in_parliament
+    ),
+    map=world
+  )
 ```
 
 ***
 
-Exclude Antartica
+Fixed country name inconsistency between `se_data` and `world` data.
 
 ```{r}
-world2 <- world |> 
-  dplyr::filter(
-    region != "Antarctica"
-  )
-ggplot(
-  data=world2 |> group_by(region) |> slice(1)
-) +
+se_data |> 
+  mp$choropleth$rename_valueData_countryname(
+  countryColumnName = "country",
+  pattern = c(
+    "Russia"="Russian Federation",
+    "USA"="United States",
+    "Iran"="Iran, Islamic Rep.",
+    "Egypt"="Egypt, Arab Rep.",
+    "Syria"="Syrian Arab Republic",
+    "Yemen"="Yemen, Rep.",
+    "UK"="United Kingdom",
+    "Democratic Republic of the Congo"="Congo, Dem. Rep.",
+    "Republic of Congo"="Congo, Rep.",
+    "Ivory Coast"="Cote d'Ivoire",
+    "Venezuela"="Venezuela, RB"
+    )
+  ) -> se_data
+
+world0_background() +
   geom_map(
+    data=se_data,
     mapping=aes(
-      map_id=region
+      map_id=country,
+      fill=women_in_parliament
     ),
-    map=world2, 
-    fill="white",
-    color="black"
-  )+
-  expand_limits(
-    x=world2$long,
-    y=world2$lat
+    map=world
   )
 ```
 
+```{r}
+choropleth0 <- function(){
+  world0_background() +
+  geom_map(
+    data=se_data,
+    mapping=aes(
+      map_id=country,
+      fill=women_in_parliament
+    ),
+    map=world
+  )
+}
+choropleth0()
+```
+
+
+### Fill colors
+
+#### Sequential color
+
+  * Color is to signal one direction strength. 
+  
+  * Gradient: Good for spot the highest and the lowest. Not easy to compare neighbors
+
+Adjust fill limits-values mapping:
+```{r}
+# reverse fill high-low value
+choropleth0() +
+  scale_fill_gradient(
+    high = "#132B43",
+    low = "#56B1F7",
+    na.value="#919191"
+  )
+```
+
+
+```{r}
+# use binned fill
+choropleth0() +
+  scale_fill_binned(
+    high = "#003870",
+    low = "#d3e3f3",
+    na.value="#919191",
+    guide=guide_colorbar(
+      reverse = FALSE,
+      label.vjust = 0.5
+    )
+  )
+```
+
+
+```{r}
+scales::colour_ramp(
+  c(high = "#003870",
+    low = "#d3e3f3")
+) -> binPalette
+scales::show_col(
+  binPalette(c(0, 0.5, 0.8, 1))
+)
+
+```
+
+
+#### Ordered Factor
+
+```{r}
+se_data2 <- se_data
+se_data2$women_in_parliament |>
+  cut(c(0,20,40,60,100), ordered_result = T) -> .fct
+.fct |> class()
+levels(.fct) <- c("0-20%","20-40%","40-60%","60-100%")
+.fct -> se_data2$women_in_parliament
+```
+
+***
+
+
+```{r}
+myPalette <- 
+  scales::colour_ramp(
+    c(low = "#d3e3f3", high = "#003870")
+  )
+scales::show_col(
+  myPalette(c(0, 0.33, 0.66, 1))
+)
+```
+
+
+```{r}
+choropleth1 <- function(){
+  world0_background() +
+  geom_map(
+    data=se_data2,
+    mapping=aes(
+      map_id=country,
+      fill=women_in_parliament
+    ),
+    map=world
+  )
+}
+```
+
+
+```{r}
+choropleth1() +
+  scale_fill_manual(
+    limits = c(NA, '0-20%','20-40%','40-60%','60-100%'),
+    values = c("#919191", myPalette(c(0, 0.33, 0.66, 1)))
+  )+
+  guides(
+    fill=guide_legend(
+      reverse = T
+    )
+  )
+```
+
+```{r}
+choropleth1() +
+  mp$scales$scale_fill_ordered_factor(
+    .ordered_fct=se_data2$women_in_parliament,
+    high = "#003870", low= "#d3e3f3", na.value="#919191"
+    ) +
+  guides(
+    fill=guide_legend(
+      reverse = T
+    )
+  )  
+```
+
+
+
+#### Diverging color
+
+##### colorspace {-}
+Diverging color 
+When dealing with diverging color it is better to rescale your color mapping source data to [-1, 1].
+
+```{r}
+se_data$women_in_parliament |>
+  scales::rescale(
+    from=c(0, 100), 
+    to=c(-1, 1)
+  ) -> se_data$women_in_parliament
+```
+
+
+colorspace package:
+```{r}
+## Register custom color palette
+colorspace::diverging_hcl(n = 7, h = c(255, 12), c = c(50, 80), l = c(20, 97), power = c(1, 1.3),  register = "man_woman")
+
+choropleth0() +
+colorspace::scale_fill_binned_diverging(
+  labels = function(x) (x+1)*50,
+  palette="man_woman"
+)
+```
+
+##### scale with 2 direction fill/color
+
+```{r} 
+choropleth0()+
+scale_fill_steps2(
+  breaks=c(-0.85, -0.65, -0.35, -0.15, 1.5),
+  high = scales::muted("red"),
+  mid = "#d6ffe6",
+  low = "#0a23ff",
+  midpoint = 0,
+  na.value = "#d9d9d9"
+)
+```
+
+## Map as background
+
+```{r}
+mp <- econDV2::Map()
+```
+
+### ggmap
+
+Two steps:
+
+  1. `get_xxxmap` to obtain raster map image.
+  
+  2. `ggmap` to produce a gg(plot) object as a background layer.
+  
+```{r}
+mp$prepare_dataframe_from$map()
+```
 
 
 ## Simple feature
@@ -360,76 +568,170 @@ class(geoValues$simple_feature_df) # "sf" "data.frame"
 geoValues$simple_feature_df |> ggplot()+geom_sf()
 ```
 
-<!--
+## Import Simple Feature Data
 
-### Save simple feature data frame
+  * <https://tpemartin.github.io/economic-data-visualization/zh-tw/annotation-and-maps.html#%E8%AE%80%E5%85%A5shp%E6%AA%94>
 
-  * save as **.shp** file
+## Projection
 
+#### Mercator projection
+
+Standard longitude and latitude system when laid out on the Cartesian plane will be a standard Mercator tanget projection with no rotation with center point the mean of data longitudes and latitudes (roughly `(0,0)`). 
+
+<figure>
+```{r, echo=F, eval=TRUE}
+teachDS::img_centering(
+  "https://upload.wikimedia.org/wikipedia/commons/b/b5/Comparison_of_Mercator_projections.svg"
+)
+```
+<figcaption>Mercator projection</figcaption>
+</figure>
+
+To gain more control on projection result, use `coord_map()`:
 ```{r}
-sf::write_sf(dfsf,"sf_df_example.shp")
-geoValues$simple_feature_df[1, ] |> 
-  sf::write_sf("sfdf.shp")
-geoValues$simple_feature_df$geometry |>
-  sf::st_cast("GEOMETRYCOLLECTION") -> dfsf
-geoValues$simple_feature_df$geometry |> sf::
+world0() + coord_map()
 ```
 
-
+<div class="alert alert-warning">
+By default, `coord_map()` take `xlim=range(world$long)`, range has some round off effect which cuts the true range short, creating the erraneous connection problem. To avoid that, set `xlim=c(-180, 180)` (a little wider than the range rendered).
 ```{r}
-print(df_sf$geometry)
-```
-
-```
-Geometry set for 4 features 
-Geometry type: GEOMETRY
-Dimension:     XY
-Bounding box:  xmin: 24.9 ymin: 120 xmax: 25 ymax: 122
-CRS:           NA
-POINT (24.943 121.3709)
-MULTIPOINT ((24.94 121.37), (24.95 121.38))
-LINESTRING (24.94 121.37, 24.95 121.38, 24.956 ...
-POLYGON ((24.94 121.37, 24.95 121.38, 24.956 12...
-```
-
-<div class="alert alert-info">
-**Coordinate Reference Systems (CRS)**
-包含兩部份：
-
-  * geographic coordinate reference systems: 經度、緯度，衡量規則通常為WGS84。
-
-  * projected coordinate reference systems：怎麼把球體上的地理位置投射成2維經緯平面，受投射中心點及投射方法選擇影響。
-
-不同CRS在2維平面投出的地理形狀、兩點距離、兩點角度會有不同結果；在繪圖時需要特別聲明。常見的地圖，如Google map，使用epsg 4326:
-
-  * <https://epsg.io/map#srs=4326&x=0.000000&y=0.000000&z=1&layer=streets>
-
-```{r}
-df_sf$geometry |> 
-  sf::st_set_crs("WGS84") -> df_sf$geometry
-# OR
-df_sf |>
-  sf::st_set_crs(4326) -> df_sf
-print(df_sf$geometry)
+world0() + coord_map(xlim=c(-180, 180))
 ```
 
 </div>
 
+Set orientation vector:  
+> A vector c(latitude,longitude,rotation) which describes where the "North Pole" should be when computing the projection.
+
 ```{r}
-gg0 <- 
-  ggplot(data=df_sf) + geom_sf()
-gg0
+center_longitude = 90 #input$center_longitude
+rotation = 0 #input$rotation
+mapproj::mapproject(
+  world$long,
+  world$lat,
+  projection="mercator",
+  orientation = c(90, center_longitude, rotation)
+) -> longlat_new
+world_new <- data.frame(
+  longlat_new[c("x","y")]
+)
+world_new$group <- world$group
+```
+
+```{r}
+world <- world |> dplyr::filter(region !="Antarctica", is.na(subregion))
+```
+
+```{r}
+center_longitude = 0 #input$center_longitude
+rotation = 0 #input$rotation
 ```
 
 
+```{r}
+world = ggplot2::map_data("world")
+world0()+coord_map(
+  # xlim=c(-180, 180),
+  orientation = c(90, 0, rotation),
+  clip="off"
+)+
+  expand_limits(x=range(world$long), y=range(world$lat))
+```
+
+```{r}
+world |> group_by(region) |> 
+  slice(1) -> world_value
+ggplot()+
+  geom_map(
+    data=world_value,
+    aes(map_id=region),
+    fill="white", color="black",
+    map=world
+  ) 
+```
 
 
---> 
+```{r}
+gg0+coord_map(
+  clip="off"
+)
+gg0+coord_map(
+  xlim= c(-190, 190)
+)
+(gg0 + coord_map()) |>
+  plotly::ggplotly()
+gg0 + coord_quickmap()
+mean(range(world$long))
+o1 = 90 #input$o1
+o2 = 0 #input$o2
+o3 = 5.1354 #input$o3
+gg0+coord_map(
+  orientation=c(o1, o2, o3)
+)
+gg0 + coord_quickmap(
+  orientation=c(o1, o2, o3)
+)
+last_plot() + coord_map(projection = "sinusoidal")
+last_plot() + coord_map(
+  orientation = 
+)
+```
+
+### Various projection
+
+![cylindrical projection](https://support.esri.com/~/media/Support/GISDictionary/cylindrical-projection.jpg)
+Types of cylindrical map projections you may know include the popular Mercator projection, Cassini, Gauss-Kruger, Miller, Behrmann, Hobo-Dyer, and Gall-Peters.
 
 
-## Import Simple Feature Data
 
-  * <https://tpemartin.github.io/economic-data-visualization/zh-tw/annotation-and-maps.html#%E8%AE%80%E5%85%A5shp%E6%AA%94>
+
+
+![planar projection](https://support.esri.com/~/media/Support/GISDictionary/planar-projection.jpg)
+
+
+***
+
+You can pull out certain country data via filter on `region`.
+
+  * A country can have many polygons defined by `subregion`, like Taiwan.
+
+```{r}
+world |> 
+  dplyr::filter(
+    stringr::str_detect(region, "Taiwan")
+  ) ->
+  taiwan
+
+taiwan |> 
+  ggplot() + geom_polygon(
+    mapping=aes(
+      x=long, y=lat, group=group
+    )
+  )
+
+last_plot() + coord_map()
+```
+
+  * By default, all geom (except geom_sf) is graphed based on Cartesian coordinate system. You need to `+coord_map()` to do map projection.
+  
+```{r}
+# the default of coord_map
+coord_map(
+  projection = "mercator",
+  ...,
+  parameters = NULL,
+  orientation = NULL,
+  xlim = NULL,
+  ylim = NULL,
+  clip = "on"
+)
+```
+  
+
+  * If multiple coordinate systems are detected, the last coordinate system will be used.
+
+
+## Rotate the projection 
 
 <!--
 
