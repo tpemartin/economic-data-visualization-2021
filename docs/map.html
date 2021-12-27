@@ -644,7 +644,6 @@ When dealing with diverging color it is better to rescale your color mapping sou
 </div>
 <div id="map-as-background" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Map as background</h2>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="map.html#cb150-1" aria-hidden="true" tabindex="-1"></a>mp <span class="ot">&lt;-</span> econDV2<span class="sc">::</span><span class="fu">Map</span>()</span></code></pre></div>
 <div id="ggmap" class="section level3" number="6.3.1">
 <h3><span class="header-section-number">6.3.1</span> ggmap</h3>
 <p>Two steps:</p>
@@ -652,12 +651,12 @@ When dealing with diverging color it is better to rescale your color mapping sou
 <li><p><code>get_xxxmap</code> to obtain raster map image.</p></li>
 <li><p><code>ggmap</code> to produce a gg(plot) object as a background layer.</p></li>
 </ol>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="map.html#cb151-1" aria-hidden="true" tabindex="-1"></a>mp<span class="sc">$</span>prepare_dataframe_from<span class="sc">$</span><span class="fu">map</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="map.html#cb150-1" aria-hidden="true" tabindex="-1"></a>mp<span class="sc">$</span>prepare_dataframe_from<span class="sc">$</span><span class="fu">map</span>()</span></code></pre></div>
 </div>
 </div>
 <div id="simple-feature" class="section level2" number="6.4">
 <h2><span class="header-section-number">6.4</span> Simple feature</h2>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="map.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="map.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
 <ul>
 <li><a href="https://r-spatial.github.io/sf/" class="uri">https://r-spatial.github.io/sf/</a></li>
 </ul>
@@ -669,81 +668,81 @@ When dealing with diverging color it is better to rescale your color mapping sou
 <div id="define-simple-features" class="section level3" number="6.4.1">
 <h3><span class="header-section-number">6.4.1</span> Define simple features</h3>
 <p>A simple feature is composed of numeric vector, matrix, or list. No data frame is used.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="map.html#cb153-1" aria-hidden="true" tabindex="-1"></a>geoValues <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb153-2"><a href="map.html#cb153-2" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>point <span class="ot">&lt;-</span></span>
-<span id="cb153-3"><a href="map.html#cb153-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_point</span>(</span>
-<span id="cb153-4"><a href="map.html#cb153-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fl">24.9433123</span>, <span class="fl">121.3699526</span>)</span>
-<span id="cb153-5"><a href="map.html#cb153-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb153-6"><a href="map.html#cb153-6" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>multipoint <span class="ot">&lt;-</span></span>
-<span id="cb153-7"><a href="map.html#cb153-7" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_multipoint</span>(</span>
-<span id="cb153-8"><a href="map.html#cb153-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbind</span>( <span class="co"># will form a matrix</span></span>
-<span id="cb153-9"><a href="map.html#cb153-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9443019</span>, <span class="fl">121.3714944</span>), <span class="co"># 1st point</span></span>
-<span id="cb153-10"><a href="map.html#cb153-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9440709</span>, <span class="fl">121.3728518</span>) <span class="co"># 2nd point</span></span>
-<span id="cb153-11"><a href="map.html#cb153-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb153-12"><a href="map.html#cb153-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb153-13"><a href="map.html#cb153-13" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>linestring <span class="ot">&lt;-</span></span>
-<span id="cb153-14"><a href="map.html#cb153-14" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_linestring</span>(</span>
-<span id="cb153-15"><a href="map.html#cb153-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbind</span>(</span>
-<span id="cb153-16"><a href="map.html#cb153-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9423755</span>, <span class="fl">121.3679438</span>), <span class="co"># 1st trace point</span></span>
-<span id="cb153-17"><a href="map.html#cb153-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9429941</span>, <span class="fl">121.3679432</span>), <span class="co"># 2nd trace point</span></span>
-<span id="cb153-18"><a href="map.html#cb153-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9432087</span>, <span class="fl">121.3686713</span>) <span class="co"># 3rd trace point</span></span>
-<span id="cb153-19"><a href="map.html#cb153-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb153-20"><a href="map.html#cb153-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb153-21"><a href="map.html#cb153-21" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon <span class="ot">&lt;-</span></span>
-<span id="cb153-22"><a href="map.html#cb153-22" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_polygon</span>(</span>
-<span id="cb153-23"><a href="map.html#cb153-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb153-24"><a href="map.html#cb153-24" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1st closed trace</span></span>
-<span id="cb153-25"><a href="map.html#cb153-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rbind</span>(</span>
-<span id="cb153-26"><a href="map.html#cb153-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9441895</span>, <span class="fl">121.3695181</span>),</span>
-<span id="cb153-27"><a href="map.html#cb153-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9442244</span>, <span class="fl">121.3692544</span>),</span>
-<span id="cb153-28"><a href="map.html#cb153-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9437158</span>, <span class="fl">121.3694094</span>),</span>
-<span id="cb153-29"><a href="map.html#cb153-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9438647</span>, <span class="fl">121.3696271</span>),</span>
-<span id="cb153-30"><a href="map.html#cb153-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9441895</span>, <span class="fl">121.3695181</span>) <span class="co"># close the polygon</span></span>
-<span id="cb153-31"><a href="map.html#cb153-31" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb153-32"><a href="map.html#cb153-32" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb153-33"><a href="map.html#cb153-33" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb153-34"><a href="map.html#cb153-34" aria-hidden="true" tabindex="-1"></a><span class="co"># polygon: a list consists of matrices.</span></span></code></pre></div>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="map.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>point)</span>
-<span id="cb154-2"><a href="map.html#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>linestring)</span>
-<span id="cb154-3"><a href="map.html#cb154-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon)</span>
-<span id="cb154-4"><a href="map.html#cb154-4" aria-hidden="true" tabindex="-1"></a><span class="co"># all have sfg class</span></span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="map.html#cb152-1" aria-hidden="true" tabindex="-1"></a>geoValues <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb152-2"><a href="map.html#cb152-2" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>point <span class="ot">&lt;-</span></span>
+<span id="cb152-3"><a href="map.html#cb152-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_point</span>(</span>
+<span id="cb152-4"><a href="map.html#cb152-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fl">24.9433123</span>, <span class="fl">121.3699526</span>)</span>
+<span id="cb152-5"><a href="map.html#cb152-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb152-6"><a href="map.html#cb152-6" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>multipoint <span class="ot">&lt;-</span></span>
+<span id="cb152-7"><a href="map.html#cb152-7" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_multipoint</span>(</span>
+<span id="cb152-8"><a href="map.html#cb152-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbind</span>( <span class="co"># will form a matrix</span></span>
+<span id="cb152-9"><a href="map.html#cb152-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9443019</span>, <span class="fl">121.3714944</span>), <span class="co"># 1st point</span></span>
+<span id="cb152-10"><a href="map.html#cb152-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9440709</span>, <span class="fl">121.3728518</span>) <span class="co"># 2nd point</span></span>
+<span id="cb152-11"><a href="map.html#cb152-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb152-12"><a href="map.html#cb152-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb152-13"><a href="map.html#cb152-13" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>linestring <span class="ot">&lt;-</span></span>
+<span id="cb152-14"><a href="map.html#cb152-14" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_linestring</span>(</span>
+<span id="cb152-15"><a href="map.html#cb152-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbind</span>(</span>
+<span id="cb152-16"><a href="map.html#cb152-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9423755</span>, <span class="fl">121.3679438</span>), <span class="co"># 1st trace point</span></span>
+<span id="cb152-17"><a href="map.html#cb152-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9429941</span>, <span class="fl">121.3679432</span>), <span class="co"># 2nd trace point</span></span>
+<span id="cb152-18"><a href="map.html#cb152-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="fl">24.9432087</span>, <span class="fl">121.3686713</span>) <span class="co"># 3rd trace point</span></span>
+<span id="cb152-19"><a href="map.html#cb152-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb152-20"><a href="map.html#cb152-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb152-21"><a href="map.html#cb152-21" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon <span class="ot">&lt;-</span></span>
+<span id="cb152-22"><a href="map.html#cb152-22" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_polygon</span>(</span>
+<span id="cb152-23"><a href="map.html#cb152-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb152-24"><a href="map.html#cb152-24" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1st closed trace</span></span>
+<span id="cb152-25"><a href="map.html#cb152-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rbind</span>(</span>
+<span id="cb152-26"><a href="map.html#cb152-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9441895</span>, <span class="fl">121.3695181</span>),</span>
+<span id="cb152-27"><a href="map.html#cb152-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9442244</span>, <span class="fl">121.3692544</span>),</span>
+<span id="cb152-28"><a href="map.html#cb152-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9437158</span>, <span class="fl">121.3694094</span>),</span>
+<span id="cb152-29"><a href="map.html#cb152-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9438647</span>, <span class="fl">121.3696271</span>),</span>
+<span id="cb152-30"><a href="map.html#cb152-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="fl">24.9441895</span>, <span class="fl">121.3695181</span>) <span class="co"># close the polygon</span></span>
+<span id="cb152-31"><a href="map.html#cb152-31" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb152-32"><a href="map.html#cb152-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb152-33"><a href="map.html#cb152-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb152-34"><a href="map.html#cb152-34" aria-hidden="true" tabindex="-1"></a><span class="co"># polygon: a list consists of matrices.</span></span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="map.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>point)</span>
+<span id="cb153-2"><a href="map.html#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>linestring)</span>
+<span id="cb153-3"><a href="map.html#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon)</span>
+<span id="cb153-4"><a href="map.html#cb153-4" aria-hidden="true" tabindex="-1"></a><span class="co"># all have sfg class</span></span></code></pre></div>
 <p>Simple feature value can be graphed directly via <code>geom_sf()</code></p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="map.html#cb155-1" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="map.html#cb154-1" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature<span class="sc">$</span>polygon <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
 </div>
 <div id="form-simple-feature-column" class="section level3" number="6.4.2">
 <h3><span class="header-section-number">6.4.2</span> Form simple feature column</h3>
 <p>A collection column of multiple simple features.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="map.html#cb156-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_sfc</span>(geoValues<span class="sc">$</span>simple_feature) <span class="ot">-&gt;</span> geoValues<span class="sc">$</span>simple_feature_column</span>
-<span id="cb156-2"><a href="map.html#cb156-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb156-3"><a href="map.html#cb156-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature_column) <span class="co"># &quot;sfc_GEOMETRY&quot; &quot;sfc&quot; </span></span>
-<span id="cb156-4"><a href="map.html#cb156-4" aria-hidden="true" tabindex="-1"></a><span class="co"># has class sfc</span></span></code></pre></div>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="map.html#cb157-1" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature_column <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb157-2"><a href="map.html#cb157-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="map.html#cb155-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_sfc</span>(geoValues<span class="sc">$</span>simple_feature) <span class="ot">-&gt;</span> geoValues<span class="sc">$</span>simple_feature_column</span>
+<span id="cb155-2"><a href="map.html#cb155-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-3"><a href="map.html#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature_column) <span class="co"># &quot;sfc_GEOMETRY&quot; &quot;sfc&quot; </span></span>
+<span id="cb155-4"><a href="map.html#cb155-4" aria-hidden="true" tabindex="-1"></a><span class="co"># has class sfc</span></span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="map.html#cb156-1" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature_column <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb156-2"><a href="map.html#cb156-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
 </div>
 <div id="form-simple-feature-data-frame" class="section level3" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> Form simple feature data frame</h3>
 <ul>
 <li>A simple feature data frame is basically a data frame with a column named <strong>geometry</strong> which is a list of each obervation’s simple feature value.</li>
 </ul>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="map.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initiate a data frame</span></span>
-<span id="cb158-2"><a href="map.html#cb158-2" aria-hidden="true" tabindex="-1"></a>df_sf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb158-3"><a href="map.html#cb158-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">name=</span><span class="fu">c</span>(<span class="st">&quot;landmark 1&quot;</span>, <span class="st">&quot;must-see landmarks&quot;</span>, <span class="st">&quot;path 1&quot;</span>, <span class="st">&quot;building 1&quot;</span>)</span>
-<span id="cb158-4"><a href="map.html#cb158-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb158-5"><a href="map.html#cb158-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-6"><a href="map.html#cb158-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add simple feature column</span></span>
-<span id="cb158-7"><a href="map.html#cb158-7" aria-hidden="true" tabindex="-1"></a>df_sf <span class="sc">|</span><span class="er">&gt;</span> sf<span class="sc">::</span><span class="fu">st_set_geometry</span>(geoValues<span class="sc">$</span>simple_feature_column) <span class="ot">-&gt;</span></span>
-<span id="cb158-8"><a href="map.html#cb158-8" aria-hidden="true" tabindex="-1"></a>  geoValues<span class="sc">$</span>simple_feature_df</span>
-<span id="cb158-9"><a href="map.html#cb158-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-10"><a href="map.html#cb158-10" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df_sf) <span class="co"># only &quot;data frame&quot;</span></span>
-<span id="cb158-11"><a href="map.html#cb158-11" aria-hidden="true" tabindex="-1"></a>df_sf <span class="sc">|</span><span class="er">&gt;</span></span>
-<span id="cb158-12"><a href="map.html#cb158-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb158-13"><a href="map.html#cb158-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">geometry=</span>geoValues<span class="sc">$</span>simple_feature_column</span>
-<span id="cb158-14"><a href="map.html#cb158-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> df_sf2</span>
-<span id="cb158-15"><a href="map.html#cb158-15" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df_sf2) <span class="co"># still a &quot;data frame&quot;</span></span>
-<span id="cb158-16"><a href="map.html#cb158-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Must go through sf::st_set_geometry to get sf class</span></span>
-<span id="cb158-17"><a href="map.html#cb158-17" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature_df) <span class="co"># &quot;sf&quot; &quot;data.frame&quot;</span></span>
-<span id="cb158-18"><a href="map.html#cb158-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-19"><a href="map.html#cb158-19" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature_df <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="map.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initiate a data frame</span></span>
+<span id="cb157-2"><a href="map.html#cb157-2" aria-hidden="true" tabindex="-1"></a>df_sf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb157-3"><a href="map.html#cb157-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">name=</span><span class="fu">c</span>(<span class="st">&quot;landmark 1&quot;</span>, <span class="st">&quot;must-see landmarks&quot;</span>, <span class="st">&quot;path 1&quot;</span>, <span class="st">&quot;building 1&quot;</span>)</span>
+<span id="cb157-4"><a href="map.html#cb157-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb157-5"><a href="map.html#cb157-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-6"><a href="map.html#cb157-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add simple feature column</span></span>
+<span id="cb157-7"><a href="map.html#cb157-7" aria-hidden="true" tabindex="-1"></a>df_sf <span class="sc">|</span><span class="er">&gt;</span> sf<span class="sc">::</span><span class="fu">st_set_geometry</span>(geoValues<span class="sc">$</span>simple_feature_column) <span class="ot">-&gt;</span></span>
+<span id="cb157-8"><a href="map.html#cb157-8" aria-hidden="true" tabindex="-1"></a>  geoValues<span class="sc">$</span>simple_feature_df</span>
+<span id="cb157-9"><a href="map.html#cb157-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-10"><a href="map.html#cb157-10" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df_sf) <span class="co"># only &quot;data frame&quot;</span></span>
+<span id="cb157-11"><a href="map.html#cb157-11" aria-hidden="true" tabindex="-1"></a>df_sf <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb157-12"><a href="map.html#cb157-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb157-13"><a href="map.html#cb157-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">geometry=</span>geoValues<span class="sc">$</span>simple_feature_column</span>
+<span id="cb157-14"><a href="map.html#cb157-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> df_sf2</span>
+<span id="cb157-15"><a href="map.html#cb157-15" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df_sf2) <span class="co"># still a &quot;data frame&quot;</span></span>
+<span id="cb157-16"><a href="map.html#cb157-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Must go through sf::st_set_geometry to get sf class</span></span>
+<span id="cb157-17"><a href="map.html#cb157-17" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(geoValues<span class="sc">$</span>simple_feature_df) <span class="co"># &quot;sf&quot; &quot;data.frame&quot;</span></span>
+<span id="cb157-18"><a href="map.html#cb157-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-19"><a href="map.html#cb157-19" aria-hidden="true" tabindex="-1"></a>geoValues<span class="sc">$</span>simple_feature_df <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_sf</span>()</span></code></pre></div>
 </div>
 </div>
 <div id="import-simple-feature-data" class="section level2" number="6.5">
@@ -766,67 +765,67 @@ Mercator projection
 </figcaption>
 </figure>
 <p>To gain more control on projection result, use <code>coord_map()</code>:</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="map.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="map.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
 <div class="alert alert-warning">
 <p>By default, <code>coord_map()</code> take <code>xlim=range(world$long)</code>, range has some round off effect which cuts the true range short, creating the erraneous connection problem. To avoid that, set <code>xlim=c(-180, 180)</code> (a little wider than the range rendered).</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="map.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="map.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>))</span></code></pre></div>
 </div>
 <p>Set orientation vector:<br />
 &gt; A vector c(latitude,longitude,rotation) which describes where the “North Pole” should be when computing the projection.</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="map.html#cb161-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$center_longitude</span></span>
-<span id="cb161-2"><a href="map.html#cb161-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span>
-<span id="cb161-3"><a href="map.html#cb161-3" aria-hidden="true" tabindex="-1"></a>mapproj<span class="sc">::</span><span class="fu">mapproject</span>(</span>
-<span id="cb161-4"><a href="map.html#cb161-4" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>long,</span>
-<span id="cb161-5"><a href="map.html#cb161-5" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>lat,</span>
-<span id="cb161-6"><a href="map.html#cb161-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection=</span><span class="st">&quot;mercator&quot;</span>,</span>
-<span id="cb161-7"><a href="map.html#cb161-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, center_longitude, rotation)</span>
-<span id="cb161-8"><a href="map.html#cb161-8" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> longlat_new</span>
-<span id="cb161-9"><a href="map.html#cb161-9" aria-hidden="true" tabindex="-1"></a>world_new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb161-10"><a href="map.html#cb161-10" aria-hidden="true" tabindex="-1"></a>  longlat_new[<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)]</span>
-<span id="cb161-11"><a href="map.html#cb161-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb161-12"><a href="map.html#cb161-12" aria-hidden="true" tabindex="-1"></a>world_new<span class="sc">$</span>group <span class="ot">&lt;-</span> world<span class="sc">$</span>group</span></code></pre></div>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="map.html#cb162-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> world <span class="sc">|</span><span class="er">&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(region <span class="sc">!=</span><span class="st">&quot;Antarctica&quot;</span>, <span class="fu">is.na</span>(subregion))</span></code></pre></div>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="map.html#cb163-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$center_longitude</span></span>
-<span id="cb163-2"><a href="map.html#cb163-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span></code></pre></div>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="map.html#cb164-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
-<span id="cb164-2"><a href="map.html#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>()<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb164-3"><a href="map.html#cb164-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># xlim=c(-180, 180),</span></span>
-<span id="cb164-4"><a href="map.html#cb164-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, rotation),</span>
-<span id="cb164-5"><a href="map.html#cb164-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
-<span id="cb164-6"><a href="map.html#cb164-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
-<span id="cb164-7"><a href="map.html#cb164-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x=</span><span class="fu">range</span>(world<span class="sc">$</span>long), <span class="at">y=</span><span class="fu">range</span>(world<span class="sc">$</span>lat))</span></code></pre></div>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="map.html#cb165-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">group_by</span>(region) <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb165-2"><a href="map.html#cb165-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="ot">-&gt;</span> world_value</span>
-<span id="cb165-3"><a href="map.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb165-4"><a href="map.html#cb165-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(</span>
-<span id="cb165-5"><a href="map.html#cb165-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>world_value,</span>
-<span id="cb165-6"><a href="map.html#cb165-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">map_id=</span>region),</span>
-<span id="cb165-7"><a href="map.html#cb165-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
-<span id="cb165-8"><a href="map.html#cb165-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">map=</span>world</span>
-<span id="cb165-9"><a href="map.html#cb165-9" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="map.html#cb166-1" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb166-2"><a href="map.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
-<span id="cb166-3"><a href="map.html#cb166-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb166-4"><a href="map.html#cb166-4" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb166-5"><a href="map.html#cb166-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">190</span>, <span class="dv">190</span>)</span>
-<span id="cb166-6"><a href="map.html#cb166-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb166-7"><a href="map.html#cb166-7" aria-hidden="true" tabindex="-1"></a>(gg0 <span class="sc">+</span> <span class="fu">coord_map</span>()) <span class="sc">|</span><span class="er">&gt;</span></span>
-<span id="cb166-8"><a href="map.html#cb166-8" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">ggplotly</span>()</span>
-<span id="cb166-9"><a href="map.html#cb166-9" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>()</span>
-<span id="cb166-10"><a href="map.html#cb166-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">range</span>(world<span class="sc">$</span>long))</span>
-<span id="cb166-11"><a href="map.html#cb166-11" aria-hidden="true" tabindex="-1"></a>o1 <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$o1</span></span>
-<span id="cb166-12"><a href="map.html#cb166-12" aria-hidden="true" tabindex="-1"></a>o2 <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$o2</span></span>
-<span id="cb166-13"><a href="map.html#cb166-13" aria-hidden="true" tabindex="-1"></a>o3 <span class="ot">=</span> <span class="fl">5.1354</span> <span class="co">#input$o3</span></span>
-<span id="cb166-14"><a href="map.html#cb166-14" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb166-15"><a href="map.html#cb166-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
-<span id="cb166-16"><a href="map.html#cb166-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb166-17"><a href="map.html#cb166-17" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>(</span>
-<span id="cb166-18"><a href="map.html#cb166-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
-<span id="cb166-19"><a href="map.html#cb166-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb166-20"><a href="map.html#cb166-20" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">projection =</span> <span class="st">&quot;sinusoidal&quot;</span>)</span>
-<span id="cb166-21"><a href="map.html#cb166-21" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(</span>
-<span id="cb166-22"><a href="map.html#cb166-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> </span>
-<span id="cb166-23"><a href="map.html#cb166-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="map.html#cb160-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$center_longitude</span></span>
+<span id="cb160-2"><a href="map.html#cb160-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span>
+<span id="cb160-3"><a href="map.html#cb160-3" aria-hidden="true" tabindex="-1"></a>mapproj<span class="sc">::</span><span class="fu">mapproject</span>(</span>
+<span id="cb160-4"><a href="map.html#cb160-4" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>long,</span>
+<span id="cb160-5"><a href="map.html#cb160-5" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>lat,</span>
+<span id="cb160-6"><a href="map.html#cb160-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection=</span><span class="st">&quot;mercator&quot;</span>,</span>
+<span id="cb160-7"><a href="map.html#cb160-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, center_longitude, rotation)</span>
+<span id="cb160-8"><a href="map.html#cb160-8" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> longlat_new</span>
+<span id="cb160-9"><a href="map.html#cb160-9" aria-hidden="true" tabindex="-1"></a>world_new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb160-10"><a href="map.html#cb160-10" aria-hidden="true" tabindex="-1"></a>  longlat_new[<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)]</span>
+<span id="cb160-11"><a href="map.html#cb160-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb160-12"><a href="map.html#cb160-12" aria-hidden="true" tabindex="-1"></a>world_new<span class="sc">$</span>group <span class="ot">&lt;-</span> world<span class="sc">$</span>group</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="map.html#cb161-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> world <span class="sc">|</span><span class="er">&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(region <span class="sc">!=</span><span class="st">&quot;Antarctica&quot;</span>, <span class="fu">is.na</span>(subregion))</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="map.html#cb162-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$center_longitude</span></span>
+<span id="cb162-2"><a href="map.html#cb162-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="map.html#cb163-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
+<span id="cb163-2"><a href="map.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>()<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb163-3"><a href="map.html#cb163-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># xlim=c(-180, 180),</span></span>
+<span id="cb163-4"><a href="map.html#cb163-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, rotation),</span>
+<span id="cb163-5"><a href="map.html#cb163-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
+<span id="cb163-6"><a href="map.html#cb163-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb163-7"><a href="map.html#cb163-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x=</span><span class="fu">range</span>(world<span class="sc">$</span>long), <span class="at">y=</span><span class="fu">range</span>(world<span class="sc">$</span>lat))</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="map.html#cb164-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">group_by</span>(region) <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb164-2"><a href="map.html#cb164-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="ot">-&gt;</span> world_value</span>
+<span id="cb164-3"><a href="map.html#cb164-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb164-4"><a href="map.html#cb164-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(</span>
+<span id="cb164-5"><a href="map.html#cb164-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>world_value,</span>
+<span id="cb164-6"><a href="map.html#cb164-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">map_id=</span>region),</span>
+<span id="cb164-7"><a href="map.html#cb164-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb164-8"><a href="map.html#cb164-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">map=</span>world</span>
+<span id="cb164-9"><a href="map.html#cb164-9" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="map.html#cb165-1" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb165-2"><a href="map.html#cb165-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
+<span id="cb165-3"><a href="map.html#cb165-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb165-4"><a href="map.html#cb165-4" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb165-5"><a href="map.html#cb165-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">190</span>, <span class="dv">190</span>)</span>
+<span id="cb165-6"><a href="map.html#cb165-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb165-7"><a href="map.html#cb165-7" aria-hidden="true" tabindex="-1"></a>(gg0 <span class="sc">+</span> <span class="fu">coord_map</span>()) <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb165-8"><a href="map.html#cb165-8" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">ggplotly</span>()</span>
+<span id="cb165-9"><a href="map.html#cb165-9" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>()</span>
+<span id="cb165-10"><a href="map.html#cb165-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">range</span>(world<span class="sc">$</span>long))</span>
+<span id="cb165-11"><a href="map.html#cb165-11" aria-hidden="true" tabindex="-1"></a>o1 <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$o1</span></span>
+<span id="cb165-12"><a href="map.html#cb165-12" aria-hidden="true" tabindex="-1"></a>o2 <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$o2</span></span>
+<span id="cb165-13"><a href="map.html#cb165-13" aria-hidden="true" tabindex="-1"></a>o3 <span class="ot">=</span> <span class="fl">5.1354</span> <span class="co">#input$o3</span></span>
+<span id="cb165-14"><a href="map.html#cb165-14" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb165-15"><a href="map.html#cb165-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
+<span id="cb165-16"><a href="map.html#cb165-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb165-17"><a href="map.html#cb165-17" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>(</span>
+<span id="cb165-18"><a href="map.html#cb165-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
+<span id="cb165-19"><a href="map.html#cb165-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb165-20"><a href="map.html#cb165-20" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">projection =</span> <span class="st">&quot;sinusoidal&quot;</span>)</span>
+<span id="cb165-21"><a href="map.html#cb165-21" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(</span>
+<span id="cb165-22"><a href="map.html#cb165-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> </span>
+<span id="cb165-23"><a href="map.html#cb165-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="various-projection" class="section level3" number="6.6.1">
 <h3><span class="header-section-number">6.6.1</span> Various projection</h3>
@@ -841,33 +840,33 @@ Types of cylindrical map projections you may know include the popular Mercator p
 <ul>
 <li>A country can have many polygons defined by <code>subregion</code>, like Taiwan.</li>
 </ul>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="map.html#cb167-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb167-2"><a href="map.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
-<span id="cb167-3"><a href="map.html#cb167-3" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_detect</span>(region, <span class="st">&quot;Taiwan&quot;</span>)</span>
-<span id="cb167-4"><a href="map.html#cb167-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
-<span id="cb167-5"><a href="map.html#cb167-5" aria-hidden="true" tabindex="-1"></a>  taiwan</span>
-<span id="cb167-6"><a href="map.html#cb167-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb167-7"><a href="map.html#cb167-7" aria-hidden="true" tabindex="-1"></a>taiwan <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb167-8"><a href="map.html#cb167-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_polygon</span>(</span>
-<span id="cb167-9"><a href="map.html#cb167-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
-<span id="cb167-10"><a href="map.html#cb167-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>long, <span class="at">y=</span>lat, <span class="at">group=</span>group</span>
-<span id="cb167-11"><a href="map.html#cb167-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb167-12"><a href="map.html#cb167-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb167-13"><a href="map.html#cb167-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb167-14"><a href="map.html#cb167-14" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="map.html#cb166-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb166-2"><a href="map.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb166-3"><a href="map.html#cb166-3" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_detect</span>(region, <span class="st">&quot;Taiwan&quot;</span>)</span>
+<span id="cb166-4"><a href="map.html#cb166-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
+<span id="cb166-5"><a href="map.html#cb166-5" aria-hidden="true" tabindex="-1"></a>  taiwan</span>
+<span id="cb166-6"><a href="map.html#cb166-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb166-7"><a href="map.html#cb166-7" aria-hidden="true" tabindex="-1"></a>taiwan <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb166-8"><a href="map.html#cb166-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_polygon</span>(</span>
+<span id="cb166-9"><a href="map.html#cb166-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb166-10"><a href="map.html#cb166-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>long, <span class="at">y=</span>lat, <span class="at">group=</span>group</span>
+<span id="cb166-11"><a href="map.html#cb166-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb166-12"><a href="map.html#cb166-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb166-13"><a href="map.html#cb166-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb166-14"><a href="map.html#cb166-14" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
 <ul>
 <li>By default, all geom (except geom_sf) is graphed based on Cartesian coordinate system. You need to <code>+coord_map()</code> to do map projection.</li>
 </ul>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="map.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default of coord_map</span></span>
-<span id="cb168-2"><a href="map.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_map</span>(</span>
-<span id="cb168-3"><a href="map.html#cb168-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> <span class="st">&quot;mercator&quot;</span>,</span>
-<span id="cb168-4"><a href="map.html#cb168-4" aria-hidden="true" tabindex="-1"></a>  ...,</span>
-<span id="cb168-5"><a href="map.html#cb168-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parameters =</span> <span class="cn">NULL</span>,</span>
-<span id="cb168-6"><a href="map.html#cb168-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="cn">NULL</span>,</span>
-<span id="cb168-7"><a href="map.html#cb168-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="cn">NULL</span>,</span>
-<span id="cb168-8"><a href="map.html#cb168-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="cn">NULL</span>,</span>
-<span id="cb168-9"><a href="map.html#cb168-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip =</span> <span class="st">&quot;on&quot;</span></span>
-<span id="cb168-10"><a href="map.html#cb168-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="map.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default of coord_map</span></span>
+<span id="cb167-2"><a href="map.html#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_map</span>(</span>
+<span id="cb167-3"><a href="map.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> <span class="st">&quot;mercator&quot;</span>,</span>
+<span id="cb167-4"><a href="map.html#cb167-4" aria-hidden="true" tabindex="-1"></a>  ...,</span>
+<span id="cb167-5"><a href="map.html#cb167-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parameters =</span> <span class="cn">NULL</span>,</span>
+<span id="cb167-6"><a href="map.html#cb167-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="cn">NULL</span>,</span>
+<span id="cb167-7"><a href="map.html#cb167-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="cn">NULL</span>,</span>
+<span id="cb167-8"><a href="map.html#cb167-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="cn">NULL</span>,</span>
+<span id="cb167-9"><a href="map.html#cb167-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip =</span> <span class="st">&quot;on&quot;</span></span>
+<span id="cb167-10"><a href="map.html#cb167-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <ul>
 <li>If multiple coordinate systems are detected, the last coordinate system will be used.</li>
 </ul>

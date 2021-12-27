@@ -297,30 +297,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="color" class="section level1" number="7">
 <h1><span class="header-section-number">第 7 章</span> Color</h1>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="color.html#cb169-1" aria-hidden="true" tabindex="-1"></a>date <span class="ot">=</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">c</span>(<span class="st">&quot;2020-02-01&quot;</span>, <span class="st">&quot;2020-04-01&quot;</span>,</span>
-<span id="cb169-2"><a href="color.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;2020-06-01&quot;</span>, <span class="st">&quot;2020-09-01&quot;</span>))</span>
-<span id="cb169-3"><a href="color.html#cb169-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb169-4"><a href="color.html#cb169-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Britain <span class="ot">&lt;-</span> </span>
-<span id="cb169-5"><a href="color.html#cb169-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb169-6"><a href="color.html#cb169-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
-<span id="cb169-7"><a href="color.html#cb169-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">100</span>)</span>
-<span id="cb169-8"><a href="color.html#cb169-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb169-9"><a href="color.html#cb169-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Spain <span class="ot">&lt;-</span></span>
-<span id="cb169-10"><a href="color.html#cb169-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb169-11"><a href="color.html#cb169-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
-<span id="cb169-12"><a href="color.html#cb169-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">53</span>, <span class="dv">103</span>)</span>
-<span id="cb169-13"><a href="color.html#cb169-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb169-14"><a href="color.html#cb169-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Italy <span class="ot">&lt;-</span></span>
-<span id="cb169-15"><a href="color.html#cb169-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb169-16"><a href="color.html#cb169-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
-<span id="cb169-17"><a href="color.html#cb169-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">99</span>)</span>
-<span id="cb169-18"><a href="color.html#cb169-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="color.html#cb170-1" aria-hidden="true" tabindex="-1"></a>dataAll <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(</span>
-<span id="cb170-2"><a href="color.html#cb170-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(data),</span>
-<span id="cb170-3"><a href="color.html#cb170-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>{</span>
-<span id="cb170-4"><a href="color.html#cb170-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cbind</span>(data[[.x]], <span class="fu">data.frame</span>(<span class="at">country=</span>.x))</span>
-<span id="cb170-5"><a href="color.html#cb170-5" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb170-6"><a href="color.html#cb170-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="color.html#cb168-1" aria-hidden="true" tabindex="-1"></a>date <span class="ot">=</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">c</span>(<span class="st">&quot;2020-02-01&quot;</span>, <span class="st">&quot;2020-04-01&quot;</span>,</span>
+<span id="cb168-2"><a href="color.html#cb168-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;2020-06-01&quot;</span>, <span class="st">&quot;2020-09-01&quot;</span>))</span>
+<span id="cb168-3"><a href="color.html#cb168-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb168-4"><a href="color.html#cb168-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Britain <span class="ot">&lt;-</span> </span>
+<span id="cb168-5"><a href="color.html#cb168-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb168-6"><a href="color.html#cb168-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb168-7"><a href="color.html#cb168-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">100</span>)</span>
+<span id="cb168-8"><a href="color.html#cb168-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb168-9"><a href="color.html#cb168-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Spain <span class="ot">&lt;-</span></span>
+<span id="cb168-10"><a href="color.html#cb168-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb168-11"><a href="color.html#cb168-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb168-12"><a href="color.html#cb168-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">53</span>, <span class="dv">103</span>)</span>
+<span id="cb168-13"><a href="color.html#cb168-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb168-14"><a href="color.html#cb168-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Italy <span class="ot">&lt;-</span></span>
+<span id="cb168-15"><a href="color.html#cb168-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb168-16"><a href="color.html#cb168-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> date,</span>
+<span id="cb168-17"><a href="color.html#cb168-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">99</span>)</span>
+<span id="cb168-18"><a href="color.html#cb168-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="color.html#cb169-1" aria-hidden="true" tabindex="-1"></a>dataAll <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(</span>
+<span id="cb169-2"><a href="color.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(data),</span>
+<span id="cb169-3"><a href="color.html#cb169-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>{</span>
+<span id="cb169-4"><a href="color.html#cb169-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cbind</span>(data[[.x]], <span class="fu">data.frame</span>(<span class="at">country=</span>.x))</span>
+<span id="cb169-5"><a href="color.html#cb169-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb169-6"><a href="color.html#cb169-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <ul>
 <li>dataAll is a grouped data</li>
 </ul>
@@ -330,40 +330,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When you have a grouped data frame and intend to draw by groups, you need to set the aesthetics <code>group</code> equal to the group variable in your data frame.</p>
 </div>
 <p>Without group aes:</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="color.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
+<span id="cb170-2"><a href="color.html#cb170-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb170-3"><a href="color.html#cb170-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb170-4"><a href="color.html#cb170-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
+<span id="cb170-5"><a href="color.html#cb170-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y</span>
+<span id="cb170-6"><a href="color.html#cb170-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb170-7"><a href="color.html#cb170-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>With group aes:</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="color.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
 <span id="cb171-2"><a href="color.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb171-3"><a href="color.html#cb171-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb171-4"><a href="color.html#cb171-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
-<span id="cb171-5"><a href="color.html#cb171-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y</span>
-<span id="cb171-6"><a href="color.html#cb171-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb171-7"><a href="color.html#cb171-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>With group aes:</p>
+<span id="cb171-5"><a href="color.html#cb171-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
+<span id="cb171-6"><a href="color.html#cb171-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> country</span>
+<span id="cb171-7"><a href="color.html#cb171-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb171-8"><a href="color.html#cb171-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<hr />
+<p>Using aesthetics other than <strong>x, y</strong> can function as group aesthetic as well:</p>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="color.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
 <span id="cb172-2"><a href="color.html#cb172-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb172-3"><a href="color.html#cb172-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb172-4"><a href="color.html#cb172-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
 <span id="cb172-5"><a href="color.html#cb172-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
-<span id="cb172-6"><a href="color.html#cb172-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> country</span>
+<span id="cb172-6"><a href="color.html#cb172-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> country</span>
 <span id="cb172-7"><a href="color.html#cb172-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb172-8"><a href="color.html#cb172-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<hr />
-<p>Using aesthetics other than <strong>x, y</strong> can function as group aesthetic as well:</p>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="color.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
 <span id="cb173-2"><a href="color.html#cb173-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb173-3"><a href="color.html#cb173-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb173-4"><a href="color.html#cb173-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
 <span id="cb173-5"><a href="color.html#cb173-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
-<span id="cb173-6"><a href="color.html#cb173-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> country</span>
+<span id="cb173-6"><a href="color.html#cb173-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> country</span>
 <span id="cb173-7"><a href="color.html#cb173-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb173-8"><a href="color.html#cb173-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="color.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataAll) <span class="sc">+</span></span>
-<span id="cb174-2"><a href="color.html#cb174-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb174-3"><a href="color.html#cb174-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb174-4"><a href="color.html#cb174-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> date,</span>
-<span id="cb174-5"><a href="color.html#cb174-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y,</span>
-<span id="cb174-6"><a href="color.html#cb174-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> country</span>
-<span id="cb174-7"><a href="color.html#cb174-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb174-8"><a href="color.html#cb174-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 
 </div>
 </div>

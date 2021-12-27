@@ -436,10 +436,6 @@ scale_fill_steps2(
 
 ## Map as background
 
-```{r}
-mp <- econDV2::Map()
-```
-
 ### ggmap
 
 Two steps:
