@@ -175,6 +175,14 @@ world0_background <- function(){
 }
 ```
 
+```{r}
+world0_background()
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/world0_background.png", "100%")
+```
+
 ### Choropleth layer: value layer
 
 Another layer of `geom_polygon`s but with different fills setup based on social-economic data. Instead of using `geom_polygon` as the background layer does, `geom_map` is an easier to use geom for Choropleth graph. 
@@ -204,28 +212,74 @@ expand_limits(
     * `map_id` column must consist of the levels of `map data`'s region column.
     
     * `fill` column: the social-economic data to show.
+    
+  * `expand_limits` to ensure that no boundary points are right on the border of the plot.
 
 #### WDI example
 
 
 Social-economic data
-```{r}
+```{r se_data}
 se_data <- jsonlite::fromJSON(
   "https://www.dropbox.com/s/78jr6g6xtjz453b/women_in_parliament.json?dl=1"
 )
-View(se_data)
+# View(se_data)
 ```
 
 ```{r}
-world0_background() +
-  geom_map(
+ggplot()+geom_map(
     data=se_data,
     mapping=aes(
       map_id=country,
       fill=women_in_parliament
     ),
     map=world
-  )
+  )+
+  expand_limits(x=world$long, y=world$lat)
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/only_geom_map.png", "80%")
+```
+
+***
+
+```{r}
+# geom_map only plot those in the social-economic data
+ggplot()+geom_map(
+    data=se_data[1:30,],
+    mapping=aes(
+      map_id=country,
+      fill=women_in_parliament
+    ),
+    map=world
+  )+
+  expand_limits(x=world$long, y=world$lat)
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/only_geom_map2.png", "80%")
+```
+
+***
+
+World background ensure every country is on the map. 
+
+```{r}
+world0_background() +
+  geom_map(
+    data=se_data[1:30, ],
+    mapping=aes(
+      map_id=country,
+      fill=women_in_parliament
+    ),
+    map=world
+  )+
+  expand_limits(x=world$long, y=world$lat)
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/geom_map_with_worldbackground.png", "100%")
 ```
 
 ***
@@ -259,7 +313,8 @@ world0_background() +
       fill=women_in_parliament
     ),
     map=world
-  )
+  )+
+  expand_limits(x=world$long, y=world$lat)
 ```
 
 ```{r}
@@ -272,11 +327,36 @@ choropleth0 <- function(){
       fill=women_in_parliament
     ),
     map=world
-  )
+  )+
+  expand_limits(x=world$long, y=world$lat)
 }
-choropleth0()
+choropleth0() + 
+  theme_void() +
+  labs(
+    title="2020各國國會女性席次佔比(%)"
+  ) +
+  theme(
+    legend.position = "bottom"
+  ) +
+  guides(
+    fill=guide_colorbar(
+        title=NULL,
+        barwidth = 4, #input$barwidth
+        barheight = 0.35, #input$barheight
+      )
+    )
+
+# can also
+choropleth0() +
+  scale_fill_gradient(
+    guide = guide_colorbar(...)
+  )
+
 ```
 
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/womanInParliament.png", "80%")
+```
 
 ### Fill colors
 
@@ -312,42 +392,58 @@ choropleth0() +
   )
 ```
 
+#### Palette function
+
+A function that can generate color as a mixture of the pigments specified.
 
 ```{r}
-scales::colour_ramp(
-  c(high = "#003870",
-    low = "#d3e3f3")
-) -> binPalette
-scales::show_col(
-  binPalette(c(0, 0.5, 0.8, 1))
-)
-
+# two pigments
+myPalette1 <- 
+  scales::colour_ramp(
+    c(low = "#d3e3f3", high = "#003870")
+  )
+myPalette1(c(0, 0.5, 1)) |> scales::show_col()
 ```
 
-
-#### Ordered Factor
-
+Return a palette function based on you shiny interaction.
 ```{r}
+myPalette2 <-
+  colorspace::choose_palette(gui="shiny") 
+myPalette2(n=3) # generate 3 equal distance color mixed
+```
+
+  * myPalette1 takes a numeric vector (element values all between 0 and 1) and return a vector of color codes.
+  
+  * myPalette2 takes an positive integer and return that number amount of color codes as a vector. 
+  
+  * With right pigments choice, `myPalette2(n=3) == myPalette1(c(0,0.5,1))`
+
+
+#### Bin your color
+
+  * Continuous color change is easy to spot those outliers, but not easy to compare non-outliers across borders.
+  
+  * Discretize your continuous various and use `scale_fill_manual` to apply your sequential palette.
+
+Discretize continuous variable using `cut`:
+```{r se_data2}
 se_data2 <- se_data
+se_data2$women_in_parliament |> IQR(na.rm=T)
+se_data2$women_in_parliament |> quantile(c(0.25, 0.5, 0.75,1), na.rm = T) |> 
+  round() -> cutpoints
+# cut into 4 ordered levels
 se_data2$women_in_parliament |>
-  cut(c(0,20,40,60,100), ordered_result = T) -> .fct
+  cut(c(0, cutpoints), ordered_result = T) -> .fct
 .fct |> class()
-levels(.fct) <- c("0-20%","20-40%","40-60%","60-100%")
+# rename levels for legend labels
+levels(.fct) <- c("0-15%","15-23%","23-31%","31-61%")
 .fct -> se_data2$women_in_parliament
 ```
 
 ***
 
 
-```{r}
-myPalette <- 
-  scales::colour_ramp(
-    c(low = "#d3e3f3", high = "#003870")
-  )
-scales::show_col(
-  myPalette(c(0, 0.33, 0.66, 1))
-)
-```
+
 
 
 ```{r}
@@ -369,7 +465,7 @@ choropleth1 <- function(){
 choropleth1() +
   scale_fill_manual(
     limits = c(NA, '0-20%','20-40%','40-60%','60-100%'),
-    values = c("#919191", myPalette(c(0, 0.33, 0.66, 1)))
+    values = c("#919191", myPalette1(c(0, 0.33, 0.66, 1)))
   )+
   guides(
     fill=guide_legend(
@@ -395,9 +491,45 @@ choropleth1() +
 
 #### Diverging color
 
-##### colorspace {-}
+##### Package **colorspace** {-}
+
+```{r}
+# choose palette
+colorspace::choose_palette(gui="shiny") -> pal
+```
+
+  * The chosen palette function will be `pal`.
+
+
+```{r}
+# Or
+mp$choose_palette()
+```
+
+  * The chosen palette function will be `mp$palette`
+
+The chosen palette function can generate interpolate as many colors on the palette as you want
+
+```{r}
+mp$choose_palette |> args()
+```
+
+
+```{r}
+pal(n=6) |> scales::show_col()
+mp$palettte(n=7) |> scales::show_col()
+mp$palettte(n=9) |> scales::show_col()
+mp$palettte(register="blue_red")
+```
+
 Diverging color 
-When dealing with diverging color it is better to rescale your color mapping source data to [-1, 1].
+
+When dealing with diverging color it is better to rescale your color mapping source data to [-1, 1] based on what you really want. By default,
+
+```{r}
+se_data$wo
+```
+
 
 ```{r}
 se_data$women_in_parliament |>
@@ -434,7 +566,7 @@ scale_fill_steps2(
 )
 ```
 
-## Map as background
+## Map tile as background
 
 ### ggmap
 
@@ -443,11 +575,46 @@ Two steps:
   1. `get_xxxmap` to obtain raster map image.
   
   2. `ggmap` to produce a gg(plot) object as a background layer.
-  
+
 ```{r}
-mp$prepare_dataframe_from$map()
+taipei <- 
+  ggmap::get_googlemap(
+    center = c(long=121.4336018, lat=25.0341671),
+  zoom = 10,
+    scale=2
+  )
+ggmap(taipei)
+
+ntpu <- ggmap::get_stamenmap(
+  bbox = c(left = 121.3636, bottom = 24.9379, right = 121.3866, top = 24.9520),
+  zoom=16,
+  maptype = "toner-lite"
+)
+ggmap(ntpu)
 ```
 
+<div class="alert alert-info">
+You can copy map info from Google map link `https://www.google.com/maps/@24.9475275,121.3795888,15z` then:
+```{r}
+# mp <- econDV2::Map()
+mp$extract$googleMapLocation()
+# then paste to get_googlemap
+```
+
+Copy map info from OSM map bbox
+
+```{r eval=T, echo=F}
+teachDS::img_centering("img/osmbbox.png")
+```
+
+then:
+```{r}
+mp$extract$osmBBox()
+# then paste to get_stamenmap
+```
+
+
+</div>
 
 ## Simple feature
 
@@ -567,6 +734,13 @@ geoValues$simple_feature_df |> ggplot()+geom_sf()
 ## Import Simple Feature Data
 
   * <https://tpemartin.github.io/economic-data-visualization/zh-tw/annotation-and-maps.html#%E8%AE%80%E5%85%A5shp%E6%AA%94>
+
+###
+
+```{r}
+
+```
+
 
 ## Projection
 
