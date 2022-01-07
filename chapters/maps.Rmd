@@ -917,6 +917,11 @@ gg_taiwan1 <- function(){
 gg_taiwan1()
 ```
 
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/gg_taiwan1.png", "100%")
+```
+
+
 ```{r}
 gg_taiwan1() +
   geom_sf(
@@ -925,6 +930,11 @@ gg_taiwan1() +
       sf_taiwan$crop_mainland()
   )
 ```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/gg_taiwan1_geom_sf.png", "100%")
+```
+
 
 <div class="alert alert-info">
 If you don't know how much to crop and want to explore different possibilities, you can:
@@ -950,6 +960,10 @@ gg_taiwan2 <- function(){
 gg_taiwan2()
 ```
 
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/gg_taiwan2.png", "100%")
+```
+
 ```{r}
 gg_taiwan2() +
   geom_sf(
@@ -959,6 +973,135 @@ gg_taiwan2() +
   )
 ```
 
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/gg_taiwan2_geom_sf.png", "100%")
+```
+
+
+### 毒品破獲
+
+```{r}
+drug <- jsonlite::fromJSON("https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?dl=1")
+```
+
+```{r}
+econDV2::Object(gg_drug)
+drug |> 
+  dplyr::filter(發生西元年=="2018") -> gg_drug$data
+library(dplyr)
+gg_drug$data |>
+  group_by(發生地點) |>
+  summarise(
+    案件次數=n()
+  ) -> gg_drug$data
+gg_drug$data |> View()
+```
+
+```{r}
+sf_taiwan$區鎮_simplified_patched |> View()
+sf_taiwan$區鎮_simplified_patched |> 
+  sf_taiwan$crop_mainland()  -> .df
+.df |> 
+  mutate(
+    location=paste0(
+      stringr::str_replace(is_in.city, "臺", "台"), name)
+  ) -> .df
+.df |> #names()
+  dplyr::left_join(
+    gg_drug$data,
+    by=c("location"="發生地點")
+  ) -> gg_drug$sf
+```
+
+```{r}
+gg_drug$map$background <- function(){
+  sf_taiwan$區鎮_simplified_patched |> 
+  sf_taiwan$crop_mainland() |> 
+  mp$sf$make_background_map()
+}
+gg_drug$map$background()
+```
+
+```{r}
+gg_drug$map$choropleth0 <- function(){
+  gg_drug$map$background() +
+    geom_sf(
+      data=gg_drug$sf,
+      mapping=aes(
+        fill=案件次數
+      ),
+      color="white",
+      size=0.15
+    ) 
+}
+
+gg_drug$map$choropleth0()
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/drug_choropleth0.png", "100%")
+```
+
+```{r}
+# mp$choose_palette()
+colorspace::sequential_hcl(n = 3, h = c(-83, 20), c = c(65, NA, 18), l = c(32, 90), power = c(0.5, 1), rev = TRUE, register = "drug")
+```
+
+
+```{r}
+gg_drug$map$choropleth0() +
+  colorspace::scale_fill_continuous_sequential(
+    palette="drug", 
+    na.value="#dbd7a8"
+  )
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/drug_choropleth0_b.png", "100%")
+```
+
+
+```{r}
+gg_drug$sf$案件次數 |> 
+  cut(
+    c(0,10,20,30)
+  ) -> 
+  gg_drug$sf$案件次數2
+
+gg_drug$map$choropleth1 <- function(){
+  gg_drug$map$background() +
+    geom_sf(
+      data=gg_drug$sf,
+      mapping=aes(
+        fill=案件次數2,
+        label=location
+      ),
+      color="white",
+      size=0.15
+    ) 
+}
+```
+
+```{r}
+gg_drug$map$choropleth1() +
+  colorspace::scale_fill_discrete_sequential(
+    palette="drug", 
+    na.value="#dbd7a8"
+  ) + 
+  theme_void() -> gg_drug$map$choropleth_final
+
+gg_drug$map$choropleth_final
+```
+
+```{r}
+plotly::ggplotly(
+  gg_drug$map$choropleth_final
+)
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/drug_choropleth_final.png","100%")
+```
 
 ## Spatial computation
 
