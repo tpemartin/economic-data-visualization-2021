@@ -1093,14 +1093,20 @@ gg_drug$map$choropleth1() +
 gg_drug$map$choropleth_final
 ```
 
+```{r , eval=T, echo=F}
+tags$a(
+  href="https://tpemartin.github.io/economic-data-visualization-2021/img/plotly_drug.html",
+  target="_blank",
+  teachDS::img_centering("img/drug_choropleth_final.png","100%")
+)
+
+```
+
+
 ```{r}
 plotly::ggplotly(
   gg_drug$map$choropleth_final
 )
-```
-
-```{r , eval=T, echo=F}
-teachDS::img_centering("img/drug_choropleth_final.png","100%")
 ```
 
 ## Spatial computation
