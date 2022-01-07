@@ -1,3 +1,7 @@
+```{r eval=T, echo=FALSE}
+klippy::klippy()
+```
+
 # Map
 
 ```{r}
@@ -878,6 +882,87 @@ taipei1() +
     inherit.aes = FALSE
   )
 ```
+
+## Taiwan background map
+
+```{r}
+xfun::download_file(
+  "https://www.dropbox.com/s/x5iinins676g53f/sf_taiwan.Rds?dl=1",
+  output="data/sf_taiwan.Rds"
+)
+sf_taiwan = readRDS("data/sf_taiwan.Rds")
+```
+
+```{r}
+mp <- econDV2::Map()
+```
+
+### 縣市
+
+```{r}
+# Without cropping
+sf_taiwan$縣市_simplified |>
+  mp$sf$make_background_map()
+
+# With cropping
+gg_taiwan1 <- function(){
+  sf_taiwan$縣市_simplified |>
+  sf_taiwan$crop_mainland() |>
+  mp$sf$make_background_map(
+      color="white",
+      size=0.14
+  )
+}
+
+gg_taiwan1()
+```
+
+```{r}
+gg_taiwan1() +
+  geom_sf(
+   data =  
+      sf_taiwan$縣市_simplified |>
+      sf_taiwan$crop_mainland()
+  )
+```
+
+<div class="alert alert-info">
+If you don't know how much to crop and want to explore different possibilities, you can:
+```{r}
+sf_taiwan$縣市_simplified |> 
+  mp$sf$gg_crop()
+```
+
+</div>
+
+### 各鄉/鎮/區
+
+```{r}
+gg_taiwan2 <- function(){
+  sf_taiwan$區鎮_simplified_patched |>
+    sf_taiwan$crop_mainland() |>
+    mp$sf$make_background_map(
+      color="white",
+      size=0.14
+    )
+}
+
+gg_taiwan2()
+```
+
+```{r}
+gg_taiwan2() +
+  geom_sf(
+    data=
+      sf_taiwan$區鎮_simplified_patched |>
+      sf_taiwan$crop_mainland()
+  )
+```
+
+
+## Spatial computation
+
+  * <https://cran.r-project.org/web/packages/sf/vignettes/sf1.html>
 
 ## Projection
 
