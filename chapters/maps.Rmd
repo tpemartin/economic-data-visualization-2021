@@ -1,8 +1,8 @@
+# Map
+
 ```{r eval=T, echo=FALSE}
 klippy::klippy()
 ```
-
-# Map
 
 ```{r}
 mp <- econDV2::Map()
