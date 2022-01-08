@@ -897,6 +897,7 @@ sf_taiwan = readRDS("data/sf_taiwan.Rds")
 mp <- econDV2::Map()
 ```
 
+
 ### 縣市
 
 ```{r}
@@ -985,7 +986,7 @@ drug <- jsonlite::fromJSON("https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?
 ```
 
 ```{r}
-econDV2::Object(gg_drug)
+gg_drug <- list()
 drug |> 
   dplyr::filter(發生西元年=="2018") -> gg_drug$data
 library(dplyr)
@@ -1109,6 +1110,62 @@ plotly::ggplotly(
 )
 ```
 
+<div class="alert alert-info">
+If you want to make the entire Taiwan island's choropleth map down to "縣市" or "鄉鎮區", you can also do:
+```{r}
+ggplot()+
+  econDV2::geom_sf_taiwan(
+    data=gg_drug$data,
+    mapping=aes(
+      fill=案件次數
+    ),
+    map_id = "發生地點",
+    type="鄉鎮區"
+  )
+
+last_plot() +
+  colorspace::scale_fill_continuous_sequential(
+    palette="drug", 
+    na.value="#dbd7a8"
+  )
+```
+
+```{r}
+gg_drug$data$案件次數 |> 
+  cut(
+    c(0,10,20,30)
+  ) -> 
+  gg_drug$data$案件次數2
+
+ggplot()+
+  econDV2::geom_sf_taiwan(
+    data=gg_drug$data,
+    mapping=aes(
+      fill=案件次數2
+    ),
+    color="white",
+    size=0.15,
+    map_id = "發生地點",
+    type="鄉鎮區",
+    background.fill = "#ebffd9",
+    background.color = "#d9d9d9",
+    background.size = 0.1
+  )
+
+last_plot() +
+  colorspace::scale_fill_discrete_sequential(
+    palette="drug", 
+    na.value="#dbd7a8"
+  ) + 
+  theme_void()
+```
+
+```{r, eval=TRUE, echo=FALSE}
+teachDS::img_centering("img/drugecondv2.png", width="100%")
+```
+
+
+</div>
 ## Spatial computation
 
   * <https://cran.r-project.org/web/packages/sf/vignettes/sf1.html>

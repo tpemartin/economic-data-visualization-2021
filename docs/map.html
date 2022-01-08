@@ -1051,7 +1051,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="毒品破獲" class="section level3" number="6.6.3">
 <h3><span class="header-section-number">6.6.3</span> 毒品破獲</h3>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="map.html#cb193-1" aria-hidden="true" tabindex="-1"></a>drug <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="st">&quot;https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?dl=1&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="map.html#cb194-1" aria-hidden="true" tabindex="-1"></a>econDV2<span class="sc">::</span><span class="fu">Object</span>(gg_drug)</span>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="map.html#cb194-1" aria-hidden="true" tabindex="-1"></a>gg_drug <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb194-2"><a href="map.html#cb194-2" aria-hidden="true" tabindex="-1"></a>drug <span class="sc">|</span><span class="er">&gt;</span> </span>
 <span id="cb194-3"><a href="map.html#cb194-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(發生西元年<span class="sc">==</span><span class="st">&quot;2018&quot;</span>) <span class="ot">-&gt;</span> gg_drug<span class="sc">$</span>data</span>
 <span id="cb194-4"><a href="map.html#cb194-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -1140,6 +1140,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="map.html#cb202-1" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(</span>
 <span id="cb202-2"><a href="map.html#cb202-2" aria-hidden="true" tabindex="-1"></a>  gg_drug<span class="sc">$</span>map<span class="sc">$</span>choropleth_final</span>
 <span id="cb202-3"><a href="map.html#cb202-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="alert alert-info">
+<p>If you want to make the entire Taiwan island’s choropleth map down to “縣市” or “鄉鎮區,” you can also do:</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="map.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb203-2"><a href="map.html#cb203-2" aria-hidden="true" tabindex="-1"></a>  econDV2<span class="sc">::</span><span class="fu">geom_sf_taiwan</span>(</span>
+<span id="cb203-3"><a href="map.html#cb203-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>gg_drug<span class="sc">$</span>data,</span>
+<span id="cb203-4"><a href="map.html#cb203-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb203-5"><a href="map.html#cb203-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span>案件次數</span>
+<span id="cb203-6"><a href="map.html#cb203-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb203-7"><a href="map.html#cb203-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">&quot;發生地點&quot;</span>,</span>
+<span id="cb203-8"><a href="map.html#cb203-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">type=</span><span class="st">&quot;鄉鎮區&quot;</span></span>
+<span id="cb203-9"><a href="map.html#cb203-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb203-10"><a href="map.html#cb203-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb203-11"><a href="map.html#cb203-11" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span></span>
+<span id="cb203-12"><a href="map.html#cb203-12" aria-hidden="true" tabindex="-1"></a>  colorspace<span class="sc">::</span><span class="fu">scale_fill_continuous_sequential</span>(</span>
+<span id="cb203-13"><a href="map.html#cb203-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette=</span><span class="st">&quot;drug&quot;</span>, </span>
+<span id="cb203-14"><a href="map.html#cb203-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value=</span><span class="st">&quot;#dbd7a8&quot;</span></span>
+<span id="cb203-15"><a href="map.html#cb203-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="map.html#cb204-1" aria-hidden="true" tabindex="-1"></a>gg_drug<span class="sc">$</span>data<span class="sc">$</span>案件次數 <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb204-2"><a href="map.html#cb204-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cut</span>(</span>
+<span id="cb204-3"><a href="map.html#cb204-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>)</span>
+<span id="cb204-4"><a href="map.html#cb204-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> </span>
+<span id="cb204-5"><a href="map.html#cb204-5" aria-hidden="true" tabindex="-1"></a>  gg_drug<span class="sc">$</span>data<span class="sc">$</span>案件次數2</span>
+<span id="cb204-6"><a href="map.html#cb204-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb204-7"><a href="map.html#cb204-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb204-8"><a href="map.html#cb204-8" aria-hidden="true" tabindex="-1"></a>  econDV2<span class="sc">::</span><span class="fu">geom_sf_taiwan</span>(</span>
+<span id="cb204-9"><a href="map.html#cb204-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>gg_drug<span class="sc">$</span>data,</span>
+<span id="cb204-10"><a href="map.html#cb204-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb204-11"><a href="map.html#cb204-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill=</span>案件次數2</span>
+<span id="cb204-12"><a href="map.html#cb204-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb204-13"><a href="map.html#cb204-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">&quot;white&quot;</span>,</span>
+<span id="cb204-14"><a href="map.html#cb204-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="fl">0.15</span>,</span>
+<span id="cb204-15"><a href="map.html#cb204-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">&quot;發生地點&quot;</span>,</span>
+<span id="cb204-16"><a href="map.html#cb204-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">type=</span><span class="st">&quot;鄉鎮區&quot;</span>,</span>
+<span id="cb204-17"><a href="map.html#cb204-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">background.fill =</span> <span class="st">&quot;#ebffd9&quot;</span>,</span>
+<span id="cb204-18"><a href="map.html#cb204-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">background.color =</span> <span class="st">&quot;#d9d9d9&quot;</span>,</span>
+<span id="cb204-19"><a href="map.html#cb204-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">background.size =</span> <span class="fl">0.1</span></span>
+<span id="cb204-20"><a href="map.html#cb204-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb204-21"><a href="map.html#cb204-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb204-22"><a href="map.html#cb204-22" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span></span>
+<span id="cb204-23"><a href="map.html#cb204-23" aria-hidden="true" tabindex="-1"></a>  colorspace<span class="sc">::</span><span class="fu">scale_fill_discrete_sequential</span>(</span>
+<span id="cb204-24"><a href="map.html#cb204-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette=</span><span class="st">&quot;drug&quot;</span>, </span>
+<span id="cb204-25"><a href="map.html#cb204-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value=</span><span class="st">&quot;#dbd7a8&quot;</span></span>
+<span id="cb204-26"><a href="map.html#cb204-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb204-27"><a href="map.html#cb204-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<div style="text-align: center;">
+<img src="img/drugecondv2.png" style="width: 100%"/>
+</div>
+</div>
 </div>
 </div>
 <div id="spatial-computation" class="section level2" number="6.7">
@@ -1162,67 +1210,67 @@ Mercator projection
 </figcaption>
 </figure>
 <p>To gain more control on projection result, use <code>coord_map()</code>:</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="map.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="map.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
 <div class="alert alert-warning">
 <p>By default, <code>coord_map()</code> take <code>xlim=range(world$long)</code>, range has some round off effect which cuts the true range short, creating the erraneous connection problem. To avoid that, set <code>xlim=c(-180, 180)</code> (a little wider than the range rendered).</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="map.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="map.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>))</span></code></pre></div>
 </div>
 <p>Set orientation vector:<br />
 &gt; A vector c(latitude,longitude,rotation) which describes where the “North Pole” should be when computing the projection.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="map.html#cb205-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$center_longitude</span></span>
-<span id="cb205-2"><a href="map.html#cb205-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span>
-<span id="cb205-3"><a href="map.html#cb205-3" aria-hidden="true" tabindex="-1"></a>mapproj<span class="sc">::</span><span class="fu">mapproject</span>(</span>
-<span id="cb205-4"><a href="map.html#cb205-4" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>long,</span>
-<span id="cb205-5"><a href="map.html#cb205-5" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>lat,</span>
-<span id="cb205-6"><a href="map.html#cb205-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection=</span><span class="st">&quot;mercator&quot;</span>,</span>
-<span id="cb205-7"><a href="map.html#cb205-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, center_longitude, rotation)</span>
-<span id="cb205-8"><a href="map.html#cb205-8" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> longlat_new</span>
-<span id="cb205-9"><a href="map.html#cb205-9" aria-hidden="true" tabindex="-1"></a>world_new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb205-10"><a href="map.html#cb205-10" aria-hidden="true" tabindex="-1"></a>  longlat_new[<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)]</span>
-<span id="cb205-11"><a href="map.html#cb205-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb205-12"><a href="map.html#cb205-12" aria-hidden="true" tabindex="-1"></a>world_new<span class="sc">$</span>group <span class="ot">&lt;-</span> world<span class="sc">$</span>group</span></code></pre></div>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="map.html#cb206-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> world <span class="sc">|</span><span class="er">&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(region <span class="sc">!=</span><span class="st">&quot;Antarctica&quot;</span>, <span class="fu">is.na</span>(subregion))</span></code></pre></div>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="map.html#cb207-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$center_longitude</span></span>
-<span id="cb207-2"><a href="map.html#cb207-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span></code></pre></div>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="map.html#cb208-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
-<span id="cb208-2"><a href="map.html#cb208-2" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>()<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb208-3"><a href="map.html#cb208-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># xlim=c(-180, 180),</span></span>
-<span id="cb208-4"><a href="map.html#cb208-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, rotation),</span>
-<span id="cb208-5"><a href="map.html#cb208-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
-<span id="cb208-6"><a href="map.html#cb208-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
-<span id="cb208-7"><a href="map.html#cb208-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x=</span><span class="fu">range</span>(world<span class="sc">$</span>long), <span class="at">y=</span><span class="fu">range</span>(world<span class="sc">$</span>lat))</span></code></pre></div>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="map.html#cb209-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">group_by</span>(region) <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb209-2"><a href="map.html#cb209-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="ot">-&gt;</span> world_value</span>
-<span id="cb209-3"><a href="map.html#cb209-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb209-4"><a href="map.html#cb209-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(</span>
-<span id="cb209-5"><a href="map.html#cb209-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>world_value,</span>
-<span id="cb209-6"><a href="map.html#cb209-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">map_id=</span>region),</span>
-<span id="cb209-7"><a href="map.html#cb209-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
-<span id="cb209-8"><a href="map.html#cb209-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">map=</span>world</span>
-<span id="cb209-9"><a href="map.html#cb209-9" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="map.html#cb210-1" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb210-2"><a href="map.html#cb210-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
-<span id="cb210-3"><a href="map.html#cb210-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb210-4"><a href="map.html#cb210-4" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb210-5"><a href="map.html#cb210-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">190</span>, <span class="dv">190</span>)</span>
-<span id="cb210-6"><a href="map.html#cb210-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb210-7"><a href="map.html#cb210-7" aria-hidden="true" tabindex="-1"></a>(gg0 <span class="sc">+</span> <span class="fu">coord_map</span>()) <span class="sc">|</span><span class="er">&gt;</span></span>
-<span id="cb210-8"><a href="map.html#cb210-8" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">ggplotly</span>()</span>
-<span id="cb210-9"><a href="map.html#cb210-9" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>()</span>
-<span id="cb210-10"><a href="map.html#cb210-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">range</span>(world<span class="sc">$</span>long))</span>
-<span id="cb210-11"><a href="map.html#cb210-11" aria-hidden="true" tabindex="-1"></a>o1 <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$o1</span></span>
-<span id="cb210-12"><a href="map.html#cb210-12" aria-hidden="true" tabindex="-1"></a>o2 <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$o2</span></span>
-<span id="cb210-13"><a href="map.html#cb210-13" aria-hidden="true" tabindex="-1"></a>o3 <span class="ot">=</span> <span class="fl">5.1354</span> <span class="co">#input$o3</span></span>
-<span id="cb210-14"><a href="map.html#cb210-14" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
-<span id="cb210-15"><a href="map.html#cb210-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
-<span id="cb210-16"><a href="map.html#cb210-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb210-17"><a href="map.html#cb210-17" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>(</span>
-<span id="cb210-18"><a href="map.html#cb210-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
-<span id="cb210-19"><a href="map.html#cb210-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb210-20"><a href="map.html#cb210-20" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">projection =</span> <span class="st">&quot;sinusoidal&quot;</span>)</span>
-<span id="cb210-21"><a href="map.html#cb210-21" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(</span>
-<span id="cb210-22"><a href="map.html#cb210-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> </span>
-<span id="cb210-23"><a href="map.html#cb210-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="map.html#cb207-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$center_longitude</span></span>
+<span id="cb207-2"><a href="map.html#cb207-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span>
+<span id="cb207-3"><a href="map.html#cb207-3" aria-hidden="true" tabindex="-1"></a>mapproj<span class="sc">::</span><span class="fu">mapproject</span>(</span>
+<span id="cb207-4"><a href="map.html#cb207-4" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>long,</span>
+<span id="cb207-5"><a href="map.html#cb207-5" aria-hidden="true" tabindex="-1"></a>  world<span class="sc">$</span>lat,</span>
+<span id="cb207-6"><a href="map.html#cb207-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection=</span><span class="st">&quot;mercator&quot;</span>,</span>
+<span id="cb207-7"><a href="map.html#cb207-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, center_longitude, rotation)</span>
+<span id="cb207-8"><a href="map.html#cb207-8" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> longlat_new</span>
+<span id="cb207-9"><a href="map.html#cb207-9" aria-hidden="true" tabindex="-1"></a>world_new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb207-10"><a href="map.html#cb207-10" aria-hidden="true" tabindex="-1"></a>  longlat_new[<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)]</span>
+<span id="cb207-11"><a href="map.html#cb207-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb207-12"><a href="map.html#cb207-12" aria-hidden="true" tabindex="-1"></a>world_new<span class="sc">$</span>group <span class="ot">&lt;-</span> world<span class="sc">$</span>group</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="map.html#cb208-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> world <span class="sc">|</span><span class="er">&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(region <span class="sc">!=</span><span class="st">&quot;Antarctica&quot;</span>, <span class="fu">is.na</span>(subregion))</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="map.html#cb209-1" aria-hidden="true" tabindex="-1"></a>center_longitude <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$center_longitude</span></span>
+<span id="cb209-2"><a href="map.html#cb209-2" aria-hidden="true" tabindex="-1"></a>rotation <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$rotation</span></span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="map.html#cb210-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">=</span> ggplot2<span class="sc">::</span><span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
+<span id="cb210-2"><a href="map.html#cb210-2" aria-hidden="true" tabindex="-1"></a><span class="fu">world0</span>()<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb210-3"><a href="map.html#cb210-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># xlim=c(-180, 180),</span></span>
+<span id="cb210-4"><a href="map.html#cb210-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, rotation),</span>
+<span id="cb210-5"><a href="map.html#cb210-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
+<span id="cb210-6"><a href="map.html#cb210-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span></span>
+<span id="cb210-7"><a href="map.html#cb210-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x=</span><span class="fu">range</span>(world<span class="sc">$</span>long), <span class="at">y=</span><span class="fu">range</span>(world<span class="sc">$</span>lat))</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="map.html#cb211-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> <span class="fu">group_by</span>(region) <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb211-2"><a href="map.html#cb211-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="ot">-&gt;</span> world_value</span>
+<span id="cb211-3"><a href="map.html#cb211-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb211-4"><a href="map.html#cb211-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(</span>
+<span id="cb211-5"><a href="map.html#cb211-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>world_value,</span>
+<span id="cb211-6"><a href="map.html#cb211-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">map_id=</span>region),</span>
+<span id="cb211-7"><a href="map.html#cb211-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">&quot;white&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb211-8"><a href="map.html#cb211-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">map=</span>world</span>
+<span id="cb211-9"><a href="map.html#cb211-9" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="map.html#cb212-1" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb212-2"><a href="map.html#cb212-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip=</span><span class="st">&quot;off&quot;</span></span>
+<span id="cb212-3"><a href="map.html#cb212-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb212-4"><a href="map.html#cb212-4" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb212-5"><a href="map.html#cb212-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">190</span>, <span class="dv">190</span>)</span>
+<span id="cb212-6"><a href="map.html#cb212-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb212-7"><a href="map.html#cb212-7" aria-hidden="true" tabindex="-1"></a>(gg0 <span class="sc">+</span> <span class="fu">coord_map</span>()) <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb212-8"><a href="map.html#cb212-8" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">ggplotly</span>()</span>
+<span id="cb212-9"><a href="map.html#cb212-9" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>()</span>
+<span id="cb212-10"><a href="map.html#cb212-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">range</span>(world<span class="sc">$</span>long))</span>
+<span id="cb212-11"><a href="map.html#cb212-11" aria-hidden="true" tabindex="-1"></a>o1 <span class="ot">=</span> <span class="dv">90</span> <span class="co">#input$o1</span></span>
+<span id="cb212-12"><a href="map.html#cb212-12" aria-hidden="true" tabindex="-1"></a>o2 <span class="ot">=</span> <span class="dv">0</span> <span class="co">#input$o2</span></span>
+<span id="cb212-13"><a href="map.html#cb212-13" aria-hidden="true" tabindex="-1"></a>o3 <span class="ot">=</span> <span class="fl">5.1354</span> <span class="co">#input$o3</span></span>
+<span id="cb212-14"><a href="map.html#cb212-14" aria-hidden="true" tabindex="-1"></a>gg0<span class="sc">+</span><span class="fu">coord_map</span>(</span>
+<span id="cb212-15"><a href="map.html#cb212-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
+<span id="cb212-16"><a href="map.html#cb212-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb212-17"><a href="map.html#cb212-17" aria-hidden="true" tabindex="-1"></a>gg0 <span class="sc">+</span> <span class="fu">coord_quickmap</span>(</span>
+<span id="cb212-18"><a href="map.html#cb212-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation=</span><span class="fu">c</span>(o1, o2, o3)</span>
+<span id="cb212-19"><a href="map.html#cb212-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb212-20"><a href="map.html#cb212-20" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(<span class="at">projection =</span> <span class="st">&quot;sinusoidal&quot;</span>)</span>
+<span id="cb212-21"><a href="map.html#cb212-21" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>(</span>
+<span id="cb212-22"><a href="map.html#cb212-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> </span>
+<span id="cb212-23"><a href="map.html#cb212-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="various-projection" class="section level3" number="6.8.1">
 <h3><span class="header-section-number">6.8.1</span> Various projection</h3>
@@ -1237,33 +1285,33 @@ Types of cylindrical map projections you may know include the popular Mercator p
 <ul>
 <li>A country can have many polygons defined by <code>subregion</code>, like Taiwan.</li>
 </ul>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="map.html#cb211-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb211-2"><a href="map.html#cb211-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
-<span id="cb211-3"><a href="map.html#cb211-3" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_detect</span>(region, <span class="st">&quot;Taiwan&quot;</span>)</span>
-<span id="cb211-4"><a href="map.html#cb211-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
-<span id="cb211-5"><a href="map.html#cb211-5" aria-hidden="true" tabindex="-1"></a>  taiwan</span>
-<span id="cb211-6"><a href="map.html#cb211-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb211-7"><a href="map.html#cb211-7" aria-hidden="true" tabindex="-1"></a>taiwan <span class="sc">|</span><span class="er">&gt;</span> </span>
-<span id="cb211-8"><a href="map.html#cb211-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_polygon</span>(</span>
-<span id="cb211-9"><a href="map.html#cb211-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
-<span id="cb211-10"><a href="map.html#cb211-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>long, <span class="at">y=</span>lat, <span class="at">group=</span>group</span>
-<span id="cb211-11"><a href="map.html#cb211-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb211-12"><a href="map.html#cb211-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb211-13"><a href="map.html#cb211-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb211-14"><a href="map.html#cb211-14" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="map.html#cb213-1" aria-hidden="true" tabindex="-1"></a>world <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb213-2"><a href="map.html#cb213-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb213-3"><a href="map.html#cb213-3" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_detect</span>(region, <span class="st">&quot;Taiwan&quot;</span>)</span>
+<span id="cb213-4"><a href="map.html#cb213-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span></span>
+<span id="cb213-5"><a href="map.html#cb213-5" aria-hidden="true" tabindex="-1"></a>  taiwan</span>
+<span id="cb213-6"><a href="map.html#cb213-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb213-7"><a href="map.html#cb213-7" aria-hidden="true" tabindex="-1"></a>taiwan <span class="sc">|</span><span class="er">&gt;</span> </span>
+<span id="cb213-8"><a href="map.html#cb213-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_polygon</span>(</span>
+<span id="cb213-9"><a href="map.html#cb213-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping=</span><span class="fu">aes</span>(</span>
+<span id="cb213-10"><a href="map.html#cb213-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>long, <span class="at">y=</span>lat, <span class="at">group=</span>group</span>
+<span id="cb213-11"><a href="map.html#cb213-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb213-12"><a href="map.html#cb213-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb213-13"><a href="map.html#cb213-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb213-14"><a href="map.html#cb213-14" aria-hidden="true" tabindex="-1"></a><span class="fu">last_plot</span>() <span class="sc">+</span> <span class="fu">coord_map</span>()</span></code></pre></div>
 <ul>
 <li>By default, all geom (except geom_sf) is graphed based on Cartesian coordinate system. You need to <code>+coord_map()</code> to do map projection.</li>
 </ul>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="map.html#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default of coord_map</span></span>
-<span id="cb212-2"><a href="map.html#cb212-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_map</span>(</span>
-<span id="cb212-3"><a href="map.html#cb212-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> <span class="st">&quot;mercator&quot;</span>,</span>
-<span id="cb212-4"><a href="map.html#cb212-4" aria-hidden="true" tabindex="-1"></a>  ...,</span>
-<span id="cb212-5"><a href="map.html#cb212-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parameters =</span> <span class="cn">NULL</span>,</span>
-<span id="cb212-6"><a href="map.html#cb212-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="cn">NULL</span>,</span>
-<span id="cb212-7"><a href="map.html#cb212-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="cn">NULL</span>,</span>
-<span id="cb212-8"><a href="map.html#cb212-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="cn">NULL</span>,</span>
-<span id="cb212-9"><a href="map.html#cb212-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip =</span> <span class="st">&quot;on&quot;</span></span>
-<span id="cb212-10"><a href="map.html#cb212-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="map.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default of coord_map</span></span>
+<span id="cb214-2"><a href="map.html#cb214-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_map</span>(</span>
+<span id="cb214-3"><a href="map.html#cb214-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> <span class="st">&quot;mercator&quot;</span>,</span>
+<span id="cb214-4"><a href="map.html#cb214-4" aria-hidden="true" tabindex="-1"></a>  ...,</span>
+<span id="cb214-5"><a href="map.html#cb214-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parameters =</span> <span class="cn">NULL</span>,</span>
+<span id="cb214-6"><a href="map.html#cb214-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">orientation =</span> <span class="cn">NULL</span>,</span>
+<span id="cb214-7"><a href="map.html#cb214-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="cn">NULL</span>,</span>
+<span id="cb214-8"><a href="map.html#cb214-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="cn">NULL</span>,</span>
+<span id="cb214-9"><a href="map.html#cb214-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip =</span> <span class="st">&quot;on&quot;</span></span>
+<span id="cb214-10"><a href="map.html#cb214-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <ul>
 <li>If multiple coordinate systems are detected, the last coordinate system will be used.</li>
 </ul>
