@@ -978,6 +978,34 @@ gg_taiwan2() +
 teachDS::img_centering("img/gg_taiwan2_geom_sf.png", "100%")
 ```
 
+### stamenmap as background
+
+```{r}
+mp$browse$openstreetmap()
+mp$copy_paste$osm_bbox()
+bbox <- c(left=117.416,
+bottom=21.269,
+right=126.041,
+top=25.904)
+
+# toner-lite
+ggmap::get_stamenmap(bbox, maptype="toner-lite", zoom=9) -> taiwan_tonerlite
+background_tw_tonerlite <- ggmap::ggmap(taiwan_tonerlite)
+background_tw_tonerlite
+
+# terrain
+ggmap::get_stamenmap(bbox, maptype="terrain", zoom=9, language="zh-TW") -> taiwan_terrain
+background_tw_terrain <- ggmap::ggmap(taiwan_terrain,
+  darken=c("0.3", "white"))
+background_tw_terrain
+```
+
+```{r}
+ggplot(faithfuld, aes(waiting, eruptions)) +
+ geom_raster(aes(fill = density), alpha=0.3) -> .gg
+.gg |> View()
+```
+
 
 ### 毒品破獲
 
@@ -1013,6 +1041,8 @@ sf_taiwan$區鎮_simplified_patched |>
     by=c("location"="發生地點")
   ) -> gg_drug$sf
 ```
+
+#### overlay sf background
 
 ```{r}
 gg_drug$map$background <- function(){
@@ -1161,11 +1191,144 @@ last_plot() +
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-teachDS::img_centering("img/drugecondv2.png", width="100%")
+teachDS::img_centering("img/drugecondv2.png", width="70%")
 ```
 
 
 </div>
+
+#### overlay stamenmap background
+
+```{r}
+uk_lads_3857 <- st_transform(uk_lads, 3857)
+
+test_map_uk <- ggmap::get_map(location = unname(st_bbox(uk_lads)), source = "stamen")
+```
+
+
+```{r}
+get_stamenmap2 <- function(...){
+  ggmap::get_stamenmap(...) -> map_stamen
+  ggmap_bbox(map_stamen)
+}
+```
+
+
+```{r}
+# Define a function to fix the bbox to be in EPSG:3857
+ggmap_bbox <- function(map) {
+  if (!inherits(map, "ggmap")) stop("map must be a ggmap object")
+  # Extract the bounding box (in lat/lon) from the ggmap to a numeric vector, 
+  # and set the names to what sf::st_bbox expects:
+  map_bbox <- setNames(unlist(attr(map, "bb")), 
+                       c("ymin", "xmin", "ymax", "xmax"))
+  
+  # Coonvert the bbox to an sf polygon, transform it to 3857, 
+  # and convert back to a bbox (convoluted, but it works)
+  bbox_3857 <- st_bbox(st_transform(st_as_sfc(st_bbox(map_bbox, crs = 4326)), 3857))
+  
+  # Overwrite the bbox of the ggmap object with the transformed coordinates 
+  attr(map, "bb")$ll.lat <- bbox_3857["ymin"]
+  attr(map, "bb")$ll.lon <- bbox_3857["xmin"]
+  attr(map, "bb")$ur.lat <- bbox_3857["ymax"]
+  attr(map, "bb")$ur.lon <- bbox_3857["xmax"]
+  map
+}
+
+# Use the function:
+taiwan_terrain2 <- ggmap_bbox(taiwan_terrain)
+```
+
+
+```{r}
+
+ggmap(taiwan_terrain2) + 
+  coord_sf(crs = st_crs(3857)) + # force the ggplot2 map to be in 3857
+  geom_sf(data = uk_lads_3857, inherit.aes = FALSE)
+```
+
+```{r}
+drug_tonerlite <- 
+  background_tw_tonerlite +
+    geom_sf(
+      data=gg_drug$sf,
+      mapping=aes(
+        fill=案件次數2,
+        label=location
+      ),
+      color="white",
+      size=0.15,
+      alpha=0.3,
+      inherit.aes = F
+    ) +
+  colorspace::scale_fill_discrete_sequential(
+    palette="drug", 
+    na.value=ggplot2::alpha("#dbd7a8", 0.1)
+  )
+
+drug_tonerlite
+```
+
+```{r}
+plotly::ggplotly(drug_tonerlite)
+```
+
+```{r}
+drug_terrain <- 
+  background_tw_terrain +
+    geom_sf(
+      data=gg_drug$sf,
+      mapping=aes(
+        fill=案件次數2,
+        label=location
+      ),
+      color="white",
+      size=0.15,
+      alpha=0.3,
+      inherit.aes = F
+    ) +
+  colorspace::scale_fill_discrete_sequential(
+    palette="drug", 
+    na.value=ggplot2::alpha("#dbd7a8", 0.1)
+  )
+
+drug_terrain
+```
+
+```{r}
+background_tw_terrain <- ggmap::ggmap(taiwan_terrain,
+  darken=c("0.3", "white"))
+ggmap2(taiwan_terrain)
+drug_terrain <- 
+  ggmap2(taiwan_terrain) +
+    geom_sf_overggmap(
+      data=gg_drug$sf,
+      mapping=aes(
+        fill=案件次數2,
+        label=location
+      ),
+      color="white",
+      size=0.15,
+      alpha=0.3,
+      inherit.aes = F
+    ) +
+  colorspace::scale_fill_discrete_sequential(
+    palette="drug", 
+    na.value=ggplot2::alpha("#dbd7a8", 0.1)
+  )
+
+drug_terrain
+```
+
+
+```{r}
+plotly::ggplotly(drug_terrain)
+```
+
+<div class="alert alert-warning">
+The overlaid map is a little off compared to the background map, since the sf data has been simplified to save the computation cost. Nonetheless, it is good for data mining purpose. 
+</div>
+
 ## Spatial computation
 
   * <https://cran.r-project.org/web/packages/sf/vignettes/sf1.html>
