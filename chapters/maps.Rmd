@@ -783,6 +783,12 @@ geoValues$simple_feature_df |> ggplot()+geom_sf()
 ### From SHP file
 
   * <https://tpemartin.github.io/economic-data-visualization/zh-tw/annotation-and-maps.html#%E8%AE%80%E5%85%A5shp%E6%AA%94>
+  
+台灣的sf data太細，以平常輸出並不需要這麼細，可以進行簡化。使用：
+```{r}
+sf_data |> mp$sf$simplify() -> sf_simplified_data
+```
+
 
 ### From OSM
 
@@ -1250,7 +1256,11 @@ plotly::ggplotly(drug$map$overstamen_tonerlite_fixed)
 ```
 
 ```{r , eval=T, echo=F}
-teachDS::img_centering("img/drug_map_overstament_tonerlite_fixed.png", "85%")
+tags$a(
+  href="taiwan_drug2018_stamen1.html",
+  target="_blank",
+  teachDS::img_centering("img/drug_map_overstament_tonerlite_fixed.png", "85%")
+)
 ```
 
   * There is still some unfit due to the fact that sf geometry is simplified. 
@@ -1304,7 +1314,7 @@ drug$map$overstamen_terrain_fixed
 
 ```{r , eval=T, echo=F}
 tags$a(
-  href="https://tpemartin.github.io/economic-data-visualization-2021/taiwan_drug2018_2.html", 
+  href="taiwan_drug2018_stamen2.html", 
   target="_blank",
   teachDS::img_centering("img/drug_map_overstament_terrain_fixed.png", "85%")
 )
