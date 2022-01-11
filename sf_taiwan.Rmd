@@ -1,0 +1,147 @@
+
+```{r}
+sf_taiwan = readRDS('data/sf_taiwan.Rds')
+```
+
+```{r}
+sf_taiwan$區鎮_simplified |>
+  dplyr::mutate(map_id=paste0(is_in.city, name)) -> sf_taiwan$區鎮_simplified
+whichNotThere <- which(!(sf_taiwan_simplified$鄉鎮區$map_id %in% sf_taiwan$區鎮_simplified$map_id))
+sf_taiwan_simplified$鄉鎮區[whichNotThere, ] |> View()
+whichNotThere_rev <- which(!( sf_taiwan$區鎮_simplified$map_id %in% sf_taiwan_simplified$鄉鎮區$map_id))
+sf_taiwan$區鎮_simplified[whichNotThere_rev, ] |> View()
+```
+
+```{r}
+bbox <- c(left=120.7432,
+bottom=24.3265,
+right=121.8212,
+top=24.8659) 
+hsinchu <- list()
+bbox |>
+  mp$osm$request_data(
+    features = c(
+      "name"="五峰鄉"
+    )
+  ) -> hsinchu[[2]]
+
+hsinchu[[2]]$osm_lines |> #dplyr::filter(admin_level=="8") |> 
+  ggplot()+geom_sf()
+hsinchu[[1]]$osm_lines |>
+  sf::st_geometry() -> geometry
+geometry[[1]] %>% sf::st_coordinates()
+
+
+create_polygon_from_linestring_geometry <- function(geometry) {
+  geometry %>%
+    purrr::reduce(sf::st_union) -> g1
+  g1 |> ggplot()+geom_sf()
+  g1 |> sf::st_line_merge() |> ggplot()+geom_sf()
+  g1 |> sf::st_line_merge() -> g2
+  g2 |> ggplot()+geom_sf()
+  g2 |> class()
+  g2 |> sf::st_cast("POLYGON")
+}
+
+geometry |> 
+  create_polygon_from_linestring_geometry() |>
+  ggplot() + geom_sf()
+
+hsinchu |> purrr::map(
+  ~{.x$osm_lines |>
+  sf::st_geometry() |>
+  create_polygon_from_linestring_geometry()}) -> hsinchu2counties
+
+hsinchu2counties[[1]] |> ggplot()+geom_sf()
+hsinchu2counties[[2]] |> ggplot()+geom_sf()
+hsinchu2counties |> sf::st_sfc() -> sfc2
+data.frame(
+  name=c("尖石鄉","五峰鄉")) |>
+  mutate(
+    is_in.city="新竹縣",
+    map_id= paste0(is_in.city,name )
+  ) |>
+  sf::st_set_geometry(sfc2) -> df2
+sf_taiwan$`新竹縣2鄉` <- df2
+sf_taiwan$新竹縣2鄉 |> rmapshaper::ms_simplify() |> ggplot()+geom_sf()
+
+sf_taiwan$區鎮 |>
+  mutate(
+    map_id=paste0(is_in.city, name)
+  ) -> sf_taiwan$區鎮
+sf_taiwan$區鎮 |>
+  rmapshaper::ms_simplify() |> 
+  ggplot()+geom_sf()
+
+sf_taiwan$區鎮 |> 
+  sf::st_crs() -> crsall
+dplyr::bind_rows(sf_taiwan$區鎮, df2) ->
+  sf_taiwan$區鎮2
+View(sf_taiwan$區鎮2) 
+
+sf_taiwan$區鎮2 |>
+  sf::st_cast("MULTIPOLYGON") -> sf_taiwan$區鎮2
+sf_taiwan$`區鎮2` |> #$is_in.city |> unique() 
+  dplyr::filter(
+    is_in.city=="臺北市"
+  ) |>
+  rmapshaper::ms_simplify() |> ggplot()+geom_sf()
+
+sf_taiwan$區鎮2 |> 
+  ggplot() + geom_sf()
+
+sf_taiwan$區鎮2  |> 
+  rmapshaper::ms_simplify() -> sf_taiwan$區鎮_simplified2
+sf_taiwan$區鎮_simplified2 |> View()
+sf_taiwan$區鎮_simplified2 |>
+  ggplot()+geom_sf()
+```
+
+```{r}
+dplyr::bind_rows(
+  sf_taiwan$區鎮_simplified,
+  sf_taiwan$新竹縣2鄉 |> rmapshaper::ms_simplify()
+) -> 
+  sf_taiwan$區鎮_simplified2
+
+sf_taiwan$區鎮_simplified2 |> ggplot() + geom_sf()
+
+sf_taiwan$區鎮_simplified2 |>
+  sf_taiwan$crop_mainland() |> ggplot() + geom_sf(aes(label=map_id))
+plotly::ggplotly(last_plot())
+```
+
+```{r}
+sf_taiwan$縣市_simplified |> names()
+sf_taiwan$縣市_simplified |> 
+  mutate(
+    map_id=name
+  ) -> sf_taiwan$縣市_simplified
+sf_taiwan$縣市_simplified |> ggplot()+geom_sf()
+```
+
+
+```{r}
+sf_taiwan_simplified <- sf_taiwan_simplified
+```
+
+
+```{r}
+sf_taiwan$縣市_simplified |>
+  select(map_id, geometry) -> 
+  sf_taiwan_simplified$縣市
+sf_taiwan$區鎮_simplified2 |> # names()
+  select(map_id, is_in.city, geometry) ->
+  sf_taiwan_simplified$鄉鎮區
+sf_taiwan$縣市_simplified |>
+  select(map_id, geometry) |>
+  sf_taiwan$crop_mainland() -> 
+  sf_taiwan_simplified$台灣本島$縣市
+sf_taiwan$區鎮_simplified2 |> # names()
+  sf_taiwan$crop_mainland() |>
+  select(map_id, is_in.city, geometry) ->
+  sf_taiwan_simplified$台灣本島$鄉鎮區
+sf_taiwan_simplified |>
+  saveRDS("data/sf_taiwan_simplified.Rds")
+```
+

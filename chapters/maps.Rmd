@@ -886,36 +886,54 @@ taipei1() +
 ## Taiwan background map
 
 ```{r}
-xfun::download_file(
-  "https://www.dropbox.com/s/x5iinins676g53f/sf_taiwan.Rds?dl=1",
-  output="data/sf_taiwan.Rds"
-)
-sf_taiwan = readRDS("data/sf_taiwan.Rds")
+sf_taiwan_simplified <- econDV2::sf_taiwan_simplified
+
+sf_taiwan_simplified$台灣本島$縣市 |> 
+  ggplot()+geom_sf()
+sf_taiwan_simplified$台灣本島$鄉鎮區 |>
+  ggplot()+geom_sf()
 ```
+
+<div class="alert alert-warning">
+Cast the **geometry** column to have uniform feature if your want to use `plotly::ggplotly` later:
+```{r}
+# Originally polygons mixed with multipolygons
+sf_taiwan_simplified$台灣本島$鄉鎮區 |> sf::st_geometry()
+
+# re-cast to uniform multipolygon
+sf_taiwan_simplified$台灣本島$鄉鎮區 |>
+  sf::st_cast("MULTIPOLYGON") -> 
+  sf_taiwan_simplified$台灣本島$鄉鎮區
+```
+
+</div>
 
 ```{r}
 mp <- econDV2::Map()
 ```
 
-
-### 縣市
+  * `mp$sf$make_background_map` 底圖製作
+  
+### 縣市底圖
 
 ```{r}
-# Without cropping
-sf_taiwan$縣市_simplified |>
+econDV2::Object(background)
+```
+
+
+```{r}
+sf_taiwan_simplified$台灣本島$縣市 |>
   mp$sf$make_background_map()
 
-# With cropping
-gg_taiwan1 <- function(){
-  sf_taiwan$縣市_simplified |>
-  sf_taiwan$crop_mainland() |>
+background$台灣本島$縣市 <- function(){
+  sf_taiwan_simplified$台灣本島$縣市 |>
   mp$sf$make_background_map(
       color="white",
       size=0.14
   )
 }
 
-gg_taiwan1()
+background$台灣本島$縣市()
 ```
 
 ```{r , eval=T, echo=F}
@@ -923,141 +941,118 @@ teachDS::img_centering("img/gg_taiwan1.png", "100%")
 ```
 
 
-```{r}
-gg_taiwan1() +
-  geom_sf(
-   data =  
-      sf_taiwan$縣市_simplified |>
-      sf_taiwan$crop_mainland()
-  )
-```
-
-```{r , eval=T, echo=F}
-teachDS::img_centering("img/gg_taiwan1_geom_sf.png", "100%")
-```
-
 
 <div class="alert alert-info">
 If you don't know how much to crop and want to explore different possibilities, you can:
 ```{r}
-sf_taiwan$縣市_simplified |> 
+sf_taiwan_simplified$縣市 |> 
   mp$sf$gg_crop()
 ```
 
 </div>
 
-### 各鄉/鎮/區
+### 各鄉/鎮/區底圖
+
 
 ```{r}
-gg_taiwan2 <- function(){
-  sf_taiwan$區鎮_simplified_patched |>
-    sf_taiwan$crop_mainland() |>
+background$台灣本島$鄉鎮區 <- function(){
+  sf_taiwan_simplified$台灣本島$鄉鎮區 |>
+    sf::st_cast("MULTIPOLYGON") |>
     mp$sf$make_background_map(
       color="white",
       size=0.14
     )
 }
 
-gg_taiwan2()
+background$台灣本島$鄉鎮()
 ```
 
 ```{r , eval=T, echo=F}
 teachDS::img_centering("img/gg_taiwan2.png", "100%")
 ```
 
-```{r}
-gg_taiwan2() +
-  geom_sf(
-    data=
-      sf_taiwan$區鎮_simplified_patched |>
-      sf_taiwan$crop_mainland()
-  )
-```
-
-```{r , eval=T, echo=F}
-teachDS::img_centering("img/gg_taiwan2_geom_sf.png", "100%")
-```
-
-### stamenmap as background
+### stamenmap底圖
 
 ```{r}
-mp$browse$openstreetmap()
-mp$copy_paste$osm_bbox()
-bbox <- c(left=117.416,
-bottom=21.269,
-right=126.041,
-top=25.904)
+bbox <- c(left=119.99690,
+bottom=21.89988,
+right=122.00000,
+top=25.29999)
+```
 
+
+```{r}
+econDV2::Object(taiwan_stamen)
 # toner-lite
-ggmap::get_stamenmap(bbox, maptype="toner-lite", zoom=9) -> taiwan_tonerlite
-background_tw_tonerlite <- ggmap::ggmap(taiwan_tonerlite)
-background_tw_tonerlite
+taiwan_stamen$tonerlite <- 
+  ggmap::get_stamenmap(bbox, maptype="toner-lite", zoom=9) 
+
+background$台灣本島$tonerlite <- 
+  function(){
+    ggmap::ggmap(taiwan_stamen$tonerlite)
+  }
+
+background$`台灣本島`$tonerlite()
 
 # terrain
-ggmap::get_stamenmap(bbox, maptype="terrain", zoom=9, language="zh-TW") -> taiwan_terrain
-background_tw_terrain <- ggmap::ggmap(taiwan_terrain,
-  darken=c("0.3", "white"))
-background_tw_terrain
-```
+taiwan_stamen$terrain <- 
+  ggmap::get_stamenmap(bbox, maptype="terrain", zoom=9)
+background$台灣本島$terrain <- function(){
+  ggmap::ggmap(taiwan_stamen$terrain,
+    darken=c("0.3", "white"))
+}
 
-```{r}
-ggplot(faithfuld, aes(waiting, eruptions)) +
- geom_raster(aes(fill = density), alpha=0.3) -> .gg
-.gg |> View()
+background$台灣本島$terrain()
 ```
 
 
 ### 毒品破獲
 
 ```{r}
-drug <- jsonlite::fromJSON("https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?dl=1")
+econDV2::Object(drug)
+drug$data <- jsonlite::fromJSON("https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?dl=1")
+drug$data <- drug$data |>
+  dplyr::filter(發生西元年=="2018")
 ```
 
 ```{r}
-gg_drug <- list()
-drug |> 
-  dplyr::filter(發生西元年=="2018") -> gg_drug$data
 library(dplyr)
-gg_drug$data |>
+drug$data |>
   group_by(發生地點) |>
   summarise(
-    案件次數=n()
-  ) -> gg_drug$data
-gg_drug$data |> View()
+    案件次數=n(),
+    案件次數2=cut(案件次數, c(0, 10, 20, 30))
+  ) -> drug$data_frequency
 ```
 
+
 ```{r}
-sf_taiwan$區鎮_simplified_patched |> View()
-sf_taiwan$區鎮_simplified_patched |> 
-  sf_taiwan$crop_mainland()  -> .df
-.df |> 
-  mutate(
-    location=paste0(
-      stringr::str_replace(is_in.city, "臺", "台"), name)
-  ) -> .df
-.df |> #names()
+drug$data |> View()
+```
+
+#### create sf econ-social data
+
+```{r}
+sf_taiwan_simplified$台灣本島$鄉鎮區 |> 
+  sf::st_cast("MULTIPOLYGON") |>  # for plotly to work
   dplyr::left_join(
-    gg_drug$data,
-    by=c("location"="發生地點")
-  ) -> gg_drug$sf
+    {
+      drug$data_frequency |>
+        mutate(
+          發生地點=
+            stringr::str_replace(發生地點, '台', "臺"))
+     },
+     by=c("map_id"="發生地點")
+    ) -> drug$sf
 ```
 
 #### overlay sf background
 
 ```{r}
-gg_drug$map$background <- function(){
-  sf_taiwan$區鎮_simplified_patched |> 
-  sf_taiwan$crop_mainland() |> 
-  mp$sf$make_background_map()
-}
-gg_drug$map$background()
-```
-
-```{r}
-gg_drug$map$choropleth0 <- function(){
-  gg_drug$map$background() +
+drug$map$choropleth0 <- function(){
+  background$`台灣本島`$鄉鎮區() +
     geom_sf(
-      data=gg_drug$sf,
+      data=drug$sf,
       mapping=aes(
         fill=案件次數
       ),
@@ -1066,7 +1061,7 @@ gg_drug$map$choropleth0 <- function(){
     ) 
 }
 
-gg_drug$map$choropleth0()
+drug$map$choropleth0()
 ```
 
 ```{r , eval=T, echo=F}
@@ -1075,12 +1070,16 @@ teachDS::img_centering("img/drug_choropleth0.png", "100%")
 
 ```{r}
 # mp$choose_palette()
-colorspace::sequential_hcl(n = 3, h = c(-83, 20), c = c(65, NA, 18), l = c(32, 90), power = c(0.5, 1), rev = TRUE, register = "drug")
+drug$register_palette <- function(){
+  colorspace::sequential_hcl(n = 3, h = c(-83, 20), c = c(65, NA, 18), l = c(32, 90), power = c(0.5, 1), rev = TRUE, register = "drug")
+}
+
+drug$register_palette()
 ```
 
 
 ```{r}
-gg_drug$map$choropleth0() +
+drug$map$choropleth0() +
   colorspace::scale_fill_continuous_sequential(
     palette="drug", 
     na.value="#dbd7a8"
@@ -1093,19 +1092,13 @@ teachDS::img_centering("img/drug_choropleth0_b.png", "100%")
 
 
 ```{r}
-gg_drug$sf$案件次數 |> 
-  cut(
-    c(0,10,20,30)
-  ) -> 
-  gg_drug$sf$案件次數2
-
-gg_drug$map$choropleth1 <- function(){
-  gg_drug$map$background() +
+drug$map$choropleth1 <- function(){
+  background$`台灣本島`$鄉鎮區() +
     geom_sf(
-      data=gg_drug$sf,
+      data=drug$sf,
       mapping=aes(
         fill=案件次數2,
-        label=location
+        label=map_id
       ),
       color="white",
       size=0.15
@@ -1114,14 +1107,14 @@ gg_drug$map$choropleth1 <- function(){
 ```
 
 ```{r}
-gg_drug$map$choropleth1() +
+drug$map$choropleth1() +
   colorspace::scale_fill_discrete_sequential(
     palette="drug", 
     na.value="#dbd7a8"
   ) + 
-  theme_void() -> gg_drug$map$choropleth_final
+  theme_void() -> drug$map$choropleth_final
 
-gg_drug$map$choropleth_final
+drug$map$choropleth_final
 ```
 
 ```{r , eval=T, echo=F}
@@ -1136,16 +1129,21 @@ tags$a(
 
 ```{r}
 plotly::ggplotly(
-  gg_drug$map$choropleth_final
+  drug$map$choropleth_final
 )
 ```
 
 <div class="alert alert-info">
-If you want to make the entire Taiwan island's choropleth map down to "縣市" or "鄉鎮區", you can also do:
+If you want to make the entire Taiwan island's choropleth map down to "縣市" or "鄉鎮區", you can also use:
+
+  * `econDV2::geom_sf_taiwan` which only need social-econ data with map_id. It will create sf social-econ data in the background for you.
+  
+  * `econDV2::geom_sf_taiwan` default at `cast2multipolygon=T` to ensure `plotly::ggplotly` work. 
+
 ```{r}
 ggplot()+
   econDV2::geom_sf_taiwan(
-    data=gg_drug$data,
+    data=drug$data_frequency,
     mapping=aes(
       fill=案件次數
     ),
@@ -1158,18 +1156,16 @@ last_plot() +
     palette="drug", 
     na.value="#dbd7a8"
   )
+
+plotly::ggplotly(last_plot())
 ```
 
-```{r}
-gg_drug$data$案件次數 |> 
-  cut(
-    c(0,10,20,30)
-  ) -> 
-  gg_drug$data$案件次數2
+  * background map design change is also possible. 
 
+```{r}
 ggplot()+
   econDV2::geom_sf_taiwan(
-    data=gg_drug$data,
+    data=drug$data_frequency,
     mapping=aes(
       fill=案件次數2
     ),
@@ -1188,6 +1184,8 @@ last_plot() +
     na.value="#dbd7a8"
   ) + 
   theme_void()
+
+plotly::ggplotly(last_plot())
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -1200,61 +1198,13 @@ teachDS::img_centering("img/drugecondv2.png", width="70%")
 #### overlay stamenmap background
 
 ```{r}
-uk_lads_3857 <- st_transform(uk_lads, 3857)
-
-test_map_uk <- ggmap::get_map(location = unname(st_bbox(uk_lads)), source = "stamen")
-```
-
-
-```{r}
-get_stamenmap2 <- function(...){
-  ggmap::get_stamenmap(...) -> map_stamen
-  ggmap_bbox(map_stamen)
-}
-```
-
-
-```{r}
-# Define a function to fix the bbox to be in EPSG:3857
-ggmap_bbox <- function(map) {
-  if (!inherits(map, "ggmap")) stop("map must be a ggmap object")
-  # Extract the bounding box (in lat/lon) from the ggmap to a numeric vector, 
-  # and set the names to what sf::st_bbox expects:
-  map_bbox <- setNames(unlist(attr(map, "bb")), 
-                       c("ymin", "xmin", "ymax", "xmax"))
-  
-  # Coonvert the bbox to an sf polygon, transform it to 3857, 
-  # and convert back to a bbox (convoluted, but it works)
-  bbox_3857 <- st_bbox(st_transform(st_as_sfc(st_bbox(map_bbox, crs = 4326)), 3857))
-  
-  # Overwrite the bbox of the ggmap object with the transformed coordinates 
-  attr(map, "bb")$ll.lat <- bbox_3857["ymin"]
-  attr(map, "bb")$ll.lon <- bbox_3857["xmin"]
-  attr(map, "bb")$ur.lat <- bbox_3857["ymax"]
-  attr(map, "bb")$ur.lon <- bbox_3857["xmax"]
-  map
-}
-
-# Use the function:
-taiwan_terrain2 <- ggmap_bbox(taiwan_terrain)
-```
-
-
-```{r}
-
-ggmap(taiwan_terrain2) + 
-  coord_sf(crs = st_crs(3857)) + # force the ggplot2 map to be in 3857
-  geom_sf(data = uk_lads_3857, inherit.aes = FALSE)
-```
-
-```{r}
-drug_tonerlite <- 
-  background_tw_tonerlite +
+drug$map$overstamen_tonerlite <- 
+  background$`台灣本島`$tonerlite() +
     geom_sf(
-      data=gg_drug$sf,
+      data=drug$sf,
       mapping=aes(
         fill=案件次數2,
-        label=location
+        label=map_id
       ),
       color="white",
       size=0.15,
@@ -1266,21 +1216,56 @@ drug_tonerlite <-
     na.value=ggplot2::alpha("#dbd7a8", 0.1)
   )
 
-drug_tonerlite
+drug$map$overstamen_tonerlite
 ```
 
 ```{r}
-plotly::ggplotly(drug_tonerlite)
+plotly::ggplotly(drug$map$overstamen_tonerlite)
 ```
 
+  * The overlay is slightly off due to some bug in ggmap. To fix it, you can use `econDV2::ggmap2() + econDV2::geom_sf_overggmap()`
+
+```{r fix}
+drug$map$overstamen_tonerlite_fixed <- 
+  econDV2::ggmap2(taiwan_stamen$tonerlite)+
+    econDV2::geom_sf_overggmap(
+        data=drug$sf,
+        mapping=aes(
+          fill=案件次數2,
+          label=map_id
+        ),
+        color="white",
+        size=0.15,
+        alpha=0.3,
+        inherit.aes = F
+      ) +
+    colorspace::scale_fill_discrete_sequential(
+      palette="drug", 
+      na.value=ggplot2::alpha("#dbd7a8", 0.1)
+    )+theme_void()
+
+drug$map$overstamen_tonerlite_fixed
+
+plotly::ggplotly(drug$map$overstamen_tonerlite_fixed)
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/drug_map_overstament_tonerlite_fixed.png", "85%")
+```
+
+  * There is still some unfit due to the fact that sf geometry is simplified. 
+
+***
+
+Terrain
 ```{r}
-drug_terrain <- 
-  background_tw_terrain +
+drug$map$overstamen_terrain <- 
+  background$`台灣本島`$terrain() +
     geom_sf(
-      data=gg_drug$sf,
+      data=drug$sf,
       mapping=aes(
         fill=案件次數2,
-        label=location
+        label=map_id
       ),
       color="white",
       size=0.15,
@@ -1292,20 +1277,17 @@ drug_terrain <-
     na.value=ggplot2::alpha("#dbd7a8", 0.1)
   )
 
-drug_terrain
+drug$map$overstamen_terrain
 ```
 
 ```{r}
-background_tw_terrain <- ggmap::ggmap(taiwan_terrain,
-  darken=c("0.3", "white"))
-ggmap2(taiwan_terrain)
-drug_terrain <- 
-  ggmap2(taiwan_terrain) +
-    geom_sf_overggmap(
-      data=gg_drug$sf,
+drug$map$overstamen_terrain_fixed <- 
+  econDV2::ggmap2(taiwan_stamen$terrain) +
+    econDV2::geom_sf_overggmap(
+      data=drug$sf,
       mapping=aes(
         fill=案件次數2,
-        label=location
+        label=map_id
       ),
       color="white",
       size=0.15,
@@ -1315,20 +1297,23 @@ drug_terrain <-
   colorspace::scale_fill_discrete_sequential(
     palette="drug", 
     na.value=ggplot2::alpha("#dbd7a8", 0.1)
-  )
+  )+theme_void()
 
-drug_terrain
+drug$map$overstamen_terrain_fixed
+```
+
+```{r , eval=T, echo=F}
+teachDS::img_centering("img/drug_map_overstament_terrain_fixed.png", "85%")
 ```
 
 
 ```{r}
-plotly::ggplotly(drug_terrain)
+plotly::ggplotly(drug$map$overstamen_terrain_fixed)
 ```
 
-<div class="alert alert-warning">
-The overlaid map is a little off compared to the background map, since the sf data has been simplified to save the computation cost. Nonetheless, it is good for data mining purpose. 
-</div>
 
+
+<!--
 ## Spatial computation
 
   * <https://cran.r-project.org/web/packages/sf/vignettes/sf1.html>
@@ -1494,7 +1479,7 @@ coord_map(
 
 ## Rotate the projection 
 
-<!--
+
 
 ## Map overlay
 
@@ -1760,5 +1745,7 @@ gg0 |> class()
 gg0$data
 ggmap |> body() |> clipr::write_clip()
 ```
+
+
 
 -->
