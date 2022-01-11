@@ -1303,7 +1303,12 @@ drug$map$overstamen_terrain_fixed
 ```
 
 ```{r , eval=T, echo=F}
-teachDS::img_centering("img/drug_map_overstament_terrain_fixed.png", "85%")
+tags$a(
+  href="https://tpemartin.github.io/economic-data-visualization-2021/taiwan_drug2018_2.html", 
+  target="_blank",
+  teachDS::img_centering("img/drug_map_overstament_terrain_fixed.png", "85%")
+)
+
 ```
 
 
