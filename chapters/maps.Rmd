@@ -889,7 +889,7 @@ taipei1() +
   )
 ```
 
-## Taiwan background map
+## Taiwan drug problem
 
 ```{r}
 sf_taiwan_simplified <- econDV2::sf_taiwan_simplified
@@ -1014,6 +1014,10 @@ background$台灣本島$terrain()
 
 ### 毒品破獲
 
+  1. 創立帶有geometry column的sf毒品資料
+  
+  2. 繪製面量圖
+
 ```{r}
 econDV2::Object(drug)
 drug$data <- jsonlite::fromJSON("https://www.dropbox.com/s/dry3nvahkmcmqoi/drug.json?dl=1")
@@ -1022,6 +1026,7 @@ drug$data <- drug$data |>
 ```
 
 ```{r}
+# 計算不同發生地點的案件破獲次數 
 library(dplyr)
 drug$data |>
   group_by(發生地點) |>
@@ -1032,25 +1037,53 @@ drug$data |>
 ```
 
 
-```{r}
-drug$data |> View()
-```
-
 #### create sf econ-social data
 
+
 ```{r}
-sf_taiwan_simplified$台灣本島$鄉鎮區 |> 
-  sf::st_cast("MULTIPOLYGON") |>  # for plotly to work
-  dplyr::left_join(
-    {
-      drug$data_frequency |>
-        mutate(
-          發生地點=
-            stringr::str_replace(發生地點, '台', "臺"))
-     },
-     by=c("map_id"="發生地點")
-    ) -> drug$sf
+left_data <-
+  sf_taiwan_simplified$`台灣本島`$鄉鎮區
+right_data <- 
+  drug$data_frequency |>
+  mutate(
+    發生地點=
+    stringr::str_replace(發生地點, '台', "臺"))
+
+## left_join
+drug$join$left <- {
+  left_data |> 
+    dplyr::left_join(
+      right_data, by=c("map_id"="發生地點")
+    )
+}
+## right_join
+drug$join$right <- {
+  left_data |> 
+    dplyr::right_join(
+      right_data, by=c("map_id"="發生地點")
+    )
+}## inner_join
+drug$join$inner <- {
+  left_data |> 
+    dplyr::inner_join(
+      right_data, by=c("map_id"="發生地點")
+    )
+}
+
 ```
+
+
+```{r}
+drug$join$left |> ggplot()+geom_sf()
+# right covers some small island data whose geometry is empty
+drug$join$right |> ggplot() + geom_sf()
+# inner like right but no small island data
+drug$join$inner |> ggplot() + geom_sf()
+
+drug$sf <- drug$join$inner
+
+```
+
 
 #### overlay sf background
 
@@ -1242,7 +1275,7 @@ drug$map$overstamen_tonerlite_fixed <-
         ),
         color="white",
         size=0.15,
-        alpha=0.3,
+        alpha=0.7,
         inherit.aes = F
       ) +
     colorspace::scale_fill_discrete_sequential(
@@ -1279,7 +1312,7 @@ drug$map$overstamen_terrain <-
       ),
       color="white",
       size=0.15,
-      alpha=0.3,
+      alpha=0.7,
       inherit.aes = F
     ) +
   colorspace::scale_fill_discrete_sequential(
@@ -1301,7 +1334,7 @@ drug$map$overstamen_terrain_fixed <-
       ),
       color="white",
       size=0.15,
-      alpha=0.3,
+      alpha=0.5,
       inherit.aes = F
     ) +
   colorspace::scale_fill_discrete_sequential(
