@@ -1,0 +1,10 @@
+
+## Vimeo
+
+```{r}
+vimeo::vimeo_auth()
+vimeo::vimeoService_create() -> vimeo
+vimeo$auth()
+
+```
+

@@ -10,24 +10,6 @@ link-citations: yes
 ---
 
 
-
-# Prerequisites
-
-## Start a project
-
-Start a new project for your ggplot environment:
-
-**Project** > **New Project...** > **New Directory** > **New Project**
-
-## 中文
-
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
-
 ```{r, eval=T, echo=F}
 klippy::klippy()
 ```
@@ -38,56 +20,49 @@ knitr::opts_chunk$set(echo = TRUE, eval=F)
 ```
 
 
+# Prerequisites
+
+## Packages
+
 ```{r}
 install.packages(
-  c("showtext","extrafont")
+  c("showtext","extrafont", "remotes")
 )
 ```
 
-```{r}
-sysfonts::font_families()
-sysfonts::font_add_google('Noto Sans TC')
-sysfonts::font_families()
-```
+  * **showtext** and **extrafont** are for Chinese characters to show properly in the graph.
 
 ```{r}
-library(ggplot2)
-library(showtext)
-showtext_auto()
-theme_set(
-  theme(
-    text=element_text(family = "Noto Sans TC")
-  ) 
-)
+remotes::install_github("tpemartin/econDV2", force=T)
 ```
+
+## Start a project
+
+You should always organize documents with the same purpose inside a unified folder, which is called a **project folder**, and initiate an **R project** with it.
+
+Start a new project for your ggplot environment:
+
+**Project** > **New Project...** > **New Directory** > **New Project**
 
 <div class="alert alert-info">
-你也可以在你的`.Rprofile`裡加上:
-```{r}
-library(ggplot2)
-library(showtext)
-sysfonts::font_add_google('Noto Sans TC')
-showtext_auto()
-theme_set(
-  theme(
-    text=element_text(family = "Noto Sans TC")
-  ) 
-)
-```
+Initiate a project and setup environment:
+
+  * Addins > (under `econDV2`) Setup environment
+
 </div>
-
-## econDV2
-
-```{r}
-devtools::install_github("tpemartin/econDV2")
-```
-
 
 ## .Rprofile
 
 ```{r}
+sysfonts::font_families()
+sysfonts::font_add_google('Noto Sans TC')
+sysfonts::font_families()
+```
+
+```{r}
 library(ggplot2)
 library(showtext)
+library(econDV2)
 sysfonts::font_add_google('Noto Sans TC')
 showtext_auto()
 theme_set(
@@ -96,7 +71,7 @@ theme_set(
   )+
     theme_classic()
 )
-library(econDV2)
+
 gg <- list(
   dash = econDV2::ggdash,
   geom = econDV2::ggbrowse,

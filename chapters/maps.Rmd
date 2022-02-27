@@ -1043,6 +1043,9 @@ drug$data |>
 ```{r}
 left_data <-
   sf_taiwan_simplified$`台灣本島`$鄉鎮區
+
+library(sf) # You need this for dplyr join functions to work with sf class data frame
+
 right_data <- 
   drug$data_frequency |>
   mutate(
@@ -1180,7 +1183,7 @@ If you want to make the entire Taiwan island's choropleth map down to "縣市" o
   * `econDV2::geom_sf_taiwan` default at `cast2multipolygon=T` to ensure `plotly::ggplotly` work. 
 
 ```{r}
-ggplot()+
+ggplot()+  
   econDV2::geom_sf_taiwan(
     data=drug$data_frequency,
     mapping=aes(

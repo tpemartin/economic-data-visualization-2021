@@ -10,8 +10,28 @@ link-citations: yes
 ---
 
 
+```{r, eval=T, echo=F}
+klippy::klippy()
+```
+
 
 # Prerequisites
+
+## Packages
+
+```{r}
+install.packages(
+  c("showtext","extrafont", "remotes")
+)
+```
+
+```{r}
+remotes::install_github("tpemartin/econDV2", force=T)
+```
+
+
+
+## Setup environment
 
 ## Start a project
 
@@ -28,21 +48,11 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-```{r, eval=T, echo=F}
-klippy::klippy()
-```
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=F)
 ```
 
 
-```{r}
-install.packages(
-  c("showtext","extrafont")
-)
-```
 
 ```{r}
 sysfonts::font_families()
